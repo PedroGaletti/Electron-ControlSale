@@ -21,6 +21,10 @@ function ready(fn) {
 }
 
 ready(() => {
+  const url  = window.location.href;
+  const index = (url.indexOf('=') + 1);
+  const screenToGo = url.substr(index);
+
   document.querySelector('#home').addEventListener('click', (e) => {
     e.preventDefault();
     window.location = `../index.html`;
@@ -29,7 +33,6 @@ ready(() => {
   document.querySelector('#register').addEventListener('click', (e) => {
     e.preventDefault();
     window.location = `./auth.html`;
-    console.log(window.location);
   });
 
   document.querySelector('#edit').addEventListener('click', (e) => {
@@ -50,5 +53,6 @@ ready(() => {
         password: document.querySelector('#password').value,
       };
       document.querySelector('#form-login').reset();
+      window.location = `../${screenToGo}`;
   });
 });

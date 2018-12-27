@@ -132,7 +132,6 @@ th {
 html {
   height: 100%;
   width: 100%;
-  overflow: hidden;
 }
 
 body {
@@ -208,6 +207,61 @@ h6 {
   position: absolute;
   top: 25%;
   margin: 0 auto;
+}
+
+.noTop {
+  top: 8%;
+  padding-bottom: 30px;
+}
+
+.margin-right {
+  margin-right: 20px;
+}
+
+#products {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+#products li {
+  cursor: pointer;
+  position: relative;
+  font-size: 14px;
+  user-select: none;
+  background: #eee;
+}
+
+#products li:nth-child(odd) {
+  background: #f9f9f9;
+}
+
+/* Darker background-color on hover */
+#products li:hover {
+  background: #ddd;
+}
+
+#product_combos {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+#product_combos li {
+  cursor: pointer;
+  position: relative;
+  font-size: 14px;
+  user-select: none;
+  background: #eee;
+}
+
+#product_combos li:nth-child(odd) {
+  background: #f9f9f9;
+}
+
+/* Darker background-color on hover */
+#product_combos li:hover {
+  background: #ddd;
 }
 
 .center-horizontal {

@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8">
     <title>288 Worship</title>
-    <link href="../css/photon.css" rel="stylesheet"> 
-    <script>require('./renderer.js')</script>
+    <link href="../../css/photon.css" rel="stylesheet"> 
+    <script>require('./register.js')</script>
     <script src="http://localhost:35729/livereload.js"></script>
   </head>
   <body>
@@ -24,39 +24,110 @@
         </button>
       </div>
     </header>
-    <div class="center-horizontal hundred-margin">
-      <image src="../images/Logo-AmareloEpreto.png" class="image center" />
-      <table class="table-striped">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Kind</th>
-            <th>File Size</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>photon.css</td>
-            <td>CSS</td>
-            <td>28K</td>
-          </tr>
-          <tr>
-            <td>photon.css</td>
-            <td>CSS</td>
-            <td>28K</td>
-          </tr>
-          <tr>
-            <td>photon.css</td>
-            <td>CSS</td>
-            <td>28K</td>
-          </tr>
-          <tr>
-            <td>photon.css</td>
-            <td>CSS</td>
-            <td>28K</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="center" id="body">
+      <div class="form-center noTop">
+        <div class="center">
+          <div class="radio">
+            <label class="margin-right">
+              <input id="product_radio" type="radio" name="radio" checked>
+              Produto
+            </label>
+            <label>
+              <input id="combo_radio" type="radio" name="radio">
+              Combo
+            </label>
+          </div>
+        </div>
+        <form id="form-login">
+          <div class="form-group">
+            <label>Produtos Cadastrados</label>
+            <ul id="products">
+              <li>Hit the gym</li>
+              <li>Pay bills</li>
+              <li>Meet George</li>
+            </ul>
+          </div>
+          <div class="form-group">
+            <label>Produtos do Combo</label>
+            <ul id="product_combos">
+              <li>Pay bills</li>
+              <li>Meet George</li>
+            </ul>
+          </div>
+          <div class="form-group">
+            <label>Valor Combo Crédito/Débito</label>
+            <input
+              id="value_card"
+              type="number"
+              class="form-control"
+              placeholder="Valor Combo Crédito/Débito"
+            />
+          </div>
+          <div class="form-group">
+            <label>Valor Combo Dinheiro</label>
+            <input
+              id="value_money"
+              type="number"
+              class="form-control"
+              placeholder="Valor Combo Dinheiro"
+            />
+          </div>
+          <div class="form-group">
+            <label>Valor Combo Crachá</label>
+            <input
+              id="value_cracha"
+              type="number"
+              class="form-control"
+              placeholder="Valor Combo Crachá"
+            />
+          </div>
+          <div class="form-group">
+            <label>Valor Combo Crédito/Débito Promocional</label>
+            <input
+              id="value_promo_card"
+              type="number"
+              class="form-control"
+              placeholder="Valor Combo Crédito/Débito Promocional"
+            />
+          </div>
+          <div class="form-group">
+            <label>Valor Combo Dinheiro Promocional</label>
+            <input
+              id="value_promo_money"
+              type="number"
+              class="form-control"
+              placeholder="Valor Combo Dinheiro Promocional"
+            />
+          </div>
+          <div class="form-group">
+            <label>Valor Combo Crachá Promocional</label>
+            <input
+              id="value_promo_cracha"
+              type="number"
+              class="form-control"
+              placeholder="Valor Combo Crachá Promocional"
+            />
+          </div>
+          <div class="form-group">
+            <label>Qtde. Combo</label>
+            <input
+              id="qtdeProduct"
+              type="number"
+              class="form-control"
+              placeholder="Qtde. Combo"
+            />
+          </div>
+          <div class="form-actions center">
+            <button
+              id="Login"
+              type="submit"
+              class="btn btn-form btn-primary"
+            >
+              Salvar
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </body>
 </html>

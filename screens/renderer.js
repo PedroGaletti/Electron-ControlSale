@@ -28,17 +28,17 @@ ready(() => {
 
   document.querySelector('#register').addEventListener('click', (e) => {
     e.preventDefault();
-    window.location = `../screens/authScreen/auth.html?screen=register`;
+    window.location = `../screens/authScreen/auth.html?screen=RegisterScreen/register.html`;
     console.log(window.location);
   });
 
   document.querySelector('#edit').addEventListener('click', (e) => {
     e.preventDefault();
-    window.location = `../screens/authScreen/auth.html?screen=edit`;
+    window.location = `../screens/authScreen/auth.html?screen=EditScreen/edit.html`;
   });
 
   document.querySelector('#refresh').addEventListener('click', (e) => {
     e.preventDefault();
-    window.location = `../screens/authScreen/auth.html?screen=refresh`;
+    window.location = `../screens/authScreen/auth.html?screen=RefreshScreen/refresh.html`;
   });
 });
