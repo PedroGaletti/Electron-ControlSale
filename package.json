@@ -5,7 +5,8 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-packager . 288Worship --platform=win32"
+    "build": "electron-packager . 288Worship --platform=win32",
+    "reload": "live-reload ./ --port 35729"
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
@@ -20,5 +21,11 @@
   "devDependencies": {
     "electron": "^3.0.7",
     "electron-packager": "^13.0.1"
+  },
+  "dependencies": {
+    "live-reload": "^1.1.0",
+    "lokijs": "^1.5.5",
+    "read-file-utf8": "^1.1.2",
+    "vue": "^2.5.21"
   }
 }

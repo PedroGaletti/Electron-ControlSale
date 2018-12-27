@@ -198,6 +198,33 @@ h6 {
   background-color: #fff;
 }
 
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-center {
+  position: absolute;
+  top: 25%;
+  margin: 0 auto;
+}
+
+.center-horizontal {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.image {
+  width: 150px;
+  margin: 0 auto;
+}
+
+.hundred-margin {
+  margin-bottom: 80px;
+}
+
 .window-content {
   position: relative;
   overflow-y: auto;
