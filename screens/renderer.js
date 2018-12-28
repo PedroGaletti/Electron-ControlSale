@@ -1,18 +1,3 @@
-var Loki = require('lokijs');
-var db = new Loki('db.json');
-var read = require('read-file-utf8')
-// var data = read(`${__dirname}/db.json`);
-// var produtcs = db.getCollection('produtcs');
-// db.loadJSON(data);
-// window.Vue = require('vue');
-// new Vue({
-//   el: 'body',
-//   data: {
-//     produtcs: [],
-//   },
-//   ready: () => this.produtcs = produtcs.data,
-// });
-
 function ready(fn) {
   if (document.readyState != 'loading') {
     return fn();

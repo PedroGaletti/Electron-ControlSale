@@ -3,60 +3,81 @@
   <head>
     <meta charset="UTF-8">
     <title>288 Worship</title>
+    <meta charset="utf-8"/>
     <link href="../css/photon.css" rel="stylesheet"> 
     <script>require('./renderer.js')</script>
-    <script src="http://localhost:35729/livereload.js"></script>
   </head>
   <body>
-    <header class="toolbar toolbar-header">
-      <div class="toolbar-actions">
-        <button id="home" class="btn btn-large btn-default">
-          <span class="icon icon-home"></span>
-        </button>
-        <button id="register" class="btn btn-large btn-primary">
-          Cadastrar
-        </button>
-        <button id="edit" class="btn btn-large btn-primary">
-          Editar
-        </button>
-        <button id="refresh" class="btn btn-large btn-primary">
-          Estoque
-        </button>
+    <div class="window">
+      <header class="toolbar toolbar-header">
+        <div class="toolbar-actions">
+          <button id="home" class="btn btn-large btn-default">
+            <span class="icon icon-home"></span>
+          </button>
+          <button id="register" class="btn btn-large btn-primary">
+            Cadastrar
+          </button>
+          <button id="edit" class="btn btn-large btn-primary">
+            Editar
+          </button>
+          <button id="refresh" class="btn btn-large btn-primary">
+            Estoque
+          </button>
+        </div>
+      </header>
+      <div class="center-horizontal hundred-margin">
+        <image src="../images/Logo-AmareloEpreto.png" class="image center" />
+        <table id="app" class="table table-striped">
+          <thead>
+            <tr>
+              <th v-for="product in products">
+                {{product.nome}}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td v-for="product in products">
+                {{product.nome}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-    </header>
-    <div class="center-horizontal hundred-margin">
-      <image src="../images/Logo-AmareloEpreto.png" class="image center" />
-      <table class="table-striped">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Kind</th>
-            <th>File Size</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>photon.css</td>
-            <td>CSS</td>
-            <td>28K</td>
-          </tr>
-          <tr>
-            <td>photon.css</td>
-            <td>CSS</td>
-            <td>28K</td>
-          </tr>
-          <tr>
-            <td>photon.css</td>
-            <td>CSS</td>
-            <td>28K</td>
-          </tr>
-          <tr>
-            <td>photon.css</td>
-            <td>CSS</td>
-            <td>28K</td>
-          </tr>
-        </tbody>
-      </table>
     </div>
   </body>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script>
+    const read = require('read-file-utf8')
+    const loki = require('lokijs');
+    const db = new loki('db.json', {
+      autosave: true,
+      autosaveInterval: 1000* 20 * 1,
+      autoload: true,
+    });
+    const data = read('db.json');
+    db.loadJSON(data);
+    const products = db.getCollection('products');
+    const users = db.addCollection('users');
+
+    if (users.data.length != 1) {
+      users.insert({
+        user: '288Worship',
+        password: '288Worshipbanc2018',
+        logged: false,
+      });
+      db.save();
+    }
+
+    window.vue = require('vue');
+    new Vue({
+      el: '#app',
+      data: {
+        products: [],
+      },
+      mounted: function() {
+        this.products = products.data;
+      }
+    });
+  </script>
 </html>
