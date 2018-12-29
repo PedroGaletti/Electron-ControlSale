@@ -5,7 +5,6 @@
     <title>288 Worship</title>
     <meta charset="utf-8"/>
     <link href="../css/photon.css" rel="stylesheet"> 
-    <script>require('./renderer.js')</script>
     <script src="http://localhost:35729/livereload.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
   </head>
@@ -33,14 +32,14 @@
           <thead>
             <tr>
               <th v-for="product in products">
-                {{product.nome}}
+                {{product.name}}
               </th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td v-for="product in products">
-                {{product.nome}}
+                {{product.name}}
               </td>
             </tr>
           </tbody>
@@ -81,7 +80,6 @@
         this.products = products.data;
       }
     });
-    console.log(db);
 
     document.querySelector('#register').addEventListener('click', (e) => {
       e.preventDefault();
@@ -102,6 +100,10 @@
       window.location = isLogged
         ? '../screens/RefreshScreen/refresh.html'
         : '../screens/authScreen/auth.html?screen=RefreshScreen/refresh.html';
+    });
+    document.querySelector('#home').addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location = `../screens/index.html`;
     });
   </script>
 </html>

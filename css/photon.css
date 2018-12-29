@@ -209,9 +209,21 @@ h6 {
   margin: 0 auto;
 }
 
+.btnIcon {
+  width: 20px;
+  background: 'transparent';
+  color: #555;
+  float: right;
+  cursor: pointer;
+}
+
 .noTop {
   top: 8%;
   padding-bottom: 30px;
+}
+
+.plus-li {
+  z-index: 9000;
 }
 
 .margin-right {
