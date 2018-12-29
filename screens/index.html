@@ -6,6 +6,8 @@
     <meta charset="utf-8"/>
     <link href="../css/photon.css" rel="stylesheet"> 
     <script>require('./renderer.js')</script>
+    <script src="http://localhost:35729/livereload.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
   </head>
   <body>
     <div class="window">
@@ -46,7 +48,6 @@
       </div>
     </div>
   </body>
-  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
   <script>
     const read = require('read-file-utf8')
     const loki = require('lokijs');
@@ -58,9 +59,10 @@
     const data = read('db.json');
     db.loadJSON(data);
     const products = db.getCollection('products');
-    const users = db.addCollection('users');
+    const users = db.getCollection('users');
+    const isLogged = users.data[0] && users.data[0].logged;
 
-    if (users.data.length != 1) {
+    if (!users.data[0] && users.data.length != 1) {
       users.insert({
         user: '288Worship',
         password: '288Worshipbanc2018',
@@ -78,6 +80,28 @@
       mounted: function() {
         this.products = products.data;
       }
+    });
+    console.log(db);
+
+    document.querySelector('#register').addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location = isLogged 
+        ? '../screens/RegisterScreen/register.html'
+        : `../screens/authScreen/auth.html?screen=RegisterScreen/register.html`;
+    });
+
+    document.querySelector('#edit').addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location = isLogged
+        ? '../screens/EditScreen/edit.html'
+        : '../screens/authScreen/auth.html?screen=EditScreen/edit.html';
+    });
+
+    document.querySelector('#refresh').addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location = isLogged
+        ? '../screens/RefreshScreen/refresh.html'
+        : '../screens/authScreen/auth.html?screen=RefreshScreen/refresh.html';
     });
   </script>
 </html>
