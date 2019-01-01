@@ -203,6 +203,31 @@ h6 {
   align-items: center;
 }
 
+.center-small {
+  width: 250px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.center-small a {
+  background: #eee;
+  cursor: pointer;
+  user-select: none;
+  font-size: 14px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.center-small a:nth-child(odd) {
+  background: #f9f9f9;
+}
+
+.center-small a:hover {
+  background: #d2d2d2;
+}
+
 .form-center {
   position: absolute;
   top: 25%;
@@ -239,8 +264,8 @@ h6 {
 #products li {
   cursor: pointer;
   position: relative;
-  font-size: 14px;
   user-select: none;
+  font-size: 14px;
   background: #eee;
 }
 

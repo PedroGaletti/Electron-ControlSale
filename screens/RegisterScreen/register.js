@@ -47,7 +47,7 @@ ready(() => {
 
   document.querySelector('#edit').addEventListener('click', (e) => {
     e.preventDefault();
-    window.location = '../EditScreen/edit.html';
+    window.location = '../ListProductScreen/listProduct.html';
   });
 
   document.querySelector('#refresh').addEventListener('click', (e) => {

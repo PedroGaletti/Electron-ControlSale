@@ -18,11 +18,11 @@ ready(() => {
   
   document.querySelector('#edit').addEventListener('click', (e) => {
     e.preventDefault();
-    window.location = '../ListProductScreen/listProduct.html';
+    window.location = './listProduct.html';
   });
   
   document.querySelector('#refresh').addEventListener('click', (e) => {
     e.preventDefault();
-    window.location = './refresh.html';
+    window.location = '../RefreshScreen/refresh.html';
   });
 });

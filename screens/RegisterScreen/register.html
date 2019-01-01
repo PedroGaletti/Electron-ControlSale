@@ -259,6 +259,8 @@
           db.save();
           document.querySelector('#form-body').reset();
           document.querySelector('#product_combos').innerHTML = ``;
+          alert('cadastrado com sucesso');
+          window.location = '../index.html';
           this.show = false;
         },
         changeProduct: function() {
