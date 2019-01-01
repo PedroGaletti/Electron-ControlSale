@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <meta charset="UTF-8">
+      <title>288 Worship</title>
+      <meta charset="utf-8"/>
+      <link href="../../css/photon.css" rel="stylesheet"> 
+      <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+      <script>require('./edit.js')</script>
+    </head>
+    <body>
+      <div class="window">
+        <header class="toolbar toolbar-header">
+          <div class="toolbar-actions">
+            <button id="home" class="btn btn-large btn-default">
+              <span class="icon icon-home"></span>
+            </button>
+            <button id="register" class="btn btn-large btn-primary">
+              Cadastrar
+            </button>
+            <button id="edit" class="btn btn-large btn-primary">
+              Editar
+            </button>
+            <button id="refresh" class="btn btn-large btn-primary">
+              Estoque
+            </button>
+          </div>
+        </header>
+        <div class="center-horizontal hundred-margin">
+          <image src="../../images/Logo-AmareloEpreto.png" class="image center" />
+          <table id="app" class="table table-striped">
+            <thead>
+              <tr>
+                <th v-for="product in products">
+                  {{product.name}}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td v-for="product in products">
+                  {{product.name}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </body>
+    <script>
+      const read = require('read-file-utf8')
+      const loki = require('lokijs');
+      const db = new loki('db.json');
+      const data = read('db.json');
+      db.loadJSON(data);
+      const products = db.getCollection('products');
+      var products_combo = [];
+  
+      window.vue = require('vue');
+      new Vue({
+        el: '#form-body',
+        data: {
+          products: [],
+          show: true,
+        },
+        mounted: function() {
+          this.products = products.data;
+        },
+        methods: {
+          clientStore: function() {
+            let data = {
+              name: document.querySelector('#name').value,
+              products: products_combo,
+              qtdeProduct: document.querySelector('#qtdeProduct').value,
+              value_card: document.querySelector('#value_card').value,
+              value_money: document.querySelector('#value_money').value,
+              value_cracha: document.querySelector('#value_cracha').value,
+              value_card_promo: document.querySelector('#value_card_promo').value,
+              value_money_promo: document.querySelector('#value_money_promo').value,
+              value_cracha_promo: document.querySelector('#value_cracha_promo').value,
+            }
+            products.update(data);
+            db.save();
+            document.querySelector('#form-body').reset();
+            document.querySelector('#product_combos').innerHTML = ``;
+            this.show = false;
+          },
+          changeProduct: function() {
+            var plus = document.getElementsByClassName("plus-li");
+            var minus = document.getElementsByClassName("minus-li");
+            var i, j;
+            for (i = 0; i < plus.length; i++) {
+              plus[i].onclick = function() {
+                products_combo.push(products.data[i - 1]);
+                this.classList.add('minus-li');
+                this.classList.remove('plus-li');
+                this.lastChild.classList.remove('icon-plus');
+                this.lastChild.classList.add('icon-minus');
+                document.querySelector('#product_combos').appendChild(this);
+              };
+            }
+  
+            for (j = 0; j < minus.length; j++) {
+              minus[j].onclick = function() {
+                products_combo.splice(j - 1, 1);
+                this.classList.add('plus-li');
+                this.classList.remove('minus-li');
+                this.lastChild.classList.remove('icon-minus');
+                this.lastChild.classList.add('icon-plus');
+                document.querySelector('#products').appendChild(this);
+              };
+            }
+          },
+        },
+      });
+  
+      document.querySelector('#product_radio').addEventListener('click', (e) => {
+        var minus = document.getElementsByClassName("minus-li");
+        for (var k = 0; k < minus.length; k++) {
+          document.querySelector('#products').appendChild(minus[k]);
+          minus[k].lastChild.classList.remove('icon-minus');
+          minus[k].lastChild.classList.add('icon-plus');
+          minus[k].classList.add('plus-li');
+        }
+        document.querySelector('#form-body').reset();
+        document.querySelector('#form-product').style.display = 'block';
+        document.querySelector('#form-combo').style.display = 'none';
+      });
+  
+      document.querySelector('#combo_radio').addEventListener('click', (e) => {
+        var minus = document.getElementsByClassName("plus-li");
+        for (var k = 0; k < minus.length; k++) {
+          minus[k].classList.remove('minus-li');
+        }
+        document.querySelector('#form-combo').style.display = 'block';
+        document.querySelector('#form-product').style.display = 'none';
+        document.querySelector('#form-body').reset();
+        products_combo = [];
+      })
+    </script>
+  </html>
