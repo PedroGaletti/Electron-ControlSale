@@ -43,7 +43,7 @@
             <div class="form-group">
               <label>Produtos Cadastrados</label>
               <ul id="products">
-                <li @click="changeProduct" class="plus-li" v-for="product in products">
+                <li @click="changeProduct(product)" class="plus-li" v-for="product in products">
                   {{product.name}}
                   <span class="btnIcon icon icon-plus"></span>
                 </li>
@@ -51,7 +51,12 @@
             </div>
             <div class="form-group">
               <label>Produtos do Combo</label>
-              <ul id="product_combos"></ul>
+              <ul id="product_combos">
+                <li @click="changeProduct(product)" class="minus-li" v-for="product in products_combo">
+                  {{product.name}}
+                  <span class="btnIcon icon icon-minus"></span>
+                </li>
+              </ul>
             </div>
             <div class="form-group">
               <label>Nome Combo</label>
@@ -236,8 +241,6 @@
     } else {
       products = db.getCollection('products');
     }
-
-    var products_combo = [];
     var show = true;
 
     window.vue = require('vue');
@@ -245,9 +248,11 @@
       el: '#form-body',
       data: {
         products: [],
+        products_combo: [],
       },
       mounted: function() {
         this.products = products.data.filter(item => !item.combo && item.qtdeProduct > 0);
+        this.products_combo = [];
       },
       methods: {
         clientStore: function() {
@@ -277,7 +282,7 @@
             : document.querySelector('#value_cracha_promo_product').value;
           let data = {
             name,
-            products: products_combo,
+            products: this.products_combo,
             qtdeProduct,
             value_card,
             value_money,
@@ -285,7 +290,7 @@
             value_card_promo,
             value_money_promo,
             value_cracha_promo,
-            combo: !!products_combo.length || false,
+            combo: !!this.products_combo.length || false,
           };
 
           if (name === '' || qtdeProduct === '' || value_card === ''
@@ -294,10 +299,14 @@
               return alert('É necessário o preenchimento de todos os campos');
             }
 
-          if (!show && !products_combo.length) {
+          if (!show && !this.products_combo.length) {
             return alert('Ao Cadastrar um combo, é preciso ter produtos no combo.');
           }
 
+          if (!this.products_combo.length > 1) {
+            alert('Um combo não pode ter somente um produto.');
+          }
+          
           products.insert(data);
           db.save();
           show = true;
@@ -306,30 +315,17 @@
           alert('Cadastrado com sucesso');
           window.location = '../index.html';
         },
-        changeProduct: function() {
-          var plus = document.getElementsByClassName("plus-li");
-          var minus = document.getElementsByClassName("minus-li");
-          var i, j;
-          for (i = 0; i < plus.length; i++) {
-            plus[i].onclick = function() {
-              products_combo.push(products.data[i - 1]);
-              this.classList.add('minus-li');
-              this.classList.remove('plus-li');
-              this.lastChild.classList.remove('icon-plus');
-              this.lastChild.classList.add('icon-minus');
-              document.querySelector('#product_combos').appendChild(this);
-            };
-          }
+        changeProduct: function(product) {
+          const currentProduct = this.products_combo.filter(item => item.$loki === product.$loki);
 
-          for (j = 0; j < minus.length; j++) {
-            minus[j].onclick = function() {
-              products_combo.splice(j - 1, 1);
-              this.classList.add('plus-li');
-              this.classList.remove('minus-li');
-              this.lastChild.classList.remove('icon-minus');
-              this.lastChild.classList.add('icon-plus');
-              document.querySelector('#products').appendChild(this);
-            };
+          if (currentProduct.length) {
+            this.products.push(product);
+            this.products_combo = this.products_combo.filter(item => item.$loki !== product.$loki);
+            return this.products_combo;
+          }
+          if (!currentProduct.length) {
+            this.products = this.products.filter(item => item.$loki !== product.$loki);
+            return this.products_combo.push(product);
           }
         },
       },
@@ -344,7 +340,7 @@
         minus[k].classList.add('plus-li');
       }
       show = true;
-      products_combo = [];
+      this.products_combo = [];
       document.querySelector('#form-body').reset();
       document.querySelector('#form-product').style.display = 'block';
       document.querySelector('#form-combo').style.display = 'none';
@@ -359,7 +355,7 @@
       document.querySelector('#form-combo').style.display = 'block';
       document.querySelector('#form-product').style.display = 'none';
       document.querySelector('#form-body').reset();
-      products_combo = [];
+      this.products_combo = [];
     })
   </script>
 </html>
