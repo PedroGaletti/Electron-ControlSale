@@ -59,6 +59,7 @@
     const products = db.getCollection('products');
     const users = db.getCollection('users');
     const isLogged = users.data[0] && users.data[0].logged;
+    console.log(db);
 
     if (!users.data[0] && users.data.length != 1) {
       users.insert({
@@ -76,7 +77,8 @@
         products: [],
       },
       mounted: function() {
-        this.products = products.data;
+        console.log(products.data);
+        this.products = products.data.filter(item => item.qtdeProduct > 0);
       }
     });
 

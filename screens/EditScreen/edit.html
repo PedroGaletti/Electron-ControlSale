@@ -29,7 +29,7 @@
         <div class="center">
           <div class="form-center noTop">
             <form id="form-body">
-              <div v-if="currentProduct.combo" id="form-combo">
+              <div v-if="currentProduct[0].combo" id="form-combo">
                 <div class="form-group">
                   <label>Produtos Cadastrados</label>
                   <ul id="products">
@@ -81,18 +81,21 @@
         },
         mounted: function() {
           this.currentProduct = product.data;
-          products.data.filter((product, index) => {
-            if (product.$loki === this.currentProduct[0].id) {
-              return products.data.splice(index, 1);
+
+          const products_combo = [...products.data];
+          products_combo.filter((product, index) => {
+            if (product.$loki !== this.currentProduct[0].id) {
+              products_combo.splice(index, 1);
             }
+            
             return this.currentProduct[0].products.map(item => {
-              if (item.$loki === product.$loki) {
-                return products.data.splice(index, 1);
+              if (item.$loki !== product.$loki) {
+                return products_combo.splice(index, 1);
               }
-              return;
             });
           });
-          this.products = products.data;
+
+          this.products = products_combo.filter(item => !item.combo && item.qtdeProduct > 0);
         },
         methods: {
           clientStore: function() {
@@ -111,11 +114,10 @@
               // value_cracha_promo: document.querySelector('#value_cracha_promo').value,
               ...this.currentProduct[0],
             };
-            console.log(data);
-            // products.update(data);
-            // db.save();
-            // window.location = '../index.html';
-            // alert('editado com sucesso');
+            products.update(data);
+            db.save();
+            window.location = '../index.html';
+            alert('editado com sucesso');
           },
           changeProduct: function(product) {
             const currentProduct = this.currentProduct[0].products.filter(item => item.$loki === product.$loki);
@@ -123,7 +125,6 @@
             if (currentProduct.length) {
               this.products.push(product);
               this.currentProduct[0].products = this.currentProduct[0].products.filter(item => item.$loki !== product.$loki);
-              console.log(this.currentProduct[0].products);
               return this.currentProduct[0].products;
             }
             if (!currentProduct.length) {

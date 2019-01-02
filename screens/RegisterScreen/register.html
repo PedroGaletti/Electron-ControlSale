@@ -229,7 +229,14 @@
     const db = new loki('db.json');
     const data = read('db.json');
     db.loadJSON(data);
-    const products = db.getCollection('products');
+    var products;
+
+    if (!products) {
+      products = db.addCollection('products');
+    } else {
+      products = db.getCollection('products');
+    }
+
     var products_combo = [];
     var show = true;
 
@@ -240,7 +247,7 @@
         products: [],
       },
       mounted: function() {
-        this.products = products.data;
+        this.products = products.data.filter(item => !item.combo && item.qtdeProduct > 0);
       },
       methods: {
         clientStore: function() {
