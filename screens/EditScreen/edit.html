@@ -29,11 +29,11 @@
         <div class="center">
           <div class="form-center noTop">
             <form id="form-body">
-              <div v-if="currentProduct[0].products.length > 0" id="form-combo">
+              <div v-if="currentProduct.combo" id="form-combo">
                 <div class="form-group">
                   <label>Produtos Cadastrados</label>
                   <ul id="products">
-                    <li @click="changeProduct" class="plus-li" v-for="product in products">
+                    <li @click="changeProduct(product)" class="plus-li" v-for="product in products">
                       {{product.name}}
                       <span class="btnIcon icon icon-plus"></span>
                     </li>
@@ -42,183 +42,11 @@
                 <div class="form-group">
                   <label>Produtos do Combo</label>
                   <ul id="product_combos">
-                    <li class="minus-li" v-for="product in currentProduct[0].products"> 
-                      {{ product.name }}
+                    <li @click="changeProduct(product)" class="minus-li" v-for="product in currentProduct[0].products">
+                      {{product.name}}
                       <span class="btnIcon icon icon-minus"></span>
                     </li>
                   </ul>
-                </div>
-                <div class="form-group">
-                  <label>Nome Combo</label>
-                  <input
-                    id="name"
-                    type="text"
-                    class="form-control"
-                    placeholder="Nome Combo"
-                    v-model="currentProduct[0].name"
-                  />
-                </div>
-                <div class="form-group">
-                  <label>Valor Combo Crédito/Débito</label>
-                  <input
-                    id="value_card"
-                    type="number"
-                    class="form-control"
-                    placeholder="Valor Combo Crédito/Débito"
-                    v-model="currentProduct[0].value_card"
-                  />
-                </div>
-                <div class="form-group">
-                  <label>Valor Combo Dinheiro</label>
-                  <input
-                    id="value_money"
-                    type="number"
-                    class="form-control"
-                    placeholder="Valor Combo Dinheiro"
-                    v-model="currentProduct[0].value_money"
-                  />
-                </div>
-                <div class="form-group">
-                  <label>Valor Combo Crachá</label>
-                  <input
-                    id="value_cracha"
-                    type="number"
-                    class="form-control"
-                    placeholder="Valor Combo Crachá"
-                    v-model="currentProduct[0].value_cracha"
-                  />
-                </div>
-                <div class="form-group">
-                  <label>Valor Combo Crédito/Débito Promocional</label>
-                  <input
-                    id="value_card_promo"
-                    type="number"
-                    class="form-control"
-                    placeholder="Valor Combo Crédito/Débito Promocional"
-                    v-model="currentProduct[0].value_card_promo"
-                  />
-                </div>
-                <div class="form-group">
-                  <label>Valor Combo Dinheiro Promocional</label>
-                  <input
-                    id="value_money_promo"
-                    type="number"
-                    class="form-control"
-                    placeholder="Valor Combo Dinheiro Promocional"
-                    v-model="currentProduct[0].value_money_promo"
-                  />
-                </div>
-                <div class="form-group">
-                  <label>Valor Combo Crachá Promocional</label>
-                  <input
-                    id="value_cracha_promo"
-                    type="number"
-                    class="form-control"
-                    placeholder="Valor Combo Crachá Promocional"
-                    v-model="currentProduct[0].value_cracha_promo"
-                  />
-                </div>
-                <div class="form-group">
-                  <label>Qtde. Combo</label>
-                  <input
-                    id="qtdeProduct"
-                    type="number"
-                    class="form-control"
-                    placeholder="Qtde. Combo"
-                    v-model="currentProduct[0].qtdeProduct"
-                  />
-                </div>
-                <div class="form-actions center">
-                  <button
-                    type="button"
-                    class="btn btn-form btn-primary"
-                    @click="clientStore"
-                  >
-                    Salvar
-                  </button>
-                </div>
-              </div>
-    
-              <div v-if="currentProduct[0].products.length === 0" id="form-product">
-                <div class="form-group">
-                  <label>Nome Produto</label>
-                  <input
-                    id="name"
-                    type="user"
-                    class="form-control"
-                    placeholder="Nome Produto"
-                    v-model="currentProduct[0].name"
-                  />
-                </div>
-                <div class="form-group">
-                  <label>Valor Produto Crédito/Débito</label>
-                  <input
-                    id="value_card"
-                    type="number"
-                    class="form-control"
-                    placeholder="Valor Produto Crédito/Débito"
-                    v-model="currentProduct[0].value_card"
-                  />
-                </div>
-                <div class="form-group">
-                  <label>Valor Produto Dinheiro</label>
-                  <input
-                    id="value_money"
-                    type="number"
-                    class="form-control"
-                    placeholder="Valor Produto Dinheiro"
-                    v-model="currentProduct[0].value_money"
-                  />
-                </div>
-                <div class="form-group">
-                  <label>Valor Produto Crachá</label>
-                  <input
-                    id="value_cracha"
-                    type="number"
-                    class="form-control"
-                    placeholder="Valor Produto Crachá"
-                    v-model="currentProduct[0].value_cracha"
-                  />
-                </div>
-                <div class="form-group">
-                  <label>Valor Produto Crédito/Débito Promocional</label>
-                  <input
-                    id="value_card_promo"
-                    type="number"
-                    class="form-control"
-                    placeholder="Valor Produto Crédito/Débito Promocional"
-                    v-model="currentProduct[0].value_card_promo"
-                  />
-                </div>
-                <div class="form-group">
-                  <label>Valor Produto Dinheiro Promocional</label>
-                  <input
-                    id="value_money_promo"
-                    type="number"
-                    class="form-control"
-                    placeholder="Valor Produto Dinheiro Promocional"
-                    v-model="currentProduct[0].value_money_promo"
-                  />
-                </div>
-                <div class="form-group">
-                  <label>Valor Produto Crachá Promocional</label>
-                  <input
-                    id="value_cracha_promo"
-                    type="number"
-                    class="form-control"
-                    placeholder="Valor Produto Crachá Promocional"
-                    v-model="currentProduct[0].value_cracha_promo"
-                  />
-                </div>
-                <div class="form-group">
-                  <label>Qtde. Produto</label>
-                  <input
-                    id="qtdeProduct"
-                    type="number"
-                    class="form-control"
-                    placeholder="Qtde. Produto"
-                    v-model="currentProduct[0].qtdeProduct"
-                  />
                 </div>
                 <div class="form-actions center">
                   <button
@@ -243,8 +71,6 @@
       db.loadJSON(data);
       const product = db.getCollection('product');
       const products = db.getCollection('products');
-      var products_combo = product.data[0].products;
-      
       
       window.vue = require('vue');
       new Vue({
@@ -275,15 +101,14 @@
             delete this.currentProduct[0].$loki
             let data = {
               $loki: id_loki,
-              products: products_combo,
-              name: document.querySelector('#name').value,
-              qtdeProduct: document.querySelector('#qtdeProduct').value,
-              value_card: document.querySelector('#value_card').value,
-              value_money: document.querySelector('#value_money').value,
-              value_cracha: document.querySelector('#value_cracha').value,
-              value_card_promo: document.querySelector('#value_card_promo').value,
-              value_money_promo: document.querySelector('#value_money_promo').value,
-              value_cracha_promo: document.querySelector('#value_cracha_promo').value,
+              // name: document.querySelector('#name').value,
+              // qtdeProduct: document.querySelector('#qtdeProduct').value,
+              // value_card: document.querySelector('#value_card').value,
+              // value_money: document.querySelector('#value_money').value,
+              // value_cracha: document.querySelector('#value_cracha').value,
+              // value_card_promo: document.querySelector('#value_card_promo').value,
+              // value_money_promo: document.querySelector('#value_money_promo').value,
+              // value_cracha_promo: document.querySelector('#value_cracha_promo').value,
               ...this.currentProduct[0],
             };
             console.log(data);
@@ -292,31 +117,23 @@
             // window.location = '../index.html';
             // alert('editado com sucesso');
           },
-          changeProduct: function() {
-            console.log('hdiowq')
-            var plus = document.getElementsByClassName("plus-li");
-            var minus = document.getElementsByClassName("minus-li");
-            var i, j;
-
-            for (i = 0; i < plus.length; i++) {
-              plus[i].onclick = function() {
-                products_combo.push(products.data[i - 1]);
-                this.classList.add('minus-li');
-                this.classList.remove('plus-li');
-                this.lastChild.classList.remove('icon-plus');
-                this.lastChild.classList.add('icon-minus');
-                document.querySelector('#product_combos').appendChild(this);
-              };
+          changeProduct: function(product) {
+            const currentProduct = this.currentProduct[0].products.filter(item => item.$loki === product.$loki);
+            
+            if (currentProduct.length) {
+              this.products.push(product);
+              this.currentProduct[0].products = this.currentProduct[0].products.filter(item => item.$loki !== product.$loki);
+              console.log(this.currentProduct[0].products);
+              return this.currentProduct[0].products;
             }
-
-            for (j = 0; j < minus.length; j++) {
-              minus[j].onclick = function() {
-                console.log('hdiowqjdo');
-              };
+            if (!currentProduct.length) {
+              this.products = this.products.filter(item => item.$loki !== product.$loki);
+              return this.currentProduct[0].products.push(product);
             }
           },
         },
       });
+      
       document.querySelector('#edit').addEventListener('click', (e) => {
         e.preventDefault();
         window.location = '../ListProductScreen/listProduct.html';

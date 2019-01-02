@@ -28,10 +28,18 @@
         </header>
         <div class="center-horizontal hundred-margin">
           <image src="../../images/Logo-AmareloEpreto.png" class="image center" />
+
           <div class="center-small" id="list-body">
-            <a @click="onSelectProduct(product)" v-for="product in products" class="nav-group-item active">
-              {{ product.name }}
-            </a>
+            <div class="content-buttons" v-for="product in products">
+              <div class="edit-button">
+                <a @click="onSelectProduct(product)" class="nav-group-item active">
+                  {{ product.name }}
+                </a>
+              </div>
+              <div class="delete-button">
+                <span @click="onRemoveProduct(product)" class="icon icon-home icon-trash"></span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -44,7 +52,6 @@
       db.loadJSON(data);
       const products = db.getCollection('products');
       db.removeCollection('product');
-      console.log(db);
       window.vue = require('vue');
       new Vue({
         el: '#list-body',
@@ -73,10 +80,14 @@
               ...param,
               $loki: undefined,
             });
-            console.log(product);
             db.save();
+            console.log('ola')
             window.location = '../EditScreen/edit.html';
           },
+          onRemoveProduct: function(param) {
+            products.remove(param);
+            db.save();
+          }
         },
       });
     </script>

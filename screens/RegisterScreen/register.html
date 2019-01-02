@@ -140,7 +140,7 @@
             <div class="form-group">
               <label>Nome Produto</label>
               <input
-                id="name"
+                id="name_product"
                 type="user"
                 class="form-control"
                 placeholder="Nome Produto"
@@ -149,7 +149,7 @@
             <div class="form-group">
               <label>Valor Produto Crédito/Débito</label>
               <input
-                id="value_card"
+                id="value_card_product"
                 type="number"
                 class="form-control"
                 placeholder="Valor Produto Crédito/Débito"
@@ -158,7 +158,7 @@
             <div class="form-group">
               <label>Valor Produto Dinheiro</label>
               <input
-                id="value_money"
+                id="value_money_product"
                 type="number"
                 class="form-control"
                 placeholder="Valor Produto Dinheiro"
@@ -167,7 +167,7 @@
             <div class="form-group">
               <label>Valor Produto Crachá</label>
               <input
-                id="value_cracha"
+                id="value_cracha_product"
                 type="number"
                 class="form-control"
                 placeholder="Valor Produto Crachá"
@@ -176,7 +176,7 @@
             <div class="form-group">
               <label>Valor Produto Crédito/Débito Promocional</label>
               <input
-                id="value_card_promo"
+                id="value_card_promo_product"
                 type="number"
                 class="form-control"
                 placeholder="Valor Produto Crédito/Débito Promocional"
@@ -185,7 +185,7 @@
             <div class="form-group">
               <label>Valor Produto Dinheiro Promocional</label>
               <input
-                id="value_money_promo"
+                id="value_money_promo_product"
                 type="number"
                 class="form-control"
                 placeholder="Valor Produto Dinheiro Promocional"
@@ -194,7 +194,7 @@
             <div class="form-group">
               <label>Valor Produto Crachá Promocional</label>
               <input
-                id="value_cracha_promo"
+                id="value_cracha_promo_product"
                 type="number"
                 class="form-control"
                 placeholder="Valor Produto Crachá Promocional"
@@ -203,7 +203,7 @@
             <div class="form-group">
               <label>Qtde. Produto</label>
               <input
-                id="qtdeProduct"
+                id="qtdeProduct_product"
                 type="number"
                 class="form-control"
                 placeholder="Qtde. Produto"
@@ -231,37 +231,73 @@
     db.loadJSON(data);
     const products = db.getCollection('products');
     var products_combo = [];
+    var show = true;
 
     window.vue = require('vue');
     new Vue({
       el: '#form-body',
       data: {
         products: [],
-        show: true,
       },
       mounted: function() {
         this.products = products.data;
       },
       methods: {
         clientStore: function() {
+          const name  = document.querySelector('#name').value 
+            ? document.querySelector('#name').value
+            : document.querySelector('#name_product').value;
+          const qtdeProduct = document.querySelector('#qtdeProduct').value
+            ? document.querySelector('#qtdeProduct').value
+            : document.querySelector('#qtdeProduct_product').value;
+          const value_card = document.querySelector('#value_card').value
+            ? document.querySelector('#value_card').value
+            : document.querySelector('#value_card_product').value;
+          const value_money = document.querySelector('#value_money').value
+            ? document.querySelector('#value_money').value
+            : document.querySelector('#value_money_product').value;
+          const value_cracha = document.querySelector('#value_cracha').value
+            ? document.querySelector('#value_cracha').value
+            : document.querySelector('#value_cracha_product').value;
+          const value_card_promo = document.querySelector('#value_card_promo').value
+            ? document.querySelector('#value_card_promo').value
+            : document.querySelector('#value_card_promo_product').value;
+          const value_money_promo = document.querySelector('#value_money_promo').value
+            ? document.querySelector('#value_money_promo').value
+            : document.querySelector('#value_money_promo_product').value;
+          const value_cracha_promo = document.querySelector('#value_cracha_promo').value
+            ? document.querySelector('#value_cracha_promo').value
+            : document.querySelector('#value_cracha_promo_product').value;
           let data = {
-            name: document.querySelector('#name').value,
+            name,
             products: products_combo,
-            qtdeProduct: document.querySelector('#qtdeProduct').value,
-            value_card: document.querySelector('#value_card').value,
-            value_money: document.querySelector('#value_money').value,
-            value_cracha: document.querySelector('#value_cracha').value,
-            value_card_promo: document.querySelector('#value_card_promo').value,
-            value_money_promo: document.querySelector('#value_money_promo').value,
-            value_cracha_promo: document.querySelector('#value_cracha_promo').value,
+            qtdeProduct,
+            value_card,
+            value_money,
+            value_cracha,
+            value_card_promo,
+            value_money_promo,
+            value_cracha_promo,
+            combo: !!products_combo.length || false,
+          };
+
+          if (name === '' || qtdeProduct === '' || value_card === ''
+            || value_money === '' || value_cracha === '' || value_card_promo === ''
+            || value_money_promo === '' || value_cracha_promo === '') {
+              return alert('É necessário o preenchimento de todos os campos');
+            }
+
+          if (!show && !products_combo.length) {
+            return alert('Ao Cadastrar um combo, é preciso ter produtos no combo.');
           }
+
           products.insert(data);
           db.save();
+          show = true;
           document.querySelector('#form-body').reset();
           document.querySelector('#product_combos').innerHTML = ``;
-          alert('cadastrado com sucesso');
+          alert('Cadastrado com sucesso');
           window.location = '../index.html';
-          this.show = false;
         },
         changeProduct: function() {
           var plus = document.getElementsByClassName("plus-li");
@@ -300,6 +336,8 @@
         minus[k].lastChild.classList.add('icon-plus');
         minus[k].classList.add('plus-li');
       }
+      show = true;
+      products_combo = [];
       document.querySelector('#form-body').reset();
       document.querySelector('#form-product').style.display = 'block';
       document.querySelector('#form-combo').style.display = 'none';
@@ -310,6 +348,7 @@
       for (var k = 0; k < minus.length; k++) {
         minus[k].classList.remove('minus-li');
       }
+      show = false;
       document.querySelector('#form-combo').style.display = 'block';
       document.querySelector('#form-product').style.display = 'none';
       document.querySelector('#form-body').reset();

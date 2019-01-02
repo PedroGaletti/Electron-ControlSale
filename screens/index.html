@@ -82,7 +82,7 @@
 
     document.querySelector('#register').addEventListener('click', (e) => {
       e.preventDefault();
-      window.location = isLogged 
+      window.location = isLogged
         ? '../screens/RegisterScreen/register.html'
         : `../screens/authScreen/auth.html?screen=RegisterScreen/register.html`;
     });

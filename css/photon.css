@@ -209,23 +209,47 @@ h6 {
   margin-top: 20px;
 }
 
-.center-small a {
-  background: #eee;
+.content-buttons {
+  display: flex;
+  flex-direction: row;
+}
+
+.delete-button {
+  width: 30%;
+  background: #fcfcfc;
   cursor: pointer;
   user-select: none;
   font-size: 14px;
   height: 40px;
-  align-items: center;
-  justify-content: center;
-  display: flex;
 }
 
-.center-small a:nth-child(odd) {
-  background: #f9f9f9;
+.delete-button span {
+  font-size: 16px;
+  color: #6d6c6d;
 }
 
-.center-small a:hover {
+
+.delete-button span:hover {
   background: #d2d2d2;
+  cursor: pointer;
+}
+
+.edit-button {
+  cursor: pointer;
+  user-select: none;
+  font-size: 14px;
+  height: 40px;
+  width: 70%;
+  background: #fcfcfc !important;
+}
+
+.edit-button a {
+  background: #fcfcfc !important;
+}
+
+.edit-button a:hover {
+  background: #d2d2d2;
+  cursor: pointer;
 }
 
 .form-center {
