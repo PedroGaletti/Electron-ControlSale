@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>288 Worship</title>
+    <meta charset="utf-8"/>
+    <link href="../css/photon.css" rel="stylesheet"> 
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  </head>
+  <body>
+    <div class="window">
+      <div class="center-horizontal hundred-margin">
+        <image src="../images/Logo-AmareloEpreto.png" class="image center" />
+        <table class="table-striped" id="table-estoque">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Valor</th>
+              <th>Cod. Produto</th>
+              <th>Remover</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="product in products">
+              <td>{{ product.name }}</td>
+              
+              <td>
+                <a>{{ product.value }}</a>
+              </td>
+
+              <td>
+                <a>{{ product.id }}</a>
+              </td>
+
+              <td>
+                <button
+                  type="button"
+                  class="btn btn-form btn-primary"
+                  @click="removeProductCart(product)"
+                >
+                  Remover
+                </button>
+              </td>
+            </tr>
+            <tr v-if="show"></tr>
+          </tbody>
+        </table>
+      </div>
+      <footer class="toolbar toolbar-footer">
+        <div class="toolbar-actions">
+          <button class="btn btn-default">
+            Cancelar Compra (Esc)
+          </button>
+      
+          <button class="btn btn-primary pull-right">
+            Finalizar Compra (Enter)
+          </button>
+        </div>
+      </footer>
+    </div>
+  </body>
+  <script>
+    const read = require('read-file-utf8')
+    const loki = require('lokijs');
+    const db = new loki('db.json');
+    const data = read('db.json');
+    db.loadJSON(data);
+    const cart = db.getCollection('cart');
+
+    window.vue = require('vue');
+    new Vue({
+      el: '#table-estoque',
+      data: {
+        products: [],
+        show: false,
+      },
+      mounted: function() {
+        this.products = cart.data;
+        this.show = false;
+      },
+      methods: {
+        removeProductCart: function(product) {
+          cart.remove(product);
+          db.save();
+        },
+      },
+    });
+  </script>
+</html>

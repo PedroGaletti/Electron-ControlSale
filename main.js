@@ -10,7 +10,7 @@ function createWindow () {
   mainWindow = new BrowserWindow({width: 1200, height: 800})
 
   // and load the index.html of the app.
-  mainWindow.loadFile(`${__dirname}/screens/index.html`)
+  mainWindow.loadFile(`${__dirname}/screens/index.html`);
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
@@ -34,6 +34,7 @@ function createWindow () {
   db.loadJSON(data);
   db.removeCollection('users');
   db.addCollection('users');
+  db.addCollection('cart');
   db.save();
 }
 

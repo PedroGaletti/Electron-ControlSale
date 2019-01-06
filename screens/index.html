@@ -28,6 +28,7 @@
       </header>
       <div class="center-horizontal hundred-margin">
         <image src="../images/Logo-AmareloEpreto.png" class="image center" />
+        <input @paste autofocus id="input" placeholder="value" />
         <table id="app" class="table table-striped">
           <thead>
             <tr>
@@ -42,18 +43,19 @@
     </div>
   </body>
   <script>
+    let newWindow;
+    let show = false;
     const read = require('read-file-utf8')
     const loki = require('lokijs');
-    const db = new loki('db.json', {
-      autosave: true,
-      autosaveInterval: 1000* 20 * 1,
-      autoload: true,
-    });
+    const db = new loki('db.json');
     const data = read('db.json');
     db.loadJSON(data);
     const products = db.getCollection('products');
+    const cart = db.getCollection('cart');
     const users = db.getCollection('users');
     const isLogged = users.data[0] && users.data[0].logged;
+    let cart_client = [];
+    let products_data;
 
     if (!users.data[0] && users.data.length != 1) {
       users.insert({
@@ -63,6 +65,47 @@
       });
       db.save();
     }
+    
+
+    document.querySelector('#input').addEventListener('paste', (e) => {
+      setTimeout(() => {
+        const value = e.target.value;
+        const index = (value.indexOf('/') + 1);
+        const id = value.substr(index);
+        const item = products_data.find(item => item.$loki == id);
+        const electron = require('electron')
+        e.target.value = '';
+
+        if (item) {
+          cart.insert({
+            value: value.substr(0, index - 1),
+            name: item.name,
+            id: item.$loki,   
+          });
+          db.save();
+          
+          if (newWindow) {
+            newWindow.reload();
+          }
+          
+          console.log(db);
+
+          if (!show) {
+            const BrowserWindow = electron.remote.BrowserWindow;
+            newWindow = new BrowserWindow({
+              width: 500,
+              height: 500,
+            });
+            newWindow.loadFile(`${__dirname}/cart.html`);
+            newWindow.on('closed', function () {
+              newWindow = null;
+            });
+            newWindow.webContents.openDevTools();
+            show = true;
+          }
+        }
+      }, 500);
+    });
 
     window.vue = require('vue');
     new Vue({
@@ -72,22 +115,23 @@
       },
       mounted: function() {
         this.products = products.data.filter(item => item.qtdeProduct > 0);
+        products_data = this.products;
         for (i = 0; i < 6; i++) {
           document.getElementsByTagName(`tbody`)[0].innerHTML += `<tr id="tr${i}"></tr>`;
         }
         for(j = 0; j < this.products.length; j++) {
           document.querySelector('#tr0').innerHTML += `
-          <td>
-            <div class="tr_body">
-              <span> Valor Cartão </span>
-              <svg
-                id="svg${j}_${i}"
-                jsbarcode-value="${this.products[j].value_card}/${this.products[j].$loki}"
-                jsbarcode-displayValue="false"
-                jsbarcode-height= "50"
-              />
-            </div>
-          </td>`;
+            <td>
+              <div class="tr_body">
+                <span> Valor Cartão </span>
+                <svg
+                  id="svg${j}_${i}"
+                  jsbarcode-value="${this.products[j].value_card}/${this.products[j].$loki}"
+                  jsbarcode-displayValue="true"
+                  jsbarcode-height="50"
+                />
+              </div>
+            </td>`;
           document.querySelector('#tr1').innerHTML += `
             <td>
               <div class="tr_body">
@@ -95,8 +139,8 @@
                 <svg
                   id="svg${j + 1}_${i + 1}"
                   jsbarcode-value="${this.products[j].value_card_promo}/${this.products[j].$loki}"
-                  jsbarcode-displayValue="false"
-                  jsbarcode-height= "50"
+                  jsbarcode-displayValue="true"
+                  jsbarcode-height="50"
                 />
               </div>
             </td>`;
@@ -107,8 +151,8 @@
                 <svg
                   id="svg${j + 2}_${i + 2}"
                   jsbarcode-value="${this.products[j].value_cracha}/${this.products[j].$loki}"
-                  jsbarcode-displayValue="false"
-                  jsbarcode-height= "50"
+                  jsbarcode-displayValue="true"
+                  jsbarcode-height="50"
                 />
               </div>
             </td>`;
@@ -119,8 +163,8 @@
                 <svg
                   id="svg${j + 3}_${i + 3}"
                   jsbarcode-value="${this.products[j].value_cracha_promo}/${this.products[j].$loki}"
-                  jsbarcode-displayValue="false"
-                  jsbarcode-height= "50"
+                  jsbarcode-displayValue="true"
+                  jsbarcode-height="50"
                 />
               </div>
             </td>`;
@@ -131,8 +175,8 @@
                 <svg
                   id="svg${j + 4}_${i + 4}"
                   jsbarcode-value="${this.products[j].value_money}/${this.products[j].$loki}"
-                  jsbarcode-displayValue="false"
-                  jsbarcode-height= "50"
+                  jsbarcode-displayValue="true"
+                  jsbarcode-height="50"
                 />
               </div>
             </td>`;
@@ -143,8 +187,8 @@
                 <svg
                   id="svg${j + 5}_${i + 5}"
                   jsbarcode-value="${this.products[j].value_money_promo}/${this.products[j].$loki}"
-                  jsbarcode-displayValue="false"
-                  jsbarcode-height= "50"
+                  jsbarcode-displayValue="true"
+                  jsbarcode-height="50"
                 />
               </div>
             </td>`;
@@ -157,7 +201,6 @@
         }
       },
     });
-    
 
     document.querySelector('#register').addEventListener('click', (e) => {
       e.preventDefault();
