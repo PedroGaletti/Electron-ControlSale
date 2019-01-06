@@ -6,6 +6,7 @@
     <meta charset="utf-8"/>
     <link href="../css/photon.css" rel="stylesheet"> 
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdn.jsdelivr.net/jsbarcode/3.6.0/JsBarcode.all.min.js"></script>
   </head>
   <body>
     <div class="window">
@@ -30,18 +31,12 @@
         <table id="app" class="table table-striped">
           <thead>
             <tr>
-              <th v-for="product in products">
+              <th style="text-align: center;" v-for="product in products">
                 {{product.name}}
               </th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td v-for="product in products">
-                {{product.name}}
-              </td>
-            </tr>
-          </tbody>
+          <tbody></tbody>
         </table>
       </div>
     </div>
@@ -59,7 +54,6 @@
     const products = db.getCollection('products');
     const users = db.getCollection('users');
     const isLogged = users.data[0] && users.data[0].logged;
-    console.log(db);
 
     if (!users.data[0] && users.data.length != 1) {
       users.insert({
@@ -77,10 +71,93 @@
         products: [],
       },
       mounted: function() {
-        console.log(products.data);
         this.products = products.data.filter(item => item.qtdeProduct > 0);
-      }
+        for (i = 0; i < 6; i++) {
+          document.getElementsByTagName(`tbody`)[0].innerHTML += `<tr id="tr${i}"></tr>`;
+        }
+        for(j = 0; j < this.products.length; j++) {
+          document.querySelector('#tr0').innerHTML += `
+          <td>
+            <div class="tr_body">
+              <span> Valor Cartão </span>
+              <svg
+                id="svg${j}_${i}"
+                jsbarcode-value="${this.products[j].value_card}/${this.products[j].$loki}"
+                jsbarcode-displayValue="false"
+                jsbarcode-height= "50"
+              />
+            </div>
+          </td>`;
+          document.querySelector('#tr1').innerHTML += `
+            <td>
+              <div class="tr_body">
+                <span> Valor Cartão Promoção </span>
+                <svg
+                  id="svg${j + 1}_${i + 1}"
+                  jsbarcode-value="${this.products[j].value_card_promo}/${this.products[j].$loki}"
+                  jsbarcode-displayValue="false"
+                  jsbarcode-height= "50"
+                />
+              </div>
+            </td>`;
+          document.querySelector('#tr2').innerHTML += `
+            <td>
+              <div class="tr_body">
+                <span> Valor Crachá </span>
+                <svg
+                  id="svg${j + 2}_${i + 2}"
+                  jsbarcode-value="${this.products[j].value_cracha}/${this.products[j].$loki}"
+                  jsbarcode-displayValue="false"
+                  jsbarcode-height= "50"
+                />
+              </div>
+            </td>`;
+          document.querySelector('#tr3').innerHTML += `
+            <td>
+              <div class="tr_body">
+                <span> Valor Crachá Promoção </span>
+                <svg
+                  id="svg${j + 3}_${i + 3}"
+                  jsbarcode-value="${this.products[j].value_cracha_promo}/${this.products[j].$loki}"
+                  jsbarcode-displayValue="false"
+                  jsbarcode-height= "50"
+                />
+              </div>
+            </td>`;
+          document.querySelector('#tr4').innerHTML += `
+            <td>
+              <div class="tr_body">
+                <span> Valor Dinheiro </span>
+                <svg
+                  id="svg${j + 4}_${i + 4}"
+                  jsbarcode-value="${this.products[j].value_money}/${this.products[j].$loki}"
+                  jsbarcode-displayValue="false"
+                  jsbarcode-height= "50"
+                />
+              </div>
+            </td>`;
+          document.querySelector('#tr5').innerHTML += `
+            <td>
+              <div class="tr_body">
+                <span> Valor Dinheiro Promoção </span>
+                <svg
+                  id="svg${j + 5}_${i + 5}"
+                  jsbarcode-value="${this.products[j].value_money_promo}/${this.products[j].$loki}"
+                  jsbarcode-displayValue="false"
+                  jsbarcode-height= "50"
+                />
+              </div>
+            </td>`;
+          JsBarcode(`#svg${j}_${i}`).init();
+          JsBarcode(`#svg${j + 1}_${i + 1}`).init();
+          JsBarcode(`#svg${j + 2}_${i + 2}`).init();
+          JsBarcode(`#svg${j + 3}_${i + 3}`).init();
+          JsBarcode(`#svg${j + 4}_${i + 4}`).init();
+          JsBarcode(`#svg${j + 5}_${i + 5}`).init();
+        }
+      },
     });
+    
 
     document.querySelector('#register').addEventListener('click', (e) => {
       e.preventDefault();

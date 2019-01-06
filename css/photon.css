@@ -234,6 +234,17 @@ h6 {
   cursor: pointer;
 }
 
+.tr_body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tr_body span {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
 .edit-button {
   cursor: pointer;
   user-select: none;
@@ -337,6 +348,10 @@ h6 {
 }
 
 .hundred-margin {
+  margin-bottom: 80px;
+}
+
+.hundred-margin table {
   margin-bottom: 80px;
 }
 
