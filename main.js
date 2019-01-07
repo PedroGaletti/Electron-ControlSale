@@ -35,6 +35,7 @@ function createWindow () {
   db.removeCollection('users');
   db.addCollection('users');
   db.addCollection('cart');
+  db.addCollection('sales');
   db.save();
 }
 

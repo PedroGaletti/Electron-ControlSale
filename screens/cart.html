@@ -8,10 +8,10 @@
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
   </head>
   <body>
-    <div class="window">
+    <div class="window" id="table-estoque">
       <div class="center-horizontal hundred-margin">
         <image src="../images/Logo-AmareloEpreto.png" class="image center" />
-        <table class="table-striped" id="table-estoque">
+        <table class="table-striped">
           <thead>
             <tr>
               <th>Nome</th>
@@ -23,15 +23,8 @@
           <tbody>
             <tr v-for="product in products">
               <td>{{ product.name }}</td>
-              
-              <td>
-                <a>{{ product.value }}</a>
-              </td>
-
-              <td>
-                <a>{{ product.id }}</a>
-              </td>
-
+              <td>{{ product.value }}</td>
+              <td>{{ product.id }}</td>
               <td>
                 <button
                   type="button"
@@ -41,18 +34,26 @@
                   Remover
                 </button>
               </td>
+              <td v-if="show"></td>
             </tr>
-            <tr v-if="show"></tr>
           </tbody>
         </table>
       </div>
       <footer class="toolbar toolbar-footer">
         <div class="toolbar-actions">
-          <button class="btn btn-default">
+          <button
+            class="btn btn-default"
+            type="button"
+            @click="finishCart(true)"
+          >
             Cancelar Compra (Esc)
           </button>
       
-          <button class="btn btn-primary pull-right">
+          <button
+            type="button"
+            @click="finishCart(false)"
+            class="btn btn-primary pull-right"
+          >
             Finalizar Compra (Enter)
           </button>
         </div>
@@ -66,22 +67,33 @@
     const data = read('db.json');
     db.loadJSON(data);
     const cart = db.getCollection('cart');
+    const sales = db.getCollection('sales');
 
     window.vue = require('vue');
     new Vue({
       el: '#table-estoque',
       data: {
         products: [],
-        show: false,
       },
       mounted: function() {
         this.products = cart.data;
-        this.show = false;
       },
       methods: {
         removeProductCart: function(product) {
           cart.remove(product);
           db.save();
+        },
+        finishCart: function(param) {
+          if (!param && cart.data.length) {
+            sales.insert({
+              products: cart.data,
+              date: new Date(),
+            });
+          }
+
+          cart.removeDataOnly();
+          db.save();
+          this.products = [];
         },
       },
     });
