@@ -277,6 +277,24 @@ h6 {
   cursor: pointer;
 }
 
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.pricingLabel {
+  font-size: 18px;
+  opacity: 0.8;
+}
+
+.pricingDiv {
+  margin-bottom: 17px;
+  position: fixed;
+  bottom: 15px;
+  right: 12px;
+}
+
 .noTop {
   top: 8%;
   padding-bottom: 30px;

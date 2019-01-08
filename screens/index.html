@@ -202,10 +202,10 @@
           document.querySelector('#tr0').innerHTML += `
             <td>
               <div class="tr_body">
-                <span> Valor Cartão </span>
+                <span> Valor Crachá </span>
                 <svg
                   id="svg${j}_${i}"
-                  jsbarcode-value="${this.products[j].value_card}/${this.products[j].$loki}"
+                  jsbarcode-value="${this.products[j].value_cracha}/${this.products[j].$loki}"
                   jsbarcode-displayValue="true"
                   jsbarcode-height="50"
                 />
@@ -214,10 +214,10 @@
           document.querySelector('#tr1').innerHTML += `
             <td>
               <div class="tr_body">
-                <span> Valor Cartão Promoção </span>
+                <span> Valor Dinheiro </span>
                 <svg
                   id="svg${j + 1}_${i + 1}"
-                  jsbarcode-value="${this.products[j].value_card_promo}/${this.products[j].$loki}"
+                  jsbarcode-value="${this.products[j].value_money}/${this.products[j].$loki}"
                   jsbarcode-displayValue="true"
                   jsbarcode-height="50"
                 />
@@ -226,10 +226,10 @@
           document.querySelector('#tr2').innerHTML += `
             <td>
               <div class="tr_body">
-                <span> Valor Crachá </span>
+                <span> Valor Cartão </span>
                 <svg
                   id="svg${j + 2}_${i + 2}"
-                  jsbarcode-value="${this.products[j].value_cracha}/${this.products[j].$loki}"
+                  jsbarcode-value="${this.products[j].value_card}/${this.products[j].$loki}"
                   jsbarcode-displayValue="true"
                   jsbarcode-height="50"
                 />
@@ -250,10 +250,10 @@
           document.querySelector('#tr4').innerHTML += `
             <td>
               <div class="tr_body">
-                <span> Valor Dinheiro </span>
+                <span> Valor Dinheiro Promoção </span>
                 <svg
                   id="svg${j + 4}_${i + 4}"
-                  jsbarcode-value="${this.products[j].value_money}/${this.products[j].$loki}"
+                  jsbarcode-value="${this.products[j].value_money_promo}/${this.products[j].$loki}"
                   jsbarcode-displayValue="true"
                   jsbarcode-height="50"
                 />
@@ -262,10 +262,10 @@
           document.querySelector('#tr5').innerHTML += `
             <td>
               <div class="tr_body">
-                <span> Valor Dinheiro Promoção </span>
+                <span> Valor Cartão Promoção </span>
                 <svg
                   id="svg${j + 5}_${i + 5}"
-                  jsbarcode-value="${this.products[j].value_money_promo}/${this.products[j].$loki}"
+                  jsbarcode-value="${this.products[j].value_card_promo}/${this.products[j].$loki}"
                   jsbarcode-displayValue="true"
                   jsbarcode-height="50"
                 />

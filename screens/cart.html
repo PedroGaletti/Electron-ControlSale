@@ -39,7 +39,12 @@
           </tbody>
         </table>
       </div>
-      <footer class="toolbar toolbar-footer">
+      <div class="form-group pricingDiv">
+        <label class="pricingLabel">
+          Valor total da compra: R$ {{ value }}
+        </label>
+      </div>
+      <footer class="toolbar toolbar-footer footer">
         <div class="toolbar-actions">
           <button
             class="btn btn-default"
@@ -77,9 +82,11 @@
       el: '#table-estoque',
       data: {
         products: [],
+        value: 0.00,
       },
       mounted: function() {
         this.products = cart.data;
+        this.products.map(item => this.value += Number(item.value));
       },
       methods: {
         removeProductCart: function(product) {
@@ -127,6 +134,7 @@
           db.removeCollection('cart');
           db.save();
           this.products = [];
+          this.value = 0.00;
         },
       },
     });
