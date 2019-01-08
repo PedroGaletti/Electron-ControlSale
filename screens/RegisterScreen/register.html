@@ -6,7 +6,7 @@
     <link href="../../css/photon.css" rel="stylesheet"> 
     <script>require('./register.js')</script>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-    <script src="../../node_modules/simple-mask-money/lib/simple-mask-money.js"></script>
+    <script src="https://rawgit.com/vuejs-tips/v-money/master/dist/v-money.js"></script>
   </head>
   <body>
     <header class="toolbar toolbar-header">
@@ -70,50 +70,56 @@
             </div>
             <div class="form-group">
               <label>Valor Combo Crédito/Débito</label>
-              <input
+              <money
                 id="value_card"
                 class="form-control"
                 placeholder="Valor Combo Crédito/Débito"
+                v-bind="money"
               />
             </div>
             <div class="form-group">
               <label>Valor Combo Dinheiro</label>
-              <input
+              <money
                 id="value_money"
                 class="form-control"
                 placeholder="Valor Combo Dinheiro"
+                v-bind="money"
               />
             </div>
             <div class="form-group">
               <label>Valor Combo Crachá</label>
-              <input
+              <money
                 id="value_cracha"
                 class="form-control"
                 placeholder="Valor Combo Crachá"
+                v-bind="money"
               />
             </div>
             <div class="form-group">
               <label>Valor Combo Crédito/Débito Promocional</label>
-              <input
+              <money
                 id="value_card_promo"
                 class="form-control"
                 placeholder="Valor Combo Crédito/Débito Promocional"
+                v-bind="money"
               />
             </div>
             <div class="form-group">
               <label>Valor Combo Dinheiro Promocional</label>
-              <input
+              <money
                 id="value_money_promo"
                 class="form-control"
                 placeholder="Valor Combo Dinheiro Promocional"
+                v-bind="money"
               />
             </div>
             <div class="form-group">
               <label>Valor Combo Crachá Promocional</label>
-              <input
+              <money
                 id="value_cracha_promo"
                 class="form-control"
                 placeholder="Valor Combo Crachá Promocional"
+                v-bind="money"
               />
             </div>
             <div class="form-actions center">
@@ -139,50 +145,56 @@
             </div>
             <div class="form-group">
               <label>Valor Produto Crédito/Débito</label>
-              <input
+              <money
                 id="value_card_product"
                 class="form-control"
                 placeholder="Valor Produto Crédito/Débito"
+                v-bind="money"
               />
             </div>
             <div class="form-group">
               <label>Valor Produto Dinheiro</label>
-              <input
+              <money
                 id="value_money_product"
                 class="form-control"
                 placeholder="Valor Produto Dinheiro"
+                v-bind="money"
               />
             </div>
             <div class="form-group">
               <label>Valor Produto Crachá</label>
-              <input
+              <money
                 id="value_cracha_product"
                 class="form-control"
                 placeholder="Valor Produto Crachá"
+                v-bind="money"
               />
             </div>
             <div class="form-group">
               <label>Valor Produto Crédito/Débito Promocional</label>
-              <input
+              <money
                 id="value_card_promo_product"
                 class="form-control"
                 placeholder="Valor Produto Crédito/Débito Promocional"
+                v-bind="money"
               />
             </div>
             <div class="form-group">
               <label>Valor Produto Dinheiro Promocional</label>
-              <input
+              <money
                 id="value_money_promo_product"
                 class="form-control"
                 placeholder="Valor Produto Dinheiro Promocional"
+                v-bind="money"
               />
             </div>
             <div class="form-group">
               <label>Valor Produto Crachá Promocional</label>
-              <input
+              <money
                 id="value_cracha_promo_product"
                 class="form-control"
                 placeholder="Valor Produto Crachá Promocional"
+                v-bind="money"
               />
             </div>
             <div class="form-group">
@@ -229,6 +241,14 @@
       data: {
         products: [],
         products_combo: [],
+        money: {
+          decimal: ',',
+          thousands: '.',
+          prefix: 'R$',
+          suffix: '',
+          precision: 2,
+          masked: false,
+        },
       },
       mounted: function() {
         this.products = products.data.filter(item => !item.combo && item.qtdeProduct > 0);
@@ -336,93 +356,5 @@
       document.querySelector('#form-body').reset();
       this.products_combo = [];
     })
-
-    let value_card = document.querySelector('#value_card');
-    let value_card_product = document.querySelector('#value_card_product');
-    let value_money = document.querySelector('#value_money');
-    let value_money_product = document.querySelector('#value_money_product');
-    let value_cracha = document.querySelector('#value_cracha')
-    let value_cracha_product = document.querySelector('#value_cracha_product');
-    let value_card_promo = document.querySelector('#value_card_promo')
-    let value_card_promo_product = document.querySelector('#value_card_promo_product');
-    let value_money_promo = document.querySelector('#value_money_promo')
-    let value_money_promo_product = document.querySelector('#value_money_promo_product');
-    let value_cracha_promo = document.querySelector('#value_cracha_promo')
-    let value_cracha_promo_product = document.querySelector('#value_cracha_promo_product');
-
-    SimpleMaskMoney.args = {
-      allowNegative: false,
-      negativeSignAfter: false,
-      prefix: '',
-      suffix: '',
-      fixed: true,
-      fractionDigits: 2,
-      decimalSeparator: ',',
-      thousandsSeparator: '.',
-      cursor: 'move'
-    };
-
-    value_card.oninput = () => value_card.value = SimpleMaskMoney.format(value_card.value);
-    value_card_product.oninput = () => value_card_product.value = SimpleMaskMoney.format(value_card_product.value);
-    value_money.oninput = () => value_money.value = SimpleMaskMoney.format(value_money.value);
-    value_money_product.oninput = () => value_money_product.value = SimpleMaskMoney.format(value_money_product.value);
-    value_cracha.oninput = () => value_cracha.value = SimpleMaskMoney.format(value_cracha.value);
-    value_cracha_product.oninput = () => value_cracha_product.value = SimpleMaskMoney.format(value_cracha_product.value);
-
-    value_card_promo.oninput = () => value_card_promo.value = SimpleMaskMoney.format(value_card_promo.value);
-    value_card_promo_product.oninput = () => value_card_promo_product.value = SimpleMaskMoney.format(value_card_promo_product.value);
-    value_money_promo.oninput = () => value_money_promo.value = SimpleMaskMoney.format(value_money_promo.value);
-    value_money_promo_product.oninput = () => value_money_promo_product.value = SimpleMaskMoney.format(value_money_promo_product.value);
-    value_cracha_promo.oninput = () => value_cracha_promo.value = SimpleMaskMoney.format(value_cracha_promo.value);
-    value_cracha_promo_product.oninput = () => value_cracha_promo_product.value = SimpleMaskMoney.format(value_cracha_promo_product.value);
-
-    value_card.onkeyup = (e) => {
-      if (e.key !== "Enter") return;
-      SimpleMaskMoney.formatToNumber(value_card.value);
-    }
-    value_card_product.onkeyup = (e) => {
-      if (e.key !== "Enter") return;
-      SimpleMaskMoney.formatToNumber(value_card_product.value);
-    }
-    value_money.onkeyup = (e) => {
-      if (e.key !== "Enter") return;
-      SimpleMaskMoney.formatToNumber(value_money.value);
-    }
-    value_money_product.onkeyup = (e) => {
-      if (e.key !== "Enter") return;
-      SimpleMaskMoney.formatToNumber(value_money_product.value);
-    }
-    value_cracha.onkeyup = (e) => {
-      if (e.key !== "Enter") return;
-      SimpleMaskMoney.formatToNumber(value_cracha.value);
-    }
-    value_cracha_product.onkeyup = (e) => {
-      if (e.key !== "Enter") return;
-      SimpleMaskMoney.formatToNumber(value_cracha_product.value);
-    }
-    value_card_promo.onkeyup = (e) => {
-      if (e.key !== "Enter") return;
-      SimpleMaskMoney.formatToNumber(value_cracha_product.value);
-    }
-    value_card_promo_product.onkeyup = (e) => {
-      if (e.key !== "Enter") return;
-      SimpleMaskMoney.formatToNumber(value_cracha_product.value);
-    }
-    value_money_promo.onkeyup = (e) => {
-      if (e.key !== "Enter") return;
-      SimpleMaskMoney.formatToNumber(value_cracha_product.value);
-    }
-    value_money_promo_product.onkeyup = (e) => {
-      if (e.key !== "Enter") return;
-      SimpleMaskMoney.formatToNumber(value_cracha_product.value);
-    }
-    value_cracha_promo.onkeyup = (e) => {
-      if (e.key !== "Enter") return;
-      SimpleMaskMoney.formatToNumber(value_cracha_product.value);
-    }
-    value_cracha_promo_product.onkeyup = (e) => {
-      if (e.key !== "Enter") return;
-      SimpleMaskMoney.formatToNumber(value_cracha_product.value);
-    }
   </script>
 </html>

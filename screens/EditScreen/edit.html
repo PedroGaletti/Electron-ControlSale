@@ -7,6 +7,7 @@
       <link href="../../css/photon.css" rel="stylesheet"> 
       <script src="https://cdn.jsdelivr.net/npm/vue"></script>
       <script>require('./edit.js')</script>
+      <script src="https://rawgit.com/vuejs-tips/v-money/master/dist/v-money.js"></script>
     </head>
     <body>
       <div class="window">
@@ -60,56 +61,62 @@
                 </div>
                 <div class="form-group">
                   <label>Valor Combo Crédito/Débito</label>
-                  <input
+                  <money
                     id="value_card"
                     class="form-control"
                     placeholder="Valor Combo Crédito/Débito"
                     v-model="currentProduct[0].value_card"
+                    v-bind="money"
                   />
                 </div>
                 <div class="form-group">
                   <label>Valor Combo Dinheiro</label>
-                  <input
+                  <money
                     id="value_money"
                     class="form-control"
                     placeholder="Valor Combo Dinheiro"
                     v-model="currentProduct[0].value_money"
+                    v-bind="money"
                   />
                 </div>
                 <div class="form-group">
                   <label>Valor Combo Crachá</label>
-                  <input
+                  <money
                     id="value_cracha"
                     class="form-control"
                     placeholder="Valor Combo Crachá"
                     v-model="currentProduct[0].value_cracha"
+                    v-bind="money"
                   />
                 </div>
                 <div class="form-group">
                   <label>Valor Combo Crédito/Débito Promocional</label>
-                  <input
+                  <money
                     id="value_card_promo"
                     class="form-control"
                     placeholder="Valor Combo Crédito/Débito Promocional"
                     v-model="currentProduct[0].value_card_promo"
+                    v-bind="money"
                   />
                 </div>
                 <div class="form-group">
                   <label>Valor Combo Dinheiro Promocional</label>
-                  <input
+                  <money
                     id="value_money_promo"
                     class="form-control"
                     placeholder="Valor Combo Dinheiro Promocional"
                     v-model="currentProduct[0].value_money_promo"
+                    v-bind="money"
                   />
                 </div>
                 <div class="form-group">
                   <label>Valor Combo Crachá Promocional</label>
-                  <input
+                  <money
                     id="value_cracha_promo"
                     class="form-control"
                     placeholder="Valor Combo Crachá Promocional"
                     v-model="currentProduct[0].value_cracha_promo"
+                    v-bind="money"
                   />
                 </div>
                 <div class="form-actions center">
@@ -128,7 +135,6 @@
                   <label>Nome Produto</label>
                   <input
                     id="name_product"
-                    type="user"
                     class="form-control"
                     placeholder="Nome Produto"
                     v-model="currentProduct[0].name"
@@ -136,56 +142,62 @@
                 </div>
                 <div class="form-group">
                   <label>Valor Produto Crédito/Débito</label>
-                  <input
+                  <money
                     id="value_card_product"
                     class="form-control"
                     placeholder="Valor Produto Crédito/Débito"
                     v-model="currentProduct[0].value_card"
+                    v-bind="money"
                   />
                 </div>
                 <div class="form-group">
                   <label>Valor Produto Dinheiro</label>
-                  <input
+                  <money
                     id="value_money_product"
                     class="form-control"
                     placeholder="Valor Produto Dinheiro"
                     v-model="currentProduct[0].value_money"
+                    v-bind="money"
                   />
                 </div>
                 <div class="form-group">
                   <label>Valor Produto Crachá</label>
-                  <input
+                  <money
                     id="value_cracha_product"
                     class="form-control"
                     placeholder="Valor Produto Crachá"
                     v-model="currentProduct[0].value_cracha"
+                    v-bind="money"
                   />
                 </div>
                 <div class="form-group">
                   <label>Valor Produto Crédito/Débito Promocional</label>
-                  <input
+                  <money
                     id="value_card_promo_product"
                     class="form-control"
                     placeholder="Valor Produto Crédito/Débito Promocional"
                     v-model="currentProduct[0].value_card_promo"
+                    v-bind="money"
                   />
                 </div>
                 <div class="form-group">
                   <label>Valor Produto Dinheiro Promocional</label>
-                  <input
+                  <money
                     id="value_money_promo_product"
                     class="form-control"
                     placeholder="Valor Produto Dinheiro Promocional"
                     v-model="currentProduct[0].value_money_promo"
+                    v-bind="money"
                   />
                 </div>
                 <div class="form-group">
                   <label>Valor Produto Crachá Promocional</label>
-                  <input
+                  <money
                     id="value_cracha_promo_product"
                     class="form-control"
                     placeholder="Valor Produto Crachá Promocional"
                     v-model="currentProduct[0].value_cracha_promo"
+                    v-bind="money"
                   />
                 </div>
                 <div class="form-group">
@@ -193,7 +205,6 @@
                   <input
                     id="qtdeProduct_product"
                     class="form-control"
-                    type="number"
                     placeholder="Qtde. Produto"
                     v-model="currentProduct[0].qtdeProduct"
                   />
@@ -228,6 +239,14 @@
         data: {
           currentProduct: [],
           products: [],
+          money: {
+            decimal: ',',
+            thousands: '.',
+            prefix: 'R$',
+            suffix: '',
+            precision: 2,
+            masked: false,
+          },
         },
         mounted: function() {
           this.currentProduct = product.data;
