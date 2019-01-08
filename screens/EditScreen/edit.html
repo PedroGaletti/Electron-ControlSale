@@ -62,7 +62,6 @@
                   <label>Valor Combo Crédito/Débito</label>
                   <input
                     id="value_card"
-                    type="number"
                     class="form-control"
                     placeholder="Valor Combo Crédito/Débito"
                     v-model="currentProduct[0].value_card"
@@ -72,7 +71,6 @@
                   <label>Valor Combo Dinheiro</label>
                   <input
                     id="value_money"
-                    type="number"
                     class="form-control"
                     placeholder="Valor Combo Dinheiro"
                     v-model="currentProduct[0].value_money"
@@ -82,7 +80,6 @@
                   <label>Valor Combo Crachá</label>
                   <input
                     id="value_cracha"
-                    type="number"
                     class="form-control"
                     placeholder="Valor Combo Crachá"
                     v-model="currentProduct[0].value_cracha"
@@ -92,7 +89,6 @@
                   <label>Valor Combo Crédito/Débito Promocional</label>
                   <input
                     id="value_card_promo"
-                    type="number"
                     class="form-control"
                     placeholder="Valor Combo Crédito/Débito Promocional"
                     v-model="currentProduct[0].value_card_promo"
@@ -102,7 +98,6 @@
                   <label>Valor Combo Dinheiro Promocional</label>
                   <input
                     id="value_money_promo"
-                    type="number"
                     class="form-control"
                     placeholder="Valor Combo Dinheiro Promocional"
                     v-model="currentProduct[0].value_money_promo"
@@ -112,7 +107,6 @@
                   <label>Valor Combo Crachá Promocional</label>
                   <input
                     id="value_cracha_promo"
-                    type="number"
                     class="form-control"
                     placeholder="Valor Combo Crachá Promocional"
                     v-model="currentProduct[0].value_cracha_promo"
@@ -144,7 +138,6 @@
                   <label>Valor Produto Crédito/Débito</label>
                   <input
                     id="value_card_product"
-                    type="number"
                     class="form-control"
                     placeholder="Valor Produto Crédito/Débito"
                     v-model="currentProduct[0].value_card"
@@ -154,7 +147,6 @@
                   <label>Valor Produto Dinheiro</label>
                   <input
                     id="value_money_product"
-                    type="number"
                     class="form-control"
                     placeholder="Valor Produto Dinheiro"
                     v-model="currentProduct[0].value_money"
@@ -164,7 +156,6 @@
                   <label>Valor Produto Crachá</label>
                   <input
                     id="value_cracha_product"
-                    type="number"
                     class="form-control"
                     placeholder="Valor Produto Crachá"
                     v-model="currentProduct[0].value_cracha"
@@ -174,7 +165,6 @@
                   <label>Valor Produto Crédito/Débito Promocional</label>
                   <input
                     id="value_card_promo_product"
-                    type="number"
                     class="form-control"
                     placeholder="Valor Produto Crédito/Débito Promocional"
                     v-model="currentProduct[0].value_card_promo"
@@ -184,7 +174,6 @@
                   <label>Valor Produto Dinheiro Promocional</label>
                   <input
                     id="value_money_promo_product"
-                    type="number"
                     class="form-control"
                     placeholder="Valor Produto Dinheiro Promocional"
                     v-model="currentProduct[0].value_money_promo"
@@ -194,7 +183,6 @@
                   <label>Valor Produto Crachá Promocional</label>
                   <input
                     id="value_cracha_promo_product"
-                    type="number"
                     class="form-control"
                     placeholder="Valor Produto Crachá Promocional"
                     v-model="currentProduct[0].value_cracha_promo"
@@ -204,8 +192,8 @@
                   <label>Qtde. Produto</label>
                   <input
                     id="qtdeProduct_product"
-                    type="number"
                     class="form-control"
+                    type="number"
                     placeholder="Qtde. Produto"
                     v-model="currentProduct[0].qtdeProduct"
                   />
@@ -268,9 +256,7 @@
             const name  = document.querySelector('#name')
               ? document.querySelector('#name').value
               : document.querySelector('#name_product').value;
-            const qtdeProduct = document.querySelector('#qtdeProduct_product') 
-              ? document.querySelector('#qtdeProduct_product').value
-              : '';
+            const qtdeProduct = document.querySelector('#qtdeProduct_product').value;
             const value_card = document.querySelector('#value_card')
               ? document.querySelector('#value_card').value
               : document.querySelector('#value_card_product').value;
@@ -348,6 +334,7 @@
         e.preventDefault();
         window.location = '../ListProductScreen/listProduct.html';
         db.removeCollection('product');
+        db.save();
       });
     </script>
   </html>

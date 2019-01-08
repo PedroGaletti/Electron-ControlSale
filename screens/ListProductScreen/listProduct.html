@@ -83,8 +83,32 @@
             window.location = '../EditScreen/edit.html';
           },
           onRemoveProduct: function(param) {
-            products.remove(param);
-            db.save();
+            if (confirm('Tem certeza que deseja excluir o produto do banco?')) {
+              let data = [];
+              products.data.map(product => {
+                product.products.map((item, index) => {
+                  if (item.$loki == param.$loki) {
+                    product.products.splice(index, 1);
+                    products.update(product);
+                    data.push({
+                      name: product.name,
+                    });
+                  }
+                });
+              });
+              
+              if (!data.length) {
+                products.remove(param);
+                return db.save();
+              }
+
+              if (data.length) {
+                if (confirm(`O Produto a ser excluido pertence aos seguintes combos: \n ${data.map(item => item.name)} \n Ele será removido dos combos ok?`)) {
+                  products.remove(param);
+                  return db.save();
+                }
+              }
+            }
           },
         },
       });
