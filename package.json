@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-packager . 288Worship --platform=win32",
+    "build": "electron-packager . 288Worship --all",
     "reload": "live-reload ./ --port 35729"
   },
   "repository": "https://github.com/electron/electron-quick-start",

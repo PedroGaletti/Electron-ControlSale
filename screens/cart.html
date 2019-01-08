@@ -83,14 +83,14 @@
           db.save();
         },
         finishCart: function(param) {
-          if (!param && cart.data.length) {
-            sales.insert({
-              products: cart.data,
-              date: new Date(),
-            });
-          }
+          // if (!param && cart.data.length) {
+          //   sales.insert({
+          //     products: cart.data,
+          //     date: new Date(),
+          //   });
+          // }
 
-          cart.removeDataOnly();
+          db.removeCollection('cart');
           db.save();
           this.products = [];
         },

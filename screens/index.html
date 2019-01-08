@@ -51,7 +51,6 @@
     const data = read('db.json');
     db.loadJSON(data);
     const products = db.getCollection('products');
-    const cart = db.getCollection('cart');
     const users = db.getCollection('users');
     const isLogged = users.data[0] && users.data[0].logged;
     let cart_client = [];
@@ -65,6 +64,38 @@
       });
       db.save();
     }
+
+    const handleNewBrowser = () => {
+      const electron = require('electron');
+      const BrowserWindow = electron.remote.BrowserWindow;
+      newWindow = new BrowserWindow({
+        width: 500,
+        height: 500,
+      });
+      newWindow.loadFile(`${__dirname}/cart.html`);
+      newWindow.on('closed', function () {
+        newWindow = null;
+      });
+      newWindow.webContents.openDevTools();
+      show = true;
+    }
+
+    const newItemInCart = (item, value) => {
+      const dbJs = new loki('db.json');
+      const data_cart = read('db.json');
+      dbJs.loadJSON(data_cart);
+      let cart = dbJs.getCollection('cart');
+      if (cart === null) {
+        cart = dbJs.addCollection('cart');
+      }
+      
+      cart.insert({
+        value,
+        name: item.name,
+        id: item.$loki,
+      });
+      dbJs.save();
+    }
     
 
     document.querySelector('#input').addEventListener('paste', (e) => {
@@ -73,33 +104,83 @@
         const index = (value.indexOf('/') + 1);
         const id = value.substr(index);
         const item = products_data.find(item => item.$loki == id);
-        const electron = require('electron')
         e.target.value = '';
 
         if (item) {
-          cart.insert({
-            value: value.substr(0, index - 1),
-            name: item.name,
-            id: item.$loki,   
-          });
-          db.save();
+          newItemInCart(item, value.substr(0, index - 1));
+
+          if (newWindow) {
+            newWindow.reload();
+          }
+
+          if (!show) {
+            handleNewBrowser();
+          }
+        }
+      }, 500);
+    });
+
+    document.querySelector('#input').addEventListener('keyup', (e) => {
+      setTimeout(() => {
+        const value = e.target.value;
+        const index = (value.indexOf('/') + 1);
+        const id = value.substr(index);
+        const item = products_data.find(item => item.$loki == id);
+        e.target.value = '';
+
+        if (item) {
+          newItemInCart(item, value.substr(0, index - 1));
           
           if (newWindow) {
             newWindow.reload();
           }
 
           if (!show) {
-            const BrowserWindow = electron.remote.BrowserWindow;
-            newWindow = new BrowserWindow({
-              width: 500,
-              height: 500,
-            });
-            newWindow.loadFile(`${__dirname}/cart.html`);
-            newWindow.on('closed', function () {
-              newWindow = null;
-            });
-            newWindow.webContents.openDevTools();
-            show = true;
+            handleNewBrowser();
+          }
+        }
+      }, 500);
+    });
+
+    document.querySelector('#input').addEventListener('keypress', (e) => {
+      setTimeout(() => {
+        const value = e.target.value;
+        const index = (value.indexOf('/') + 1);
+        const id = value.substr(index);
+        const item = products_data.find(item => item.$loki == id);
+        e.target.value = '';
+
+        if (item) {
+          newItemInCart(item, value.substr(0, index - 1));
+          
+          if (newWindow) {
+            newWindow.reload();
+          }
+
+          if (!show) {
+            handleNewBrowser();
+          }
+        }
+      }, 500);
+    });
+
+    document.querySelector('#input').addEventListener('focus', (e) => {
+      setTimeout(() => {
+        const value = e.target.value;
+        const index = (value.indexOf('/') + 1);
+        const id = value.substr(index);
+        const item = products_data.find(item => item.$loki == id);
+        e.target.value = '';
+
+        if (item) {
+          newItemInCart(item, value.substr(0, index - 1));
+          
+          if (newWindow) {
+            newWindow.reload();
+          }
+
+          if (!show) {
+            handleNewBrowser();
           }
         }
       }, 500);
