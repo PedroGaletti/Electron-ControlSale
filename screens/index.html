@@ -59,7 +59,7 @@
     if (!users.data[0] && users.data.length != 1) {
       users.insert({
         user: '288Worship',
-        password: '288Worshipbanc2018',
+        password: '288Worshipbanc2019',
         logged: false,
       });
       db.save();
@@ -193,7 +193,7 @@
         products: [],
       },
       mounted: function() {
-        this.products = products.data.filter(item => item.qtdeProduct > 0);
+        this.products = products.data.filter(item => item.qtdeProduct > 0 || item.qtdeProduct == '');
         products_data = this.products;
         for (i = 0; i < 6; i++) {
           document.getElementsByTagName(`tbody`)[0].innerHTML += `<tr id="tr${i}"></tr>`;

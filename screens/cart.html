@@ -6,6 +6,7 @@
     <meta charset="utf-8"/>
     <link href="../css/photon.css" rel="stylesheet"> 
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
   </head>
   <body>
     <div class="window" id="table-estoque">
@@ -44,6 +45,7 @@
             class="btn btn-default"
             type="button"
             @click="finishCart(true)"
+            id="buttonCancel"
           >
             Cancelar Compra (Esc)
           </button>
@@ -52,6 +54,7 @@
             type="button"
             @click="finishCart(false)"
             class="btn btn-primary pull-right"
+            id="buttonFinalizar"
           >
             Finalizar Compra (Enter)
           </button>
@@ -67,6 +70,7 @@
     db.loadJSON(data);
     const cart = db.getCollection('cart');
     const sales = db.getCollection('sales');
+    const products = db.getCollection('products');
 
     window.vue = require('vue');
     new Vue({
@@ -83,12 +87,42 @@
           db.save();
         },
         finishCart: function(param) {
-          // if (!param && cart.data.length) {
-          //   sales.insert({
-          //     products: cart.data,
-          //     date: new Date(),
-          //   });
-          // }
+          if (!param && cart.data.length) {
+            let data = [];
+
+            cart.data.map(item => {
+              products.data.map(product => {
+                if (item.id === product.$loki) {
+                  if (!product.combo) product.qtdeProduct -= 1;
+                  String(product.qtdeProduct);
+                  return data.push(product);
+                }
+              });
+            });
+
+            data.map(item => {
+              if (!item.combo) return products.update(item);
+              if (item.combo) {
+                item.products.map(product => {
+                  return products.data.map(product_data => {
+                    if (product.$loki === product_data.$loki) {
+                      product.qtdeProduct -= 1;
+                      String(product.qtdeProduct);
+                      return products.update(product);
+                    }
+                  })
+                });
+              }
+
+              if (item.combo) return products.update(item);
+            });
+
+            sales.insert({
+              products_sales: cart.data,
+              qtdeProducts: products.data,
+              date: new Date(),
+            });
+          }
 
           db.removeCollection('cart');
           db.save();
@@ -96,5 +130,15 @@
         },
       },
     });
+
+
+    document.addEventListener('keypress', (e) => {
+      if(e.which == 13) document.querySelector('#buttonFinalizar').click();
+    }, false);
+
+    document.addEventListener('keyup', (e) => {
+      if(e.which == 27) document.querySelector('#buttonCancel').click();
+    }, false);
+
   </script>
 </html>

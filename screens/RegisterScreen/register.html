@@ -121,15 +121,6 @@
                 placeholder="Valor Combo Crachá Promocional"
               />
             </div>
-            <div class="form-group">
-              <label>Qtde. Combo</label>
-              <input
-                id="qtdeProduct"
-                type="number"
-                class="form-control"
-                placeholder="Qtde. Combo"
-              />
-            </div>
             <div class="form-actions center">
               <button
                 type="button"
@@ -256,31 +247,30 @@
       },
       methods: {
         clientStore: function() {
-          const name  = document.querySelector('#name').value 
+          const name  = document.querySelector('#name')
             ? document.querySelector('#name').value
             : document.querySelector('#name_product').value;
-          const qtdeProduct = document.querySelector('#qtdeProduct').value
-            ? document.querySelector('#qtdeProduct').value
-            : document.querySelector('#qtdeProduct_product').value;
-          const value_card = document.querySelector('#value_card').value
+          const qtdeProduct = document.querySelector('#qtdeProduct_product').value;
+          const value_card = document.querySelector('#value_card')
             ? document.querySelector('#value_card').value
             : document.querySelector('#value_card_product').value;
-          const value_money = document.querySelector('#value_money').value
+          const value_money = document.querySelector('#value_money')
             ? document.querySelector('#value_money').value
             : document.querySelector('#value_money_product').value;
-          const value_cracha = document.querySelector('#value_cracha').value
+          const value_cracha = document.querySelector('#value_cracha')
             ? document.querySelector('#value_cracha').value
             : document.querySelector('#value_cracha_product').value;
-          const value_card_promo = document.querySelector('#value_card_promo').value
+          const value_card_promo = document.querySelector('#value_card_promo')
             ? document.querySelector('#value_card_promo').value
             : document.querySelector('#value_card_promo_product').value;
-          const value_money_promo = document.querySelector('#value_money_promo').value
+          const value_money_promo = document.querySelector('#value_money_promo')
             ? document.querySelector('#value_money_promo').value
             : document.querySelector('#value_money_promo_product').value;
-          const value_cracha_promo = document.querySelector('#value_cracha_promo').value
+          const value_cracha_promo = document.querySelector('#value_cracha_promo')
             ? document.querySelector('#value_cracha_promo').value
             : document.querySelector('#value_cracha_promo_product').value;
-          let data = {
+          
+            let data = {
             name,
             products: this.products_combo,
             qtdeProduct,
@@ -293,7 +283,7 @@
             combo: !!this.products_combo.length || false,
           };
 
-          if (name === '' || qtdeProduct === '' || value_card === ''
+          if (name === '' || (show && qtdeProduct === '') || value_card === ''
             || value_money === '' || value_cracha === '' || value_card_promo === ''
             || value_money_promo === '' || value_cracha_promo === '') {
               return alert('É necessário o preenchimento de todos os campos');

@@ -43,10 +43,13 @@
             <tbody>
               <tr v-for="product in products">
                 <td>{{ product.name }}</td>
-                <td>{{ product.qtdeProduct }}</td>
+                <td>
+                  <a v-if="!product.combo">{{ product.qtdeProduct }}</a>
+                  <a v-if="product.combo">-</a>
+                </td>
                 
-                <td v-if="product.qtdeProduct > 0">Ativo</td>
-                <td v-if="product.qtdeProduct == 0">Não ativo</td>
+                <td v-if="product.combo || product.qtdeProduct > 0">Ativo</td>
+                <td v-if="!product.combo && product.qtdeProduct == 0">Não ativo</td>
                 
                 <td>
                   <a v-if="product.products.length === 0">-</a>
@@ -69,20 +72,24 @@
                 </td>
                 <td>
                   <input
+                    v-if="!product.combo"
                     placeholder="Novo Estoque"
                     id="new_stoque"
                     type="number"
                     class="form-control new_stoque"
                   />
+                  <a v-if="product.combo">-</a>
                 </td>
                 <td>
                   <button
+                    v-if="!product.combo"
                     type="button"
                     class="btn btn-form btn-primary"
                     @click="onSelectProduct(product)"
                   >
                     Salvar
                   </button>
+                  <a v-if="product.combo">-</a>
                 </td>
               </tr>
               <tr v-if="show"></tr>
@@ -118,6 +125,16 @@
                   ...param,
                   qtdeProduct: stoque[i].value,
                 };
+                
+                products.data.map(product => {
+                  product.products.map((item, index) => {
+                    if (item.$loki == param.$loki) {
+                      product.products[index] = data;
+                      products.update(product);
+                    }
+                  });
+                });
+
                 products.update(data);
                 db.save();
                 alert('Estoque alterado com sucesso');

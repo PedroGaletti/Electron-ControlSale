@@ -118,16 +118,6 @@
                     v-model="currentProduct[0].value_cracha_promo"
                   />
                 </div>
-                <div class="form-group">
-                  <label>Qtde. Combo</label>
-                  <input
-                    id="qtdeProduct"
-                    type="number"
-                    class="form-control"
-                    placeholder="Qtde. Combo"
-                    v-model="currentProduct[0].qtdeProduct"
-                  />
-                </div>
                 <div class="form-actions center">
                   <button
                     type="button"
@@ -275,30 +265,31 @@
             const id_loki = this.currentProduct[0].id;
             delete this.currentProduct[0].id;
             delete this.currentProduct[0].$loki
-            const name  = document.querySelector('#name').value 
-            ? document.querySelector('#name').value
-            : document.querySelector('#name_product').value;
-            const qtdeProduct = document.querySelector('#qtdeProduct').value
-              ? document.querySelector('#qtdeProduct').value
-              : document.querySelector('#qtdeProduct_product').value;
-            const value_card = document.querySelector('#value_card').value
+            const name  = document.querySelector('#name')
+              ? document.querySelector('#name').value
+              : document.querySelector('#name_product').value;
+            const qtdeProduct = document.querySelector('#qtdeProduct_product') 
+              ? document.querySelector('#qtdeProduct_product').value
+              : '';
+            const value_card = document.querySelector('#value_card')
               ? document.querySelector('#value_card').value
               : document.querySelector('#value_card_product').value;
-            const value_money = document.querySelector('#value_money').value
+            const value_money = document.querySelector('#value_money')
               ? document.querySelector('#value_money').value
               : document.querySelector('#value_money_product').value;
-            const value_cracha = document.querySelector('#value_cracha').value
+            const value_cracha = document.querySelector('#value_cracha')
               ? document.querySelector('#value_cracha').value
               : document.querySelector('#value_cracha_product').value;
-            const value_card_promo = document.querySelector('#value_card_promo').value
+            const value_card_promo = document.querySelector('#value_card_promo')
               ? document.querySelector('#value_card_promo').value
               : document.querySelector('#value_card_promo_product').value;
-            const value_money_promo = document.querySelector('#value_money_promo').value
+            const value_money_promo = document.querySelector('#value_money_promo')
               ? document.querySelector('#value_money_promo').value
               : document.querySelector('#value_money_promo_product').value;
-            const value_cracha_promo = document.querySelector('#value_cracha_promo').value
+            const value_cracha_promo = document.querySelector('#value_cracha_promo')
               ? document.querySelector('#value_cracha_promo').value
               : document.querySelector('#value_cracha_promo_product').value;
+            
             let data = {
               $loki: id_loki,
               name,
@@ -311,9 +302,27 @@
               value_cracha_promo,
               ...this.currentProduct[0],
             };
-            if (!this.currentProduct[0].products.length > 1) {
-              alert('Um combo não pode ter somente um produto.');
+            
+            if (this.currentProduct[0].products.length == 1) {
+              return alert('Um combo não pode ter somente um produto.');
             }
+
+            if (name === '' || (!this.currentProduct[0].combo && qtdeProduct === '') || value_card === ''
+              || value_money === '' || value_cracha === '' || value_card_promo === ''
+              || value_money_promo === '' || value_cracha_promo === '') {
+              return alert('É necessário o preenchimento de todos os campos');
+            }
+
+            products.data.map(product => {
+              product.products.map((item, index) => {
+                if (item.$loki == data.$loki) {
+                  product.products[index] = data;
+                  products.update(product);
+                }
+              });
+            });
+
+
             products.update(data);
             db.save();
             window.location = '../index.html';
