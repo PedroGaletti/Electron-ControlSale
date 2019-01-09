@@ -285,12 +285,12 @@
             name,
             products: this.products_combo,
             qtdeProduct,
-            value_card,
-            value_money,
-            value_cracha,
-            value_card_promo,
-            value_money_promo,
-            value_cracha_promo,
+            value_card: value_card.substr(2).replace(",", "."),
+            value_money: value_money.substr(2).replace(",", "."),
+            value_cracha: value_cracha.substr(2).replace(",", "."),
+            value_card_promo: value_card_promo.substr(2).replace(",", "."),
+            value_money_promo: value_money_promo.substr(2).replace(",", "."),
+            value_cracha_promo: value_cracha_promo.substr(2).replace(",", "."),
             combo: !!this.products_combo.length || false,
           };
 
