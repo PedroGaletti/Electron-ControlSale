@@ -25,12 +25,11 @@ function createWindow () {
 
   const read = require('read-file-utf8')
   const loki = require('lokijs');
-  const db = new loki('db.json', {
-    autosave: true,
-    autosaveInterval: 1000* 20 * 1,
-    autoload: true,
-  });
-  const data = read('db.json');
+  const path = require('path');
+  let dbFile = path.resolve(__dirname, './db.json');
+  const db = new loki(dbFile);
+  db.save();
+  const data = read(`${__dirname}/db.json`);
   db.loadJSON(data);
   db.removeCollection('users');
   db.addCollection('users');

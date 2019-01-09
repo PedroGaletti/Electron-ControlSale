@@ -47,14 +47,23 @@
     let show = false;
     const read = require('read-file-utf8')
     const loki = require('lokijs');
-    const db = new loki('db.json');
-    const data = read('db.json');
+    const path = require('path');
+    let dbFile = path.resolve(__dirname, '../db.json');
+    const db = new loki(dbFile);
+    db.save();
+    const data = read(path.resolve(__dirname, '../db.json'));
     db.loadJSON(data);
-    const products = db.getCollection('products');
-    const users = db.getCollection('users');
-    const isLogged = users.data[0] && users.data[0].logged;
+
     let cart_client = [];
     let products_data;
+    let users = db.getCollection('users');
+    if (!users) {
+      users = db.addCollection('users');
+      db.save();
+    } else {
+      users = db.getCollection('users')
+      db.save();
+    }
 
     if (!users.data[0] && users.data.length != 1) {
       users.insert({
@@ -64,6 +73,9 @@
       });
       db.save();
     }
+
+    const products = db.getCollection('products');
+    const isLogged = users.data[0] && users.data[0].logged;
 
     const handleNewBrowser = () => {
       const electron = require('electron');

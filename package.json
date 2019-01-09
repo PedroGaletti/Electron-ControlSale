@@ -25,6 +25,7 @@
   "dependencies": {
     "live-reload": "^1.1.0",
     "lokijs": "^1.5.5",
+    "path": "^0.12.7",
     "read-file-utf8": "^1.1.2",
     "simple-mask-money": "^2.0.1",
     "vue": "^2.5.21"
