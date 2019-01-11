@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html>
     <head>
       <meta charset="UTF-8">
@@ -27,8 +27,18 @@
             </button>
           </div>
         </header>
+        <div class="tab-group">
+          <div id="tab_formulario" class="tab-item active">
+            <span  class="icon icon-cancel icon-close-tab"></span>
+            Formulário
+          </div>
+          <div id="tab_stoque" class="tab-item">
+            <span class="icon icon-cancel icon-close-tab"></span>
+            Estoque
+          </div>
+        </div>
         <div class="center">
-          <div class="form-center noTop">
+          <div id="form" class="form-center topEdit">
             <form id="form-body">
               <div v-if="currentProduct[0].combo" id="form-combo">
                 <div class="form-group">
@@ -221,6 +231,11 @@
               </div>
             </form>
           </div>
+
+          <div id="stoque">
+            
+          </div>
+
         </div>
       </div>
     </body>
@@ -234,6 +249,7 @@
       db.loadJSON(data);
       const product = db.getCollection('product');
       const products = db.getCollection('products');
+      const stoque_history = db.getCollection('history_stoque');
       
       window.vue = require('vue');
       new Vue({
@@ -296,11 +312,22 @@
             const value_cracha_promo = document.querySelector('#value_cracha_promo')
               ? document.querySelector('#value_cracha_promo').value
               : document.querySelector('#value_cracha_promo_product').value;
+            const sum = () => {
+              if (this.currentProduct[0].qtdeProduct != qtdeProduct) {
+                if (qtdeProduct.substr(0) === '-') {
+                  return Number(this.currentProduct[0].qtdeProduct) - Number(qtdeProduct);
+                }
+
+                return Number(this.currentProduct[0].qtdeProduct) + Number(qtdeProduct);
+              }
+
+              return this.currentProduct[0].qtdeProduct;
+            }
             
             let data = {
               $loki: id_loki,
               name,
-              qtdeProduct,
+              qtdeProduct: sum(),
               value_card,
               value_money,
               value_cracha,
@@ -310,6 +337,9 @@
               ...this.currentProduct[0],
             };
             
+            console.log(qtdeProduct);
+            console.log(this.currentProduct[0]);
+
             if (this.currentProduct[0].products.length == 1) {
               return alert('Um combo não pode ter somente um produto.');
             }
@@ -331,8 +361,15 @@
 
 
             products.update(data);
+            stoque_history.insert({
+              id_product: id_loki,
+              first_qtdeProduct: this.currentProduct[0].first_qtdeProduct,
+              medium_qtdeProduct: this.currentProduct[0].qtdeProduct,
+              last_qtdeProduct: qtdeProduct,
+            });
+            console.log(stoque_history);
             db.save();
-            window.location = '../index.html';
+            // window.location = '../index.html';
             alert('editado com sucesso');
           },
           changeProduct: function(product) {
@@ -351,6 +388,16 @@
         },
       });
       
+      document.querySelector('#tab_formulario').addEventListener('click', (e) => {
+        document.querySelector('#form').style.display = 'block';
+        document.querySelector('#stoque').style.display = 'none';
+      });
+
+      document.querySelector('#tab_stoque').addEventListener('click', (e) => {
+        document.querySelector('#form').style.display = 'none';
+        document.querySelector('#stoque').style.display = 'block';
+      });
+
       document.querySelector('#edit').addEventListener('click', (e) => {
         e.preventDefault();
         window.location = '../ListProductScreen/listProduct.html';

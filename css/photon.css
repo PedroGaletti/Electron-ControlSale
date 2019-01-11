@@ -300,6 +300,11 @@ h6 {
   padding-bottom: 30px;
 }
 
+.topEdit {
+  top: 12% !important;
+  padding-bottom: 30px;
+}
+
 dialog {
   padding: 0;
   border: 1px solid #bebebe;
@@ -2445,6 +2450,7 @@ td:last-child {
 
 .tab-group {
   margin-top: -1px;
+  margin-bottom: 20px;
   display: flex;
   border-top: 1px solid #989698;
   border-bottom: 1px solid #989698;

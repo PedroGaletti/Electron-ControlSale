@@ -107,6 +107,10 @@
       const data = read(path.resolve(__dirname, '../../db.json'));
       db.loadJSON(data);
       const products = db.getCollection('products');
+      const stoque_history = db.getCollection('history_stoque');
+      const users = db.getCollection('users');
+      const isLogged = users.data[0] && users.data[0].logged;
+
       window.vue = require('vue');
       new Vue({
         el: '#table-estoque',
@@ -125,7 +129,7 @@
               if (stoque[i].value && param.$loki === this.products[i].$loki) {
                 let data = {
                   ...param,
-                  qtdeProduct: stoque[i].value,
+                  qtdeProduct: sum(stoque[i].value, param),
                 };
                 
                 products.data.map(product => {
@@ -138,6 +142,12 @@
                 });
 
                 products.update(data);
+                stoque_history.insert({
+                  id_product: param.$loki,
+                  first_qtdeProduct: param.first_qtdeProduct,
+                  medium_qtdeProduct: param.qtdeProduct,
+                  last_qtdeProduct: data.qtdeProduct,
+                });
                 db.save();
                 alert('Estoque alterado com sucesso');
                 stoque[i].value = '';
@@ -146,6 +156,40 @@
             };
           },
         },
+      });
+
+      const sum = (value, param) => {
+        if (value.substr(0) === '-') {
+          return Number(param.qtdeProduct) - Number(value);
+        }
+
+        return Number(param.qtdeProduct) + Number(value);
+      }
+
+      document.querySelector('#register').addEventListener('click', (e) => {
+        e.preventDefault();
+        window.location = isLogged
+          ? '../screens/RegisterScreen/register.html'
+          : `../screens/authScreen/auth.html?screen=RegisterScreen/register.html`;
+      });
+
+      document.querySelector('#edit').addEventListener('click', (e) => {
+        e.preventDefault();
+        window.location = isLogged
+          ? '../screens/ListProductScreen/listProduct.html'
+          : '../screens/authScreen/auth.html?screen=ListProductScreen/listProduct.html';
+      });
+
+      document.querySelector('#refresh').addEventListener('click', (e) => {
+        e.preventDefault();
+        window.location = isLogged
+          ? '../screens/RefreshScreen/refresh.html'
+          : '../screens/authScreen/auth.html?screen=RefreshScreen/refresh.html';
+      });
+
+      document.querySelector('#home').addEventListener('click', (e) => {
+        e.preventDefault();
+        window.location = '../index.html';
       });
     </script>
   </html>

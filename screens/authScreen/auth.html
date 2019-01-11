@@ -65,9 +65,9 @@
     const db = new loki(dbFile);
     const data = read(path.resolve(__dirname, '../../db.json'));
     db.loadJSON(data);
-    const url  = window.location.href;
+    const url  = window.location.href === 'file:///Users/pedrogaletti/Pedro/Electron/screens/authScreen/auth.html' ? 'ListProductScreen/listProduct.html' : window.location.href;
     const index = (url.indexOf('=') + 1);
-    const screenToGo = url.substr(index);
+    let screenToGo = url.substr(index);
     const users = db.getCollection('users');
     const isLogged = users.data[0].logged;
  
@@ -85,7 +85,7 @@
           const newUsers = db.addCollection('users');
           newUsers.insert({
             user: '288Worship',
-            password: '288Worshipbanc2018',
+            password: '288Worshipbanc2019',
             logged: true,
           });
           db.save();
@@ -95,21 +95,30 @@
           alert('Por favor preencha os campos com os dados corretos');
         }
       });
-    document.querySelector('#register').addEventListener('click', (e) => {
-      e.preventDefault();
-      window.location = isLogged ? `../${screenToGo}` : `./auth.html`;
-    });
-    document.querySelector('#edit').addEventListener('click', (e) => {
-      e.preventDefault();
-      window.location = isLogged ? `../${screenToGo}` : `./auth.html`;
-    });
-    document.querySelector('#refresh').addEventListener('click', (e) => {
-      e.preventDefault();
-      window.location = isLogged ? `../${screenToGo}` : `./auth.html`;
-    });
-    document.querySelector('#home').addEventListener('click', (e) => {
-      e.preventDefault();
-      window.location = `../index.html`;
-    });
+
+      document.querySelector('#register').addEventListener('click', (e) => {
+          screenToGo = 'RegisterScreen/register.html';
+          if (isLogged) {
+            window.location = '../RegisterScreen/register.html';
+          }
+      });
+
+      document.querySelector('#edit').addEventListener('click', (e) => {
+        screenToGo = 'ListProductScreen/listProduct.html';
+        if (isLogged) {
+          window.location = '../ListProductScreen/listProduct.html';
+        }
+      });
+
+      document.querySelector('#refresh').addEventListener('click', (e) => {
+        screenToGo = 'RefreshScreen/refresh.html';
+        if (isLogged) {
+          window.location = '../RefreshScreen/refresh.html';
+        }
+      });
+
+      document.querySelector('#home').addEventListener('click', (e) => {
+        window.location = '../index.html';
+      });
   </script>
 </html>

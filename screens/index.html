@@ -59,8 +59,10 @@
     let users = db.getCollection('users');
     if (!users) {
       users = db.addCollection('users');
+      db.addCollection('history_stoque');
       db.save();
     } else {
+      db.getCollection('history_stoque');
       users = db.getCollection('users')
       db.save();
     }

@@ -6,6 +6,9 @@ function ready(fn) {
 }
 
 ready(() => {
+  document.querySelector('#form').style.display = 'block';
+  document.querySelector('#stoque').style.display = 'none';
+  
   document.querySelector('#home').addEventListener('click', (e) => {
     e.preventDefault();
     window.location = '../index.html';

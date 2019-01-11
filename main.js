@@ -13,7 +13,7 @@ function createWindow () {
   mainWindow.loadFile(`${__dirname}/screens/index.html`);
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
@@ -35,6 +35,7 @@ function createWindow () {
   db.addCollection('users');
   db.addCollection('cart');
   db.addCollection('sales');
+  db.addCollection('history_stoque');
   db.save();
 
   const template = [{
