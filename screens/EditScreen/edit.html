@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
     <head>
       <meta charset="UTF-8">
@@ -7,7 +7,7 @@
       <link href="../../css/photon.css" rel="stylesheet"> 
       <script src="https://cdn.jsdelivr.net/npm/vue"></script>
       <script>require('./edit.js')</script>
-      <script src="https://rawgit.com/vuejs-tips/v-money/master/dist/v-money.js"></script>
+      <script src="../../scripts/money.js"></script>
     </head>
     <body>
       <div class="window">
@@ -257,6 +257,7 @@
         data: {
           currentProduct: [],
           products: [],
+          original_product: {},
           money: {
             decimal: ',',
             thousands: '.',
@@ -268,6 +269,7 @@
         },
         mounted: function() {
           this.currentProduct = product.data;
+          this.original_product = {...product.data[0]};
           const products_combo = [...products.data];
           
           products_combo.filter((product, index) => {
@@ -286,7 +288,7 @@
           this.products = products_combo.filter(item => !item.combo && item.qtdeProduct > 0);
         },
         methods: {
-          clientStore: function() {
+          clientStore: async function() {
             const id_loki = this.currentProduct[0].id;
             delete this.currentProduct[0].id;
             delete this.currentProduct[0].$loki
@@ -336,9 +338,6 @@
               value_cracha_promo,
               ...this.currentProduct[0],
             };
-            
-            console.log(qtdeProduct);
-            console.log(this.currentProduct[0]);
 
             if (this.currentProduct[0].products.length == 1) {
               return alert('Um combo não pode ter somente um produto.');
@@ -350,7 +349,14 @@
               return alert('É necessário o preenchimento de todos os campos');
             }
 
-            products.data.map(product => {
+            await stoque_history.insert({
+              id_product: id_loki,
+              first_qtdeProduct: this.currentProduct[0].first_qtdeProduct,
+              medium_qtdeProduct: this.original_product.qtdeProduct,
+              last_qtdeProduct: qtdeProduct,
+            });
+
+            await products.data.map(product => {
               product.products.map((item, index) => {
                 if (item.$loki == data.$loki) {
                   product.products[index] = data;
@@ -358,18 +364,9 @@
                 }
               });
             });
-
-
-            products.update(data);
-            stoque_history.insert({
-              id_product: id_loki,
-              first_qtdeProduct: this.currentProduct[0].first_qtdeProduct,
-              medium_qtdeProduct: this.currentProduct[0].qtdeProduct,
-              last_qtdeProduct: qtdeProduct,
-            });
-            console.log(stoque_history);
+            await products.update(data);
             db.save();
-            // window.location = '../index.html';
+            window.location = '../index.html';
             alert('editado com sucesso');
           },
           changeProduct: function(product) {
