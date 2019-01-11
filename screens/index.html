@@ -54,6 +54,7 @@
     const data = read(path.resolve(__dirname, '../db.json'));
     db.loadJSON(data);
 
+    let count_cart = 0;
     let cart_client = [];
     let products_data;
     let users = db.getCollection('users');
@@ -93,7 +94,7 @@
       show = true;
     }
 
-    const newItemInCart = (item, value) => {
+    const newItemInCart = async (item, value) => {
       let dbFile = path.resolve(__dirname, '../db.json');
       const dbJs = new loki(dbFile);
       db.save();
@@ -103,13 +104,22 @@
       if (cart === null) {
         cart = dbJs.addCollection('cart');
       }
+
+      if (count_cart === 0) {
+        for (x = 0; x < cart.data.length; x++) {
+          if (x !== cart.data.length) {
+            cart.data.splice(x, 1);
+          }
+        }
+        count_cart = 1;
+      }
       
-      cart.insert({
+      await cart.insert({
         value,
         name: item.name,
         id: item.$loki,
       });
-      dbJs.save();
+      await dbJs.save();
     }
 
     window.vue = require('vue');
