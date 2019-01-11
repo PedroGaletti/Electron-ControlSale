@@ -28,7 +28,7 @@
       </header>
       <div class="center-horizontal hundred-margin">
         <image src="../images/Logo-AmareloEpreto.png" class="image center" />
-        <input @paste autofocus id="input" placeholder="value" />
+        <input autofocus id="input" placeholder="value" />
         <table id="app" class="table table-striped">
           <thead>
             <tr>
@@ -88,13 +88,14 @@
       newWindow.on('closed', function () {
         newWindow = null;
       });
-      newWindow.webContents.openDevTools();
       show = true;
     }
 
     const newItemInCart = (item, value) => {
-      const dbJs = new loki('db.json');
-      const data_cart = read('db.json');
+      let dbFile = path.resolve(__dirname, '../db.json');
+      const dbJs = new loki(dbFile);
+      db.save();
+      const data_cart = read(path.resolve(__dirname, '../db.json'));
       dbJs.loadJSON(data_cart);
       let cart = dbJs.getCollection('cart');
       if (cart === null) {
@@ -108,95 +109,6 @@
       });
       dbJs.save();
     }
-    
-
-    document.querySelector('#input').addEventListener('paste', (e) => {
-      setTimeout(() => {
-        const value = e.target.value;
-        const index = (value.indexOf('/') + 1);
-        const id = value.substr(index);
-        const item = products_data.find(item => item.$loki == id);
-        e.target.value = '';
-
-        if (item) {
-          newItemInCart(item, value.substr(0, index - 1));
-
-          if (newWindow) {
-            newWindow.reload();
-          }
-
-          if (!show) {
-            handleNewBrowser();
-          }
-        }
-      }, 500);
-    });
-
-    document.querySelector('#input').addEventListener('keyup', (e) => {
-      setTimeout(() => {
-        const value = e.target.value;
-        const index = (value.indexOf('/') + 1);
-        const id = value.substr(index);
-        const item = products_data.find(item => item.$loki == id);
-        e.target.value = '';
-
-        if (item) {
-          newItemInCart(item, value.substr(0, index - 1));
-          
-          if (newWindow) {
-            newWindow.reload();
-          }
-
-          if (!show) {
-            handleNewBrowser();
-          }
-        }
-      }, 500);
-    });
-
-    document.querySelector('#input').addEventListener('keypress', (e) => {
-      setTimeout(() => {
-        const value = e.target.value;
-        const index = (value.indexOf('/') + 1);
-        const id = value.substr(index);
-        const item = products_data.find(item => item.$loki == id);
-        e.target.value = '';
-
-        if (item) {
-          newItemInCart(item, value.substr(0, index - 1));
-          
-          if (newWindow) {
-            newWindow.reload();
-          }
-
-          if (!show) {
-            handleNewBrowser();
-          }
-        }
-      }, 500);
-    });
-
-    document.querySelector('#input').addEventListener('focus', (e) => {
-      setTimeout(() => {
-        const value = e.target.value;
-        const index = (value.indexOf('/') + 1);
-        const id = value.substr(index);
-        const item = products_data.find(item => item.$loki == id);
-        e.target.value = '';
-
-        if (item) {
-          newItemInCart(item, value.substr(0, index - 1));
-          
-          if (newWindow) {
-            newWindow.reload();
-          }
-
-          if (!show) {
-            handleNewBrowser();
-          }
-        }
-      }, 500);
-    });
 
     window.vue = require('vue');
     new Vue({
@@ -291,6 +203,95 @@
           JsBarcode(`#svg${j + 5}_${i + 5}`).init();
         }
       },
+    });
+    
+
+    document.querySelector('#input').addEventListener('paste', (e) => {
+      setTimeout(() => {
+        const value = e.target.value;
+        const index = (value.indexOf('/') + 1);
+        const id = value.substr(index);
+        const item = products_data.find(item => item.$loki == id);
+        e.target.value = '';
+
+        if (item) {
+          newItemInCart(item, value.substr(0, index - 1));
+
+          if (newWindow) {
+            newWindow.reload();
+          }
+
+          if (!show) {
+            handleNewBrowser();
+          }
+        }
+      }, 500);
+    });
+
+    document.querySelector('#input').addEventListener('keyup', (e) => {
+      setTimeout(() => {
+        const value = e.target.value;
+        const index = (value.indexOf('/') + 1);
+        const id = value.substr(index);
+        const item = products_data.find(item => item.$loki == id);
+        e.target.value = '';
+
+        if (item) {
+          newItemInCart(item, value.substr(0, index - 1));
+          
+          if (newWindow) {
+            newWindow.reload();
+          }
+
+          if (!show) {
+            handleNewBrowser();
+          }
+        }
+      }, 500);
+    });
+
+    document.querySelector('#input').addEventListener('keypress', (e) => {
+      setTimeout(() => {
+        const value = e.target.value;
+        const index = (value.indexOf('/') + 1);
+        const id = value.substr(index);
+        const item = products_data.find(item => item.$loki == id);
+        e.target.value = '';
+
+        if (item) {
+          newItemInCart(item, value.substr(0, index - 1));
+          
+          if (newWindow) {
+            newWindow.reload();
+          }
+
+          if (!show) {
+            handleNewBrowser();
+          }
+        }
+      }, 500);
+    });
+
+    document.querySelector('#input').addEventListener('focus', (e) => {
+      setTimeout(() => {
+        const value = e.target.value;
+        const index = (value.indexOf('/') + 1);
+        const id = value.substr(index);
+        const item = products_data.find(item => item.$loki == id);
+        e.target.value = '';
+
+        if (item) {
+          newItemInCart(item, value.substr(0, index - 1));
+          
+          if (newWindow) {
+            newWindow.reload();
+          }
+
+          if (!show) {
+            handleNewBrowser();
+          }
+        }
+      }, 500);
     });
 
     document.querySelector('#register').addEventListener('click', (e) => {
