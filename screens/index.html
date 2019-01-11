@@ -88,16 +88,16 @@
         height: 500,
       });
       newWindow.loadFile(`${__dirname}/cart.html`);
+      newWindow.webContents.openDevTools();
       newWindow.on('closed', function () {
         newWindow = null;
       });
       show = true;
     }
 
-    const newItemInCart = async (item, value) => {
+    const newItemInCart = (item, value) => {
       let dbFile = path.resolve(__dirname, '../db.json');
       const dbJs = new loki(dbFile);
-      db.save();
       const data_cart = read(path.resolve(__dirname, '../db.json'));
       dbJs.loadJSON(data_cart);
       let cart = dbJs.getCollection('cart');
@@ -106,20 +106,18 @@
       }
 
       if (count_cart === 0) {
-        for (x = 0; x < cart.data.length; x++) {
-          if (x !== cart.data.length) {
-            cart.data.splice(x, 1);
-          }
-        }
+        cart.removeDataOnly();
         count_cart = 1;
       }
       
-      await cart.insert({
+      cart.insert({
         value,
         name: item.name,
         id: item.$loki,
       });
-      await dbJs.save();
+      dbJs.save();
+      console.log(db);
+      console.log(dbJs);
     }
 
     window.vue = require('vue');

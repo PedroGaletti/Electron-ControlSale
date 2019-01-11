@@ -88,7 +88,10 @@
       },
       mounted: function() {
         this.products = cart.data;
-        this.products.map(item => this.value += Number(item.value));
+        this.products.filter(item => {
+          this.value += Number(item.value)
+        });
+        this.value = String(this.value).substr(3, 1) === '.' ? Number(String(this.value).substr(0,6)) : this.value;
       },
       methods: {
         removeProductCart: function(product) {
