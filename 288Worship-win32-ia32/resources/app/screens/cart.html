@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>288 Worship</title>
+    <meta charset="utf-8"/>
+    <link href="../css/photon.css" rel="stylesheet"> 
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="window" id="table-estoque">
+      <div class="center-horizontal hundred-margin">
+        <image src="../images/Logo-AmareloEpreto.png" class="image center" />
+        <table class="table-striped">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Valor</th>
+              <th>Cod. Produto</th>
+              <th>Remover</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="product in products">
+              <td>{{ product.name }}</td>
+              <td>{{ product.value }}</td>
+              <td>{{ product.id }}</td>
+              <td>
+                <button
+                  type="button"
+                  class="btn btn-form btn-primary"
+                  @click="removeProductCart(product)"
+                >
+                  Remover
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="form-group pricingDiv">
+        <label class="pricingLabel">
+          Valor total da compra: R$ {{ value }}
+        </label>
+      </div>
+      <footer class="toolbar toolbar-footer footer">
+        <div class="toolbar-actions">
+          <button
+            class="btn btn-default"
+            type="button"
+            @click="finishCart(true)"
+            id="buttonCancel"
+          >
+            Cancelar Compra (Esc)
+          </button>
+      
+          <button
+            type="button"
+            @click="finishCart(false)"
+            class="btn btn-primary pull-right"
+            id="buttonFinalizar"
+          >
+            Finalizar Compra (Enter)
+          </button>
+        </div>
+      </footer>
+    </div>
+  </body>
+  <script>
+    const read = require('read-file-utf8')
+    const loki = require('lokijs');
+    const path = require('path');
+    let dbFile = path.resolve(__dirname, '../db.json');
+    const db = new loki(dbFile);
+    const data = read(path.resolve(__dirname, '../db.json'));
+    db.loadJSON(data);
+    const cart = db.getCollection('cart');
+    const sales = db.getCollection('sales');
+    const products = db.getCollection('products');
+
+    window.vue = require('vue');
+    new Vue({
+      el: '#table-estoque',
+      data: {
+        products: [],
+        value: 0.00,
+      },
+      mounted: function() {
+        this.products = cart.data;
+        this.products.map(item => this.value += Number(item.value));
+      },
+      methods: {
+        removeProductCart: function(product) {
+          cart.remove(product);
+          db.save();
+        },
+        finishCart: function(param) {
+          if (!param && cart.data.length) {
+            let data = [];
+
+            cart.data.map(item => {
+              products.data.map(product => {
+                if (item.id === product.$loki) {
+                  if (!product.combo) product.qtdeProduct -= 1;
+                  String(product.qtdeProduct);
+                  return data.push(product);
+                }
+              });
+            });
+
+            data.map(item => {
+              if (!item.combo) return products.update(item);
+              if (item.combo) {
+                item.products.map(product => {
+                  return products.data.map(product_data => {
+                    if (product.$loki === product_data.$loki) {
+                      product.qtdeProduct -= 1;
+                      String(product.qtdeProduct);
+                      return products.update(product);
+                    }
+                  })
+                });
+              }
+
+              if (item.combo) return products.update(item);
+            });
+
+            sales.insert({
+              products_sales: cart.data,
+              qtdeProducts: products.data,
+              date: new Date(),
+            });
+          }
+
+          db.removeCollection('cart');
+          db.save();
+          this.products = [];
+          this.value = 0.00;
+        },
+      },
+    });
+
+
+    document.addEventListener('keypress', (e) => {
+      if(e.which == 13) document.querySelector('#buttonFinalizar').click();
+    }, false);
+
+    document.addEventListener('keyup', (e) => {
+      if(e.which == 27) document.querySelector('#buttonCancel').click();
+    }, false);
+
+  </script>
+</html>

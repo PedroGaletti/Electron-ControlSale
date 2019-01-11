@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>288 Worship</title>
+    <meta charset="utf-8"/>
+    <link href="../css/photon.css" rel="stylesheet"> 
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdn.jsdelivr.net/jsbarcode/3.6.0/JsBarcode.all.min.js"></script>
+  </head>
+  <body>
+    <div class="window">
+      <header class="toolbar toolbar-header">
+        <div class="toolbar-actions">
+          <button id="home" class="btn btn-large btn-default">
+            <span class="icon icon-home"></span>
+          </button>
+          <button id="register" class="btn btn-large btn-primary">
+            Cadastrar
+          </button>
+          <button id="edit" class="btn btn-large btn-primary">
+            Editar
+          </button>
+          <button id="refresh" class="btn btn-large btn-primary">
+            Estoque
+          </button>
+        </div>
+      </header>
+      <div class="center-horizontal hundred-margin">
+        <image src="../images/Logo-AmareloEpreto.png" class="image center" />
+        <input autofocus id="input" placeholder="value" />
+        <table id="app" class="table table-striped">
+          <thead>
+            <tr>
+              <th style="text-align: center;" v-for="product in products">
+                {{product.name}}
+              </th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+  <script>
+    let newWindow;
+    let show = false;
+    const read = require('read-file-utf8')
+    const loki = require('lokijs');
+    const path = require('path');
+    let dbFile = path.resolve(__dirname, '../db.json');
+    const db = new loki(dbFile);
+    db.save();
+    const data = read(path.resolve(__dirname, '../db.json'));
+    db.loadJSON(data);
+
+    let cart_client = [];
+    let products_data;
+    let users = db.getCollection('users');
+    if (!users) {
+      users = db.addCollection('users');
+      db.save();
+    } else {
+      users = db.getCollection('users')
+      db.save();
+    }
+
+    if (!users.data[0] && users.data.length != 1) {
+      users.insert({
+        user: '288Worship',
+        password: '288Worshipbanc2019',
+        logged: false,
+      });
+      db.save();
+    }
+
+    const products = db.getCollection('products');
+    const isLogged = users.data[0] && users.data[0].logged;
+
+    const handleNewBrowser = () => {
+      const electron = require('electron');
+      const BrowserWindow = electron.remote.BrowserWindow;
+      newWindow = new BrowserWindow({
+        width: 500,
+        height: 500,
+      });
+      newWindow.loadFile(`${__dirname}/cart.html`);
+      newWindow.on('closed', function () {
+        newWindow = null;
+      });
+      show = true;
+    }
+
+    const newItemInCart = (item, value) => {
+      let dbFile = path.resolve(__dirname, '../db.json');
+      const dbJs = new loki(dbFile);
+      db.save();
+      const data_cart = read(path.resolve(__dirname, '../db.json'));
+      dbJs.loadJSON(data_cart);
+      let cart = dbJs.getCollection('cart');
+      if (cart === null) {
+        cart = dbJs.addCollection('cart');
+      }
+      
+      cart.insert({
+        value,
+        name: item.name,
+        id: item.$loki,
+      });
+      dbJs.save();
+    }
+
+    window.vue = require('vue');
+    new Vue({
+      el: '#app',
+      data: {
+        products: [],
+      },
+      mounted: function() {
+        this.products = products.data.filter(item => item.qtdeProduct > 0 || item.qtdeProduct == '');
+        products_data = this.products;
+        for (i = 0; i < 6; i++) {
+          document.getElementsByTagName(`tbody`)[0].innerHTML += `<tr id="tr${i}"></tr>`;
+        }
+        for(j = 0; j < this.products.length; j++) {
+          document.querySelector('#tr0').innerHTML += `
+            <td>
+              <div class="tr_body">
+                <span> Valor Crachá </span>
+                <svg
+                  id="svg${j}_${i}"
+                  jsbarcode-value="${this.products[j].value_cracha}/${this.products[j].$loki}"
+                  jsbarcode-displayValue="true"
+                  jsbarcode-height="50"
+                />
+              </div>
+            </td>`;
+          document.querySelector('#tr1').innerHTML += `
+            <td>
+              <div class="tr_body">
+                <span> Valor Dinheiro </span>
+                <svg
+                  id="svg${j + 1}_${i + 1}"
+                  jsbarcode-value="${this.products[j].value_money}/${this.products[j].$loki}"
+                  jsbarcode-displayValue="true"
+                  jsbarcode-height="50"
+                />
+              </div>
+            </td>`;
+          document.querySelector('#tr2').innerHTML += `
+            <td>
+              <div class="tr_body">
+                <span> Valor Cartão </span>
+                <svg
+                  id="svg${j + 2}_${i + 2}"
+                  jsbarcode-value="${this.products[j].value_card}/${this.products[j].$loki}"
+                  jsbarcode-displayValue="true"
+                  jsbarcode-height="50"
+                />
+              </div>
+            </td>`;
+          document.querySelector('#tr3').innerHTML += `
+            <td>
+              <div class="tr_body">
+                <span> Valor Crachá Promoção </span>
+                <svg
+                  id="svg${j + 3}_${i + 3}"
+                  jsbarcode-value="${this.products[j].value_cracha_promo}/${this.products[j].$loki}"
+                  jsbarcode-displayValue="true"
+                  jsbarcode-height="50"
+                />
+              </div>
+            </td>`;
+          document.querySelector('#tr4').innerHTML += `
+            <td>
+              <div class="tr_body">
+                <span> Valor Dinheiro Promoção </span>
+                <svg
+                  id="svg${j + 4}_${i + 4}"
+                  jsbarcode-value="${this.products[j].value_money_promo}/${this.products[j].$loki}"
+                  jsbarcode-displayValue="true"
+                  jsbarcode-height="50"
+                />
+              </div>
+            </td>`;
+          document.querySelector('#tr5').innerHTML += `
+            <td>
+              <div class="tr_body">
+                <span> Valor Cartão Promoção </span>
+                <svg
+                  id="svg${j + 5}_${i + 5}"
+                  jsbarcode-value="${this.products[j].value_card_promo}/${this.products[j].$loki}"
+                  jsbarcode-displayValue="true"
+                  jsbarcode-height="50"
+                />
+              </div>
+            </td>`;
+          JsBarcode(`#svg${j}_${i}`).init();
+          JsBarcode(`#svg${j + 1}_${i + 1}`).init();
+          JsBarcode(`#svg${j + 2}_${i + 2}`).init();
+          JsBarcode(`#svg${j + 3}_${i + 3}`).init();
+          JsBarcode(`#svg${j + 4}_${i + 4}`).init();
+          JsBarcode(`#svg${j + 5}_${i + 5}`).init();
+        }
+      },
+    });
+    
+
+    document.querySelector('#input').addEventListener('paste', (e) => {
+      setTimeout(() => {
+        const value = e.target.value;
+        const index = (value.indexOf('/') + 1);
+        const id = value.substr(index);
+        const item = products_data.find(item => item.$loki == id);
+        e.target.value = '';
+
+        if (item) {
+          newItemInCart(item, value.substr(0, index - 1));
+
+          if (newWindow) {
+            newWindow.reload();
+          }
+
+          if (!show) {
+            handleNewBrowser();
+          }
+        }
+      }, 500);
+    });
+
+    document.querySelector('#input').addEventListener('keyup', (e) => {
+      setTimeout(() => {
+        const value = e.target.value;
+        const index = (value.indexOf('/') + 1);
+        const id = value.substr(index);
+        const item = products_data.find(item => item.$loki == id);
+        e.target.value = '';
+
+        if (item) {
+          newItemInCart(item, value.substr(0, index - 1));
+          
+          if (newWindow) {
+            newWindow.reload();
+          }
+
+          if (!show) {
+            handleNewBrowser();
+          }
+        }
+      }, 500);
+    });
+
+    document.querySelector('#input').addEventListener('keypress', (e) => {
+      setTimeout(() => {
+        const value = e.target.value;
+        const index = (value.indexOf('/') + 1);
+        const id = value.substr(index);
+        const item = products_data.find(item => item.$loki == id);
+        e.target.value = '';
+
+        if (item) {
+          newItemInCart(item, value.substr(0, index - 1));
+          
+          if (newWindow) {
+            newWindow.reload();
+          }
+
+          if (!show) {
+            handleNewBrowser();
+          }
+        }
+      }, 500);
+    });
+
+    document.querySelector('#input').addEventListener('focus', (e) => {
+      setTimeout(() => {
+        const value = e.target.value;
+        const index = (value.indexOf('/') + 1);
+        const id = value.substr(index);
+        const item = products_data.find(item => item.$loki == id);
+        e.target.value = '';
+
+        if (item) {
+          newItemInCart(item, value.substr(0, index - 1));
+          
+          if (newWindow) {
+            newWindow.reload();
+          }
+
+          if (!show) {
+            handleNewBrowser();
+          }
+        }
+      }, 500);
+    });
+
+    document.querySelector('#register').addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location = isLogged
+        ? '../screens/RegisterScreen/register.html'
+        : `../screens/authScreen/auth.html?screen=RegisterScreen/register.html`;
+    });
+
+    document.querySelector('#edit').addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location = isLogged
+        ? '../screens/ListProductScreen/listProduct.html'
+        : '../screens/authScreen/auth.html?screen=ListProductScreen/listProduct.html';
+    });
+
+    document.querySelector('#refresh').addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location = isLogged
+        ? '../screens/RefreshScreen/refresh.html'
+        : '../screens/authScreen/auth.html?screen=RefreshScreen/refresh.html';
+    });
+    document.querySelector('#home').addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location = `../screens/index.html`;
+    });
+  </script>
+</html>

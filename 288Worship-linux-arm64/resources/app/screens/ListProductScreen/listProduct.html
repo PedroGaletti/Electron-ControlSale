@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <meta charset="UTF-8">
+      <title>288 Worship</title>
+      <meta charset="utf-8"/>
+      <link href="../../css/photon.css" rel="stylesheet"> 
+      <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+      <script>require('./listProduct.js')</script>
+    </head>
+    <body>
+      <div class="window">
+        <header class="toolbar toolbar-header">
+          <div class="toolbar-actions">
+            <button id="home" class="btn btn-large btn-default">
+              <span class="icon icon-home"></span>
+            </button>
+            <button id="register" class="btn btn-large btn-primary">
+              Cadastrar
+            </button>
+            <button id="edit" class="btn btn-large btn-primary">
+              Editar
+            </button>
+            <button id="refresh" class="btn btn-large btn-primary">
+              Estoque
+            </button>
+          </div>
+        </header>
+        <div class="center-horizontal hundred-margin">
+          <image src="../../images/Logo-AmareloEpreto.png" class="image center" />
+          <div class="center-small" id="list-body">
+            <div class="content-buttons" v-for="product in products">
+              <div class="edit-button">
+                <a @click="onSelectProduct(product)" class="nav-group-item active">
+                  {{ product.name }}
+                </a>
+              </div>
+              <div class="delete-button">
+                <span @click="onRemoveProduct(product)" class="icon icon-home icon-trash"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </body>
+    <script>
+      const read = require('read-file-utf8')
+      const loki = require('lokijs');
+      const path = require('path');
+      let dbFile = path.resolve(__dirname, '../../db.json');
+      const db = new loki(dbFile);
+      const data = read(path.resolve(__dirname, '../../db.json'));
+      db.loadJSON(data);
+      const products = db.getCollection('products');
+      db.removeCollection('product');
+      window.vue = require('vue');
+      new Vue({
+        el: '#list-body',
+        data: {
+          products: [],
+          show: true,
+        },
+        mounted: function() {
+          this.products = products.data;
+        },
+        methods: {
+          onSelectProduct: function(param) {
+            const product = db.addCollection('product');
+            product.insert({
+              id: param.$loki,
+              meta: param.meta,
+              name: param.name,
+              products: param.products,
+              qtdeProduct: param.qtdeProduct,
+              value_card: param.value_card,
+              value_card_promo: param.value_card_promo,
+              value_cracha: param.value_cracha,
+              value_cracha_promo: param.value_cracha_promo,
+              value_money: param.value_money,
+              value_money_promo: param.value_money_promo,
+              ...param,
+              $loki: undefined,
+            });
+            db.save();
+            window.location = '../EditScreen/edit.html';
+          },
+          onRemoveProduct: function(param) {
+            if (confirm('Tem certeza que deseja excluir o produto do banco?')) {
+              let data = [];
+              products.data.map(product => {
+                product.products.map((item, index) => {
+                  if (item.$loki == param.$loki) {
+                    product.products.splice(index, 1);
+                    products.update(product);
+                    data.push({
+                      name: product.name,
+                    });
+                  }
+                });
+              });
+              
+              if (!data.length) {
+                products.remove(param);
+                return db.save();
+              }
+
+              if (data.length) {
+                if (confirm(`O Produto a ser excluido pertence aos seguintes combos: \n ${data.map(item => item.name)} \n Ele será removido dos combos ok?`)) {
+                  products.remove(param);
+                  return db.save();
+                }
+              }
+            }
+          },
+        },
+      });
+    </script>
+  </html>

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>288 Worship</title>
+    <link href="../../css/photon.css" rel="stylesheet"> 
+    <script>require('./register.js')</script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://rawgit.com/vuejs-tips/v-money/master/dist/v-money.js"></script>
+  </head>
+  <body>
+    <header class="toolbar toolbar-header">
+      <div class="toolbar-actions">
+        <button id="home" class="btn btn-large btn-default">
+          <span class="icon icon-home"></span>
+        </button>
+        <button id="register" class="btn btn-large btn-primary">
+          Cadastrar
+        </button>
+        <button id="edit" class="btn btn-large btn-primary">
+          Editar
+        </button>
+        <button id="refresh" class="btn btn-large btn-primary">
+          Estoque
+        </button>
+      </div>
+    </header>
+    <div class="center" id="body">
+      <div class="form-center noTop">
+        <div class="center">
+          <div class="radio">
+            <label class="margin-right">
+              <input id="product_radio" type="radio" name="radio" checked>
+              Produto
+            </label>
+            <label>
+              <input id="combo_radio" type="radio" name="radio">
+              Combo
+            </label>
+          </div>
+        </div>
+        <form id="form-body">
+          <div id="form-combo">
+            <div class="form-group">
+              <label>Produtos Cadastrados</label>
+              <ul id="products">
+                <li @click="changeProduct(product)" class="plus-li" v-for="product in products">
+                  {{product.name}}
+                  <span class="btnIcon icon icon-plus"></span>
+                </li>
+              </ul>
+            </div>
+            <div class="form-group">
+              <label>Produtos do Combo</label>
+              <ul id="product_combos">
+                <li @click="changeProduct(product)" class="minus-li" v-for="product in products_combo">
+                  {{product.name}}
+                  <span class="btnIcon icon icon-minus"></span>
+                </li>
+              </ul>
+            </div>
+            <div class="form-group">
+              <label>Nome Combo</label>
+              <input
+                id="name"
+                type="text"
+                class="form-control"
+                placeholder="Nome Combo"
+              />
+            </div>
+            <div class="form-group">
+              <label>Valor Combo Crédito/Débito</label>
+              <money
+                id="value_card"
+                class="form-control"
+                placeholder="Valor Combo Crédito/Débito"
+                v-bind="money"
+              />
+            </div>
+            <div class="form-group">
+              <label>Valor Combo Dinheiro</label>
+              <money
+                id="value_money"
+                class="form-control"
+                placeholder="Valor Combo Dinheiro"
+                v-bind="money"
+              />
+            </div>
+            <div class="form-group">
+              <label>Valor Combo Crachá</label>
+              <money
+                id="value_cracha"
+                class="form-control"
+                placeholder="Valor Combo Crachá"
+                v-bind="money"
+              />
+            </div>
+            <div class="form-group">
+              <label>Valor Combo Crédito/Débito Promocional</label>
+              <money
+                id="value_card_promo"
+                class="form-control"
+                placeholder="Valor Combo Crédito/Débito Promocional"
+                v-bind="money"
+              />
+            </div>
+            <div class="form-group">
+              <label>Valor Combo Dinheiro Promocional</label>
+              <money
+                id="value_money_promo"
+                class="form-control"
+                placeholder="Valor Combo Dinheiro Promocional"
+                v-bind="money"
+              />
+            </div>
+            <div class="form-group">
+              <label>Valor Combo Crachá Promocional</label>
+              <money
+                id="value_cracha_promo"
+                class="form-control"
+                placeholder="Valor Combo Crachá Promocional"
+                v-bind="money"
+              />
+            </div>
+            <div class="form-actions center">
+              <button
+                type="button"
+                class="btn btn-form btn-primary"
+                @click="clientStore"
+              >
+                Salvar
+              </button>
+            </div>
+          </div>
+
+          <div id="form-product">
+            <div class="form-group">
+              <label>Nome Produto</label>
+              <input
+                id="name_product"
+                type="user"
+                class="form-control"
+                placeholder="Nome Produto"
+              />
+            </div>
+            <div class="form-group">
+              <label>Valor Produto Crédito/Débito</label>
+              <money
+                id="value_card_product"
+                class="form-control"
+                placeholder="Valor Produto Crédito/Débito"
+                v-bind="money"
+              />
+            </div>
+            <div class="form-group">
+              <label>Valor Produto Dinheiro</label>
+              <money
+                id="value_money_product"
+                class="form-control"
+                placeholder="Valor Produto Dinheiro"
+                v-bind="money"
+              />
+            </div>
+            <div class="form-group">
+              <label>Valor Produto Crachá</label>
+              <money
+                id="value_cracha_product"
+                class="form-control"
+                placeholder="Valor Produto Crachá"
+                v-bind="money"
+              />
+            </div>
+            <div class="form-group">
+              <label>Valor Produto Crédito/Débito Promocional</label>
+              <money
+                id="value_card_promo_product"
+                class="form-control"
+                placeholder="Valor Produto Crédito/Débito Promocional"
+                v-bind="money"
+              />
+            </div>
+            <div class="form-group">
+              <label>Valor Produto Dinheiro Promocional</label>
+              <money
+                id="value_money_promo_product"
+                class="form-control"
+                placeholder="Valor Produto Dinheiro Promocional"
+                v-bind="money"
+              />
+            </div>
+            <div class="form-group">
+              <label>Valor Produto Crachá Promocional</label>
+              <money
+                id="value_cracha_promo_product"
+                class="form-control"
+                placeholder="Valor Produto Crachá Promocional"
+                v-bind="money"
+              />
+            </div>
+            <div class="form-group">
+              <label>Qtde. Produto</label>
+              <input
+                type="number"
+                id="qtdeProduct_product"
+                class="form-control"
+                placeholder="Qtde. Produto"
+              />
+            </div>
+            <div class="form-actions center">
+              <button
+                type="button"
+                class="btn btn-form btn-primary"
+                @click="clientStore"
+              >
+                Salvar
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+  <script>
+    const read = require('read-file-utf8')
+    const loki = require('lokijs');
+    const path = require('path');
+    let dbFile = path.resolve(__dirname, '../../db.json');
+    const db = new loki(dbFile);
+    const data = read(path.resolve(__dirname, '../../db.json'));
+    db.loadJSON(data);
+    var products;
+
+    if (!products) {
+      products = db.addCollection('products');
+    } else {
+      products = db.getCollection('products');
+    }
+    var show = true;
+
+    window.vue = require('vue');
+    new Vue({
+      el: '#form-body',
+      data: {
+        products: [],
+        products_combo: [],
+        money: {
+          decimal: ',',
+          thousands: '.',
+          prefix: 'R$',
+          suffix: '',
+          precision: 2,
+          masked: false,
+        },
+      },
+      mounted: function() {
+        this.products = products.data.filter(item => !item.combo && item.qtdeProduct > 0);
+        this.products_combo = [];
+      },
+      methods: {
+        clientStore: function() {
+          const name  = document.querySelector('#name').value
+            ? document.querySelector('#name').value
+            : document.querySelector('#name_product').value;
+          const qtdeProduct = document.querySelector('#qtdeProduct_product').value;
+          const value_card = document.querySelector('#value_card').value
+            ? document.querySelector('#value_card').value
+            : document.querySelector('#value_card_product').value;
+          const value_money = document.querySelector('#value_money').value
+            ? document.querySelector('#value_money').value
+            : document.querySelector('#value_money_product').value;
+          const value_cracha = document.querySelector('#value_cracha').value
+            ? document.querySelector('#value_cracha').value
+            : document.querySelector('#value_cracha_product').value;
+          const value_card_promo = document.querySelector('#value_card_promo').value
+            ? document.querySelector('#value_card_promo').value
+            : document.querySelector('#value_card_promo_product').value;
+          const value_money_promo = document.querySelector('#value_money_promo').value
+            ? document.querySelector('#value_money_promo').value
+            : document.querySelector('#value_money_promo_product').value;
+          const value_cracha_promo = document.querySelector('#value_cracha_promo').value
+            ? document.querySelector('#value_cracha_promo').value
+            : document.querySelector('#value_cracha_promo_product').value;
+          
+            let data = {
+            name,
+            products: this.products_combo,
+            qtdeProduct,
+            value_card: value_card.substr(2).replace(",", "."),
+            value_money: value_money.substr(2).replace(",", "."),
+            value_cracha: value_cracha.substr(2).replace(",", "."),
+            value_card_promo: value_card_promo.substr(2).replace(",", "."),
+            value_money_promo: value_money_promo.substr(2).replace(",", "."),
+            value_cracha_promo: value_cracha_promo.substr(2).replace(",", "."),
+            combo: !!this.products_combo.length || false,
+          };
+
+          if (name === '' || (show && qtdeProduct === '') || value_card === ''
+            || value_money === '' || value_cracha === '' || value_card_promo === ''
+            || value_money_promo === '' || value_cracha_promo === '') {
+              return alert('É necessário o preenchimento de todos os campos');
+            }
+
+          if (!show && !this.products_combo.length) {
+            return alert('Ao Cadastrar um combo, é preciso ter produtos no combo.');
+          }
+
+          if (!this.products_combo.length > 1) {
+            alert('Um combo não pode ter somente um produto.');
+          }
+          
+          products.insert(data);
+          db.save();
+          show = true;
+          document.querySelector('#form-body').reset();
+          document.querySelector('#product_combos').innerHTML = ``;
+          alert('Cadastrado com sucesso');
+          window.location = '../index.html';
+        },
+        changeProduct: function(product) {
+          const currentProduct = this.products_combo.filter(item => item.$loki === product.$loki);
+
+          if (currentProduct.length) {
+            this.products.push(product);
+            this.products_combo = this.products_combo.filter(item => item.$loki !== product.$loki);
+            return this.products_combo;
+          }
+          if (!currentProduct.length) {
+            this.products = this.products.filter(item => item.$loki !== product.$loki);
+            return this.products_combo.push(product);
+          }
+        },
+      },
+    });
+
+    document.querySelector('#product_radio').addEventListener('click', (e) => {
+      var minus = document.getElementsByClassName("minus-li");
+      for (var k = 0; k < minus.length; k++) {
+        document.querySelector('#products').appendChild(minus[k]);
+        minus[k].lastChild.classList.remove('icon-minus');
+        minus[k].lastChild.classList.add('icon-plus');
+        minus[k].classList.add('plus-li');
+      }
+      show = true;
+      this.products_combo = [];
+      document.querySelector('#form-body').reset();
+      document.querySelector('#form-product').style.display = 'block';
+      document.querySelector('#form-combo').style.display = 'none';
+    });
+
+    document.querySelector('#combo_radio').addEventListener('click', (e) => {
+      var minus = document.getElementsByClassName("plus-li");
+      for (var k = 0; k < minus.length; k++) {
+        minus[k].classList.remove('minus-li');
+      }
+      show = false;
+      document.querySelector('#form-combo').style.display = 'block';
+      document.querySelector('#form-product').style.display = 'none';
+      document.querySelector('#form-body').reset();
+      this.products_combo = [];
+    })
+  </script>
+</html>
