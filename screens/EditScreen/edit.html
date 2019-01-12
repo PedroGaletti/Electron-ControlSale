@@ -29,17 +29,17 @@
         </header>
         <div class="tab-group">
           <div id="tab_formulario" class="tab-item active">
-            <span  class="icon icon-cancel icon-close-tab"></span>
+            <span id="span_tab_formulario" class="icon icon-cancel icon-close-tab"></span>
             Formulário
           </div>
           <div id="tab_stoque" class="tab-item">
-            <span class="icon icon-cancel icon-close-tab"></span>
+            <span id="span_tab_stoque" class="icon icon-cancel icon-close-tab"></span>
             Estoque
           </div>
         </div>
-        <div class="center">
+        <div class="center" id="body-div">
           <div id="form" class="form-center topEdit">
-            <form id="form-body">
+            <form>
               <div v-if="currentProduct[0].combo" id="form-combo">
                 <div class="form-group">
                   <label>Produtos Cadastrados</label>
@@ -216,7 +216,18 @@
                     id="qtdeProduct_product"
                     class="form-control"
                     placeholder="Qtde. Produto"
-                    v-model="currentProduct[0].qtdeProduct"
+                  />
+                </div>
+                <div class="form-group">
+                  <label>Qtde. Produto Atual</label>
+                  <input
+                    id="qtdeProduct_see"
+                    class="form-control"
+                    placeholder="Qtde. Produto Atual"
+                    v-model="original_product.qtdeProduct"
+                    disabled
+                    style="background: #ddd"
+                    class="disabled-input"
                   />
                 </div>
                 <div class="form-actions center">
@@ -232,8 +243,27 @@
             </form>
           </div>
 
-          <div id="stoque">
-            
+          <div class="center-horizontal hundred-margin" id="stoque">
+            <table class="table-striped" id="table-estoque">
+              <thead>
+                <tr>
+                  <th>Estoque Origem</th>
+                  <th>Ultimo estoque antes da alteração</th>
+                  <th>Qtd. Alterada</th>
+                  <th>Estoque após alteração</th>
+                  <th>Estoque Atual</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="stoque in stoques">
+                  <td><a>{{ stoque.first_qtdeProduct }}</a></td>
+                  <td><a>{{ stoque.medium_qtdeProduct }}</a></td>
+                  <td><a>{{ stoque.stoqueAlter }}</a></td>
+                  <td><a>{{ stoque.last_qtdeProduct }}</a></td>
+                  <td><a>{{ original_product.qtdeProduct }}</a></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
 
         </div>
@@ -253,11 +283,12 @@
       
       window.vue = require('vue');
       new Vue({
-        el: '#form-body',
+        el: '#body-div',
         data: {
           currentProduct: [],
           products: [],
           original_product: {},
+          stoques: [],
           money: {
             decimal: ',',
             thousands: '.',
@@ -286,12 +317,14 @@
 
           products_combo.filter(Boolean);
           this.products = products_combo.filter(item => !item.combo && item.qtdeProduct > 0);
+          this.stoques = stoque_history.data.filter(item => item.id_product == this.original_product.id);
         },
         methods: {
           clientStore: async function() {
             const id_loki = this.currentProduct[0].id;
             delete this.currentProduct[0].id;
-            delete this.currentProduct[0].$loki
+            delete this.currentProduct[0].$loki;
+            delete this.currentProduct[0].qtdeProduct;
             const name  = document.querySelector('#name')
               ? document.querySelector('#name').value
               : document.querySelector('#name_product').value;
@@ -315,17 +348,27 @@
               ? document.querySelector('#value_cracha_promo').value
               : document.querySelector('#value_cracha_promo_product').value;
             const sum = () => {
-              if (this.currentProduct[0].qtdeProduct != qtdeProduct) {
+              if (this.original_product.qtdeProduct != qtdeProduct) {
                 if (qtdeProduct.substr(0) === '-') {
-                  return Number(this.currentProduct[0].qtdeProduct) - Number(qtdeProduct);
+                  return Number(this.original_product.qtdeProduct) - Number(qtdeProduct);
                 }
 
-                return Number(this.currentProduct[0].qtdeProduct) + Number(qtdeProduct);
+                return Number(this.original_product.qtdeProduct) + Number(qtdeProduct);
               }
 
-              return this.currentProduct[0].qtdeProduct;
+              return this.original_product.qtdeProduct;
             }
-            
+
+            if (this.currentProduct[0].products.length == 1) {
+              return alert('Um combo não pode ter somente um produto.');
+            }
+
+            if (name === '' || (!this.currentProduct[0].combo && qtdeProduct === '') || value_card === ''
+              || value_money === '' || value_cracha === '' || value_card_promo === ''
+              || value_money_promo === '' || value_cracha_promo === '') {
+              return alert('É necessário o preenchimento de todos os campos');
+            }
+
             let data = {
               $loki: id_loki,
               name,
@@ -339,21 +382,12 @@
               ...this.currentProduct[0],
             };
 
-            if (this.currentProduct[0].products.length == 1) {
-              return alert('Um combo não pode ter somente um produto.');
-            }
-
-            if (name === '' || (!this.currentProduct[0].combo && qtdeProduct === '') || value_card === ''
-              || value_money === '' || value_cracha === '' || value_card_promo === ''
-              || value_money_promo === '' || value_cracha_promo === '') {
-              return alert('É necessário o preenchimento de todos os campos');
-            }
-
             await stoque_history.insert({
               id_product: id_loki,
               first_qtdeProduct: this.currentProduct[0].first_qtdeProduct,
               medium_qtdeProduct: this.original_product.qtdeProduct,
-              last_qtdeProduct: qtdeProduct,
+              last_qtdeProduct: sum(),
+              stoqueAlter: qtdeProduct,
             });
 
             await products.data.map(product => {
@@ -365,8 +399,10 @@
               });
             });
             await products.update(data);
+            console.log(data);
+            console.log(stoque_history);
             db.save();
-            window.location = '../index.html';
+            window.location = '../ListProductScreen/listProduct.html';
             alert('editado com sucesso');
           },
           changeProduct: function(product) {
@@ -388,11 +424,15 @@
       document.querySelector('#tab_formulario').addEventListener('click', (e) => {
         document.querySelector('#form').style.display = 'block';
         document.querySelector('#stoque').style.display = 'none';
+        document.querySelector('#tab_formulario').classList.add('active');
+        document.querySelector('#tab_stoque').classList.remove('active');
       });
 
       document.querySelector('#tab_stoque').addEventListener('click', (e) => {
         document.querySelector('#form').style.display = 'none';
         document.querySelector('#stoque').style.display = 'block';
+        document.querySelector('#tab_formulario').classList.remove('active');
+        document.querySelector('#tab_stoque').classList.add('active');
       });
 
       document.querySelector('#edit').addEventListener('click', (e) => {
