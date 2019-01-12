@@ -247,20 +247,20 @@
             <table class="table-striped" id="table-estoque">
               <thead>
                 <tr>
-                  <th>Estoque Origem</th>
-                  <th>Ultimo estoque antes da alteração</th>
-                  <th>Qtd. Alterada</th>
-                  <th>Estoque após alteração</th>
-                  <th>Estoque Atual</th>
+                  <th style="text-align: center;">Estoque Origem</th>
+                  <th style="text-align: center;">Ultimo estoque antes da alteração</th>
+                  <th style="text-align: center;">Qtd. Alterada</th>
+                  <th style="text-align: center;">Estoque após alteração</th>
+                  <th style="text-align: center;">Estoque Atual</th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="stoque in stoques">
-                  <td><a>{{ stoque.first_qtdeProduct }}</a></td>
-                  <td><a>{{ stoque.medium_qtdeProduct }}</a></td>
-                  <td><a>{{ stoque.stoqueAlter }}</a></td>
-                  <td><a>{{ stoque.last_qtdeProduct }}</a></td>
-                  <td><a>{{ original_product.qtdeProduct }}</a></td>
+                  <td style="text-align: center;"><a>{{ stoque.first_qtdeProduct }}</a></td>
+                  <td style="text-align: center;"><a>{{ stoque.medium_qtdeProduct }}</a></td>
+                  <td style="text-align: center;"><a>{{ stoque.stoqueAlter }}</a></td>
+                  <td style="text-align: center;"><a>{{ stoque.last_qtdeProduct }}</a></td>
+                  <td style="text-align: center;"><a>{{ original_product.qtdeProduct }}</a></td>
                 </tr>
               </tbody>
             </table>
