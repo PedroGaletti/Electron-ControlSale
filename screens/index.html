@@ -127,7 +127,8 @@
         products: [],
       },
       mounted: function() {
-        this.products = products.data.filter(item => item.qtdeProduct > 0 || item.qtdeProduct == '');
+        this.products = products.data;
+        this.products_filter = products.data.filter(item => !item.qtdeProduct > 0 || item.qtdeProduct == '' && !item.products.length === 1);
         products_data = this.products;
         for (i = 0; i < 6; i++) {
           document.getElementsByTagName(`tbody`)[0].innerHTML += `<tr id="tr${i}"></tr>`;
@@ -137,72 +138,102 @@
             <td>
               <div class="tr_body">
                 <span> Valor Crachá </span>
-                <svg
-                  id="svg${j}_${i}"
-                  jsbarcode-value="${this.products[j].value_cracha}/${this.products[j].$loki}"
-                  jsbarcode-displayValue="true"
-                  jsbarcode-height="50"
-                />
+                ${this.products[j].products.length === 1
+                    ? 'Combo com somente um produto' 
+                    :  this.products[j].qtdeProduct === 0
+                      ? 'Produto sem estoque'
+                      : `<svg
+                        id="svg${j}_${i}"
+                        jsbarcode-value="${this.products[j].value_cracha}/${this.products[j].$loki}"
+                        jsbarcode-displayValue="true"
+                        jsbarcode-height="50"
+                      />`
+                }
               </div>
             </td>`;
           document.querySelector('#tr1').innerHTML += `
             <td>
               <div class="tr_body">
                 <span> Valor Dinheiro </span>
-                <svg
-                  id="svg${j + 1}_${i + 1}"
-                  jsbarcode-value="${this.products[j].value_money}/${this.products[j].$loki}"
-                  jsbarcode-displayValue="true"
-                  jsbarcode-height="50"
-                />
+                ${this.products[j].products.length === 1
+                    ? 'Combo com somente um produto' 
+                    :  this.products[j].qtdeProduct === 0
+                      ? 'Produto sem estoque'
+                      : `<svg
+                          id="svg${j + 1}_${i + 1}"
+                          jsbarcode-value="${this.products[j].value_money}/${this.products[j].$loki}"
+                          jsbarcode-displayValue="true"
+                          jsbarcode-height="50"
+                        />`
+                }
               </div>
             </td>`;
           document.querySelector('#tr2').innerHTML += `
             <td>
               <div class="tr_body">
                 <span> Valor Cartão </span>
-                <svg
-                  id="svg${j + 2}_${i + 2}"
-                  jsbarcode-value="${this.products[j].value_card}/${this.products[j].$loki}"
-                  jsbarcode-displayValue="true"
-                  jsbarcode-height="50"
-                />
+                ${this.products[j].products.length === 1
+                  ? 'Combo com somente um produto' 
+                  :  this.products[j].qtdeProduct === 0
+                    ? 'Produto sem estoque'
+                    : `<svg
+                        id="svg${j + 2}_${i + 2}"
+                        jsbarcode-value="${this.products[j].value_card}/${this.products[j].$loki}"
+                        jsbarcode-displayValue="true"
+                        jsbarcode-height="50"
+                      />`
+                }
               </div>
             </td>`;
           document.querySelector('#tr3').innerHTML += `
             <td>
               <div class="tr_body">
                 <span> Valor Crachá Promoção </span>
-                <svg
-                  id="svg${j + 3}_${i + 3}"
-                  jsbarcode-value="${this.products[j].value_cracha_promo}/${this.products[j].$loki}"
-                  jsbarcode-displayValue="true"
-                  jsbarcode-height="50"
-                />
+                ${this.products[j].products.length === 1
+                  ? 'Combo com somente um produto' 
+                  :  this.products[j].qtdeProduct === 0
+                    ? 'Produto sem estoque'
+                    : `<svg
+                        id="svg${j + 3}_${i + 3}"
+                        jsbarcode-value="${this.products[j].value_cracha_promo}/${this.products[j].$loki}"
+                        jsbarcode-displayValue="true"
+                        jsbarcode-height="50"
+                      />`
+                }
               </div>
             </td>`;
           document.querySelector('#tr4').innerHTML += `
             <td>
               <div class="tr_body">
                 <span> Valor Dinheiro Promoção </span>
-                <svg
-                  id="svg${j + 4}_${i + 4}"
-                  jsbarcode-value="${this.products[j].value_money_promo}/${this.products[j].$loki}"
-                  jsbarcode-displayValue="true"
-                  jsbarcode-height="50"
-                />
+                ${this.products[j].products.length === 1
+                  ? 'Combo com somente um produto' 
+                  :  this.products[j].qtdeProduct === 0
+                    ? 'Produto sem estoque'
+                    : `<svg
+                        id="svg${j + 4}_${i + 4}"
+                        jsbarcode-value="${this.products[j].value_money_promo}/${this.products[j].$loki}"
+                        jsbarcode-displayValue="true"
+                        jsbarcode-height="50"
+                      />`
+                }
               </div>
             </td>`;
           document.querySelector('#tr5').innerHTML += `
             <td>
               <div class="tr_body">
                 <span> Valor Cartão Promoção </span>
-                <svg
-                  id="svg${j + 5}_${i + 5}"
-                  jsbarcode-value="${this.products[j].value_card_promo}/${this.products[j].$loki}"
-                  jsbarcode-displayValue="true"
-                  jsbarcode-height="50"
-                />
+                ${this.products[j].products.length === 1
+                  ? 'Combo com somente um produto' 
+                  :  this.products[j].qtdeProduct === 0
+                    ? 'Produto sem estoque'
+                    : `<svg
+                        id="svg${j + 5}_${i + 5}"
+                        jsbarcode-value="${this.products[j].value_card_promo}/${this.products[j].$loki}"
+                        jsbarcode-displayValue="true"
+                        jsbarcode-height="50"
+                      />`
+                }
               </div>
             </td>`;
           JsBarcode(`#svg${j}_${i}`).init();
