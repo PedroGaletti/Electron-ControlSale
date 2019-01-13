@@ -68,7 +68,18 @@
     const url  = window.location.href === 'file:///Users/pedrogaletti/Pedro/Electron/screens/authScreen/auth.html' ? 'ListProductScreen/listProduct.html' : window.location.href;
     const index = (url.indexOf('=') + 1);
     let screenToGo = url.substr(index);
-    const users = db.getCollection('users');
+    let users;
+    if (users === null) {
+      users = db.addCollection('users');
+      users.insert({
+        user: '288Worship',
+        password: '288Worshipbanc2019',
+        logged: false,
+      });
+      db.save();
+    } else {
+      users = db.getCollection('users')
+    }
     const isLogged = users.data[0].logged;
  
     document.querySelector('#Login')
@@ -91,7 +102,6 @@
           db.save();
           console.log(screenToGo);
           const verifyScreenToGo = screenToGo === 'file:///Users/pedrogaletti/Pedro/Electron/screens/authScreen/auth.html';
-
           window.location = verifyScreenToGo ? '../ListProductScreen/listProduct.html' : `../${screenToGo}`;
           document.querySelector('#form-login').reset();
         } else {

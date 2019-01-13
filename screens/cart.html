@@ -188,7 +188,18 @@
             return alert('produto não pode ser inserido, pois esta inativo. Procure um técnico');
           }
 
-          return newItemInCart(item, value.substr(0, value.length - 2));
+          const verify_product_inside = () => {
+            const a = item.products.map(product => {
+              if (product.qtdeProduct <= 0 && product.combo === false) {
+                return true;
+              }
+            });
+
+            return a.indexOf(true) != -1 ? true : false;
+          }
+
+          return verify_product_inside() ? alert('Produtos do combo esgotados. Procure um técnico') : newItemInCart(item, value.substr(0, value.length - 2));
+
         }
       }, 500);
   });
@@ -206,7 +217,17 @@
           return alert('produto não pode ser inserido, pois esta inativo. Procure um técnico');
         }
 
-        return newItemInCart(item, value.substr(0, value.length - 2));
+        const verify_product_inside = () => {
+          const a = item.products.map(product => {
+            if (product.qtdeProduct <= 0 && product.combo === false) {
+              return true;
+            }
+          });
+
+          return a.indexOf(true) != -1 ? true : false;
+        }
+
+        return verify_product_inside() ? alert('Produtos do combo esgotados. Procure um técnico') : newItemInCart(item, value.substr(0, value.length - 2));
       }
     }, 500);
   });
@@ -224,7 +245,17 @@
           return alert('produto não pode ser inserido, pois esta inativo. Procure um técnico');
         }
 
-        return newItemInCart(item, value.substr(0, value.length - 2));
+        const verify_product_inside = () => {
+          const a = item.products.map(product => {
+            if (product.qtdeProduct <= 0 && product.combo === false) {
+              return true;
+            }
+          });
+
+          return a.indexOf(true) != -1 ? true : false;
+        }
+
+        return verify_product_inside() ? alert('Produtos do combo esgotados. Procure um técnico') : newItemInCart(item, value.substr(0, value.length - 2));
       }
     }, 500);
   });
@@ -243,7 +274,17 @@
           return alert('produto não pode ser inserido, pois esta inativo. Procure um técnico');
         }
 
-        return newItemInCart(item, value.substr(0, value.length - 2));
+        const verify_product_inside = () => {
+          const a = item.products.map(product => {
+            if (product.qtdeProduct <= 0 && product.combo === false) {
+              return true;
+            }
+          });
+
+          return a.indexOf(true) != -1 ? true : false;
+        }
+
+        return verify_product_inside() ? alert('Produtos do combo esgotados. Procure um técnico') : newItemInCart(item, value.substr(0, value.length - 2));
       }
     }, 500);
   });
