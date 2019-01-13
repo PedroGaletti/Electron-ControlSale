@@ -11,6 +11,7 @@
     <div class="window" id="table-estoque">
       <div class="center-horizontal hundred-margin">
         <image src="../images/Logo-AmareloEpreto.png" class="image center" />
+        <input autofocus id="input" placeholder="value" />
         <table class="table-striped">
           <thead>
             <tr>
@@ -74,9 +75,15 @@
     const db = new loki(dbFile);
     const data = read(path.resolve(__dirname, '../db.json'));
     db.loadJSON(data);
-    const cart = db.getCollection('cart');
+    let cart;
+    if (cart === null) {
+      cart = db.addCollection('cart');
+    } else {
+      cart = db.getCollection('cart');
+    }
     const sales = db.getCollection('sales');
     const products = db.getCollection('products');
+    let products_data = [];
 
     window.vue = require('vue');
     new Vue({
@@ -90,7 +97,9 @@
         this.products.filter(item => {
           this.value += Number(item.value)
         });
+        this.products_data = products.data;
         this.value = String(this.value).substr(3, 1) === '.' ? Number(String(this.value).substr(0,6)) : this.value;
+        products_data = this.products_data;
       },
       methods: {
         removeProductCart: function(product) {
@@ -135,7 +144,7 @@
             });
           }
 
-          db.removeCollection('cart');
+          cart.removeDataOnly('cart');
           db.save();
           this.products = [];
           this.value = 0.00;
@@ -143,14 +152,85 @@
       },
     });
 
+    const newItemInCart = (item, value) => {
+      cart.insert({
+        value,
+        name: item.name,
+        id: item.$loki,
+      });
+      db.save();
+    }
+
 
     document.addEventListener('keypress', (e) => {
-      if(e.which == 13) document.querySelector('#buttonFinalizar').click();
+      if(e.which == 13) {
+        document.querySelector('#buttonFinalizar').click();
+        document.querySelector('#input').focus();
+      }
     }, false);
 
     document.addEventListener('keyup', (e) => {
       if(e.which == 27) document.querySelector('#buttonCancel').click();
+      document.querySelector('#input').focus();
     }, false);
+
+
+    document.querySelector('#input').addEventListener('paste', (e) => {
+      setTimeout(() => {
+        const value = e.target.value;
+        const id = (value.substr(value.length - 1));
+        const item = products_data.find(item => item.$loki == id);
+        e.target.value = '';
+
+        if (item) {
+          newItemInCart(item, value.substr(0, value.length - 2));
+          window.location.reload();
+        }
+      }, 500);
+  });
+
+  document.querySelector('#input').addEventListener('keyup', (e) => {
+    setTimeout(() => {
+      const value = e.target.value;
+      const id = (value.substr(value.length - 1));
+      const item = products_data.find(item => item.$loki == id);
+      e.target.value = '';
+
+      if (item) {
+        newItemInCart(item, value.substr(0, value.length - 2));
+        window.location.reload();
+      }
+    }, 500);
+  });
+
+  document.querySelector('#input').addEventListener('keypress', (e) => {
+    setTimeout(() => {
+      const value = e.target.value;
+      const id = (value.substr(value.length - 1));
+      const item = products_data.find(item => item.$loki == id);
+      e.target.value = '';
+
+      if (item) {
+        newItemInCart(item, value.substr(0, value.length - 2));
+        window.location.reload();
+      }
+    }, 500);
+  });
+
+
+  document.querySelector('#input').addEventListener('focus', (e) => {
+    setTimeout(() => {
+      const value = e.target.value;
+      const id = (value.substr(value.length - 1));
+      const item = products_data.find(item => item.$loki == id);
+      e.target.value = '';
+
+      if (item) {
+        newItemInCart(item, value.substr(0, value.length - 2));
+        window.location.reload();
+      }
+    }, 500);
+  });
 
   </script>
 </html>

@@ -28,7 +28,6 @@
       </header>
       <div class="center-horizontal hundred-margin">
         <image src="../images/Logo-AmareloEpreto.png" class="image center" />
-        <input autofocus id="input" placeholder="value" />
         <table id="app" class="table table-striped">
           <thead>
             <tr>
@@ -53,9 +52,8 @@
     db.save();
     const data = read(path.resolve(__dirname, '../db.json'));
     db.loadJSON(data);
-
+    
     let count_cart = 0;
-    let cart_client = [];
     let products_data;
     let users = db.getCollection('users');
     if (!users) {
@@ -93,31 +91,16 @@
         newWindow = null;
       });
       show = true;
-    }
-
-    const newItemInCart = (item, value) => {
-      let dbFile = path.resolve(__dirname, '../db.json');
-      const dbJs = new loki(dbFile);
-      const data_cart = read(path.resolve(__dirname, '../db.json'));
-      dbJs.loadJSON(data_cart);
-      let cart = dbJs.getCollection('cart');
+      let cart = db.getCollection('cart');
       if (cart === null) {
-        cart = dbJs.addCollection('cart');
+        cart = db.addCollection('cart');
       }
 
       if (count_cart === 0) {
         cart.removeDataOnly();
         count_cart = 1;
       }
-      
-      cart.insert({
-        value,
-        name: item.name,
-        id: item.$loki,
-      });
-      dbJs.save();
-      console.log(db);
-      console.log(dbJs);
+      db.save();
     }
 
     window.vue = require('vue');
@@ -129,6 +112,9 @@
       mounted: function() {
         this.products = products.data;
         this.products_filter = products.data.filter(item => !item.qtdeProduct > 0 || item.qtdeProduct == '' && !item.products.length === 1);
+        if (!show) {
+          handleNewBrowser();
+        }
         products_data = this.products;
         for (i = 0; i < 6; i++) {
           document.getElementsByTagName(`tbody`)[0].innerHTML += `<tr id="tr${i}"></tr>`;
@@ -242,97 +228,9 @@
           JsBarcode(`#svg${j + 3}_${i + 3}`).init();
           JsBarcode(`#svg${j + 4}_${i + 4}`).init();
           JsBarcode(`#svg${j + 5}_${i + 5}`).init();
+          
         }
       },
-    });
-    
-
-    document.querySelector('#input').addEventListener('paste', (e) => {
-      setTimeout(() => {
-        const value = e.target.value;
-        const index = (value.indexOf('/') + 1);
-        const id = value.substr(index);
-        const item = products_data.find(item => item.$loki == id);
-        e.target.value = '';
-
-        if (item) {
-          newItemInCart(item, value.substr(0, index - 1));
-
-          if (newWindow) {
-            newWindow.reload();
-          }
-
-          if (!show) {
-            handleNewBrowser();
-          }
-        }
-      }, 500);
-    });
-
-    document.querySelector('#input').addEventListener('keyup', (e) => {
-      setTimeout(() => {
-        const value = e.target.value;
-        const index = (value.indexOf('/') + 1);
-        const id = value.substr(index);
-        const item = products_data.find(item => item.$loki == id);
-        e.target.value = '';
-
-        if (item) {
-          newItemInCart(item, value.substr(0, index - 1));
-          
-          if (newWindow) {
-            newWindow.reload();
-          }
-
-          if (!show) {
-            handleNewBrowser();
-          }
-        }
-      }, 500);
-    });
-
-    document.querySelector('#input').addEventListener('keypress', (e) => {
-      setTimeout(() => {
-        const value = e.target.value;
-        const index = (value.indexOf('/') + 1);
-        const id = value.substr(index);
-        const item = products_data.find(item => item.$loki == id);
-        e.target.value = '';
-
-        if (item) {
-          newItemInCart(item, value.substr(0, index - 1));
-          
-          if (newWindow) {
-            newWindow.reload();
-          }
-
-          if (!show) {
-            handleNewBrowser();
-          }
-        }
-      }, 500);
-    });
-
-    document.querySelector('#input').addEventListener('focus', (e) => {
-      setTimeout(() => {
-        const value = e.target.value;
-        const index = (value.indexOf('/') + 1);
-        const id = value.substr(index);
-        const item = products_data.find(item => item.$loki == id);
-        e.target.value = '';
-
-        if (item) {
-          newItemInCart(item, value.substr(0, index - 1));
-          
-          if (newWindow) {
-            newWindow.reload();
-          }
-
-          if (!show) {
-            handleNewBrowser();
-          }
-        }
-      }, 500);
     });
 
     document.querySelector('#register').addEventListener('click', (e) => {
