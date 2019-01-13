@@ -89,7 +89,10 @@
             logged: true,
           });
           db.save();
-          window.location = `../${screenToGo}`;
+          console.log(screenToGo);
+          const verifyScreenToGo = screenToGo === 'file:///Users/pedrogaletti/Pedro/Electron/screens/authScreen/auth.html';
+
+          window.location = verifyScreenToGo ? '../ListProductScreen/listProduct.html' : `../${screenToGo}`;
           document.querySelector('#form-login').reset();
         } else {
           alert('Por favor preencha os campos com os dados corretos');

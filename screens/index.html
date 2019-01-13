@@ -126,7 +126,7 @@
                 <span> Valor Crachá </span>
                 ${this.products[j].products.length === 1
                     ? 'Combo com somente um produto' 
-                    :  this.products[j].qtdeProduct <= 0
+                    :  this.products[j].qtdeProduct <= 0 && this.products[j].combo === false
                       ? 'Produto sem estoque'
                       : `<svg
                         id="svg${j}_${i}"
@@ -143,7 +143,7 @@
                 <span> Valor Dinheiro </span>
                 ${this.products[j].products.length === 1
                     ? 'Combo com somente um produto' 
-                    :  this.products[j].qtdeProduct <= 0
+                    :  this.products[j].qtdeProduct <= 0 && this.products[j].combo === false
                       ? 'Produto sem estoque'
                       : `<svg
                           id="svg${j + 1}_${i + 1}"
@@ -160,7 +160,7 @@
                 <span> Valor Cartão </span>
                 ${this.products[j].products.length === 1
                   ? 'Combo com somente um produto' 
-                  :  this.products[j].qtdeProduct <= 0
+                  :  this.products[j].qtdeProduct <= 0 && this.products[j].combo === false
                     ? 'Produto sem estoque'
                     : `<svg
                         id="svg${j + 2}_${i + 2}"
@@ -177,7 +177,7 @@
                 <span> Valor Crachá Promoção </span>
                 ${this.products[j].products.length === 1
                   ? 'Combo com somente um produto' 
-                  :  this.products[j].qtdeProduct <= 0
+                  :  this.products[j].qtdeProduct <= 0 && this.products[j].combo === false
                     ? 'Produto sem estoque'
                     : `<svg
                         id="svg${j + 3}_${i + 3}"
@@ -194,7 +194,7 @@
                 <span> Valor Dinheiro Promoção </span>
                 ${this.products[j].products.length === 1
                   ? 'Combo com somente um produto' 
-                  :  this.products[j].qtdeProduct <= 0
+                  :  this.products[j].qtdeProduct <= 0 && this.products[j].combo === false
                     ? 'Produto sem estoque'
                     : `<svg
                         id="svg${j + 4}_${i + 4}"
@@ -211,7 +211,7 @@
                 <span> Valor Cartão Promoção </span>
                 ${this.products[j].products.length === 1
                   ? 'Combo com somente um produto' 
-                  :  this.products[j].qtdeProduct <= 0
+                  :  this.products[j].qtdeProduct <= 0 && this.products[j].combo === false
                     ? 'Produto sem estoque'
                     : `<svg
                         id="svg${j + 5}_${i + 5}"
