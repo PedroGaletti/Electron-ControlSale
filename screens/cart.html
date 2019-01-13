@@ -180,7 +180,11 @@
         e.target.value = '';
 
         if (item) {
-          await newItemInCart(item, value.substr(0, value.length - 2));
+          if (item.qtdeProduct <= 0 || item.products.length === 1) {
+            return alert('produto não pode ser inserido, pois esta inativo. Procure um técnico');
+          }
+
+          return newItemInCart(item, value.substr(0, value.length - 2));
           // await window.location.reload();
         }
       }, 500);
@@ -195,7 +199,11 @@
       e.target.value = '';
 
       if (item) {
-        await newItemInCart(item, value.substr(0, value.length - 2));
+        if (item.qtdeProduct <= 0 || item.products.length === 1) {
+          return alert('produto não pode ser inserido, pois esta inativo. Procure um técnico');
+        }
+
+        return newItemInCart(item, value.substr(0, value.length - 2));
         // await window.location.reload();
       }
     }, 500);
@@ -210,7 +218,11 @@
       e.target.value = '';
 
       if (item) {
-        await newItemInCart(item, value.substr(0, value.length - 2));
+        if (item.qtdeProduct <= 0 || item.products.length === 1) {
+          return alert('produto não pode ser inserido, pois esta inativo. Procure um técnico');
+        }
+
+        return newItemInCart(item, value.substr(0, value.length - 2));
         // await window.location.reload();
       }
     }, 500);
@@ -226,7 +238,11 @@
       e.target.value = '';
 
       if (item) {
-        await newItemInCart(item, value.substr(0, value.length - 2));
+        if (item.qtdeProduct <= 0 || item.products.length === 1) {
+          return alert('produto não pode ser inserido, pois esta inativo. Procure um técnico');
+        }
+
+        return newItemInCart(item, value.substr(0, value.length - 2));
         // await window.location.reload();
       }
     }, 500);

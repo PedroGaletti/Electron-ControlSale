@@ -49,7 +49,7 @@
                 </td>
                 
                 <td v-if="product.combo && !product.products.length === 1 || product.qtdeProduct > 0">Ativo</td>
-                <td v-if="!product.combo && product.qtdeProduct == 0 || product.products.length === 1">Não ativo</td>
+                <td v-if="!product.combo && product.qtdeProduct <= 0 || product.products.length === 1">Não ativo</td>
                 
                 <td>
                   <a v-if="product.products.length === 0">-</a>
