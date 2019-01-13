@@ -130,7 +130,7 @@
                       ? 'Produto sem estoque'
                       : `<svg
                         id="svg${j}_${i}"
-                        jsbarcode-value="${this.products[j].value_cracha}/${this.products[j].$loki}"
+                        jsbarcode-value="${this.products[j].value_cracha}-${this.products[j].$loki}"
                         jsbarcode-displayValue="true"
                         jsbarcode-height="50"
                       />`
@@ -147,7 +147,7 @@
                       ? 'Produto sem estoque'
                       : `<svg
                           id="svg${j + 1}_${i + 1}"
-                          jsbarcode-value="${this.products[j].value_money}/${this.products[j].$loki}"
+                          jsbarcode-value="${this.products[j].value_money}-${this.products[j].$loki}"
                           jsbarcode-displayValue="true"
                           jsbarcode-height="50"
                         />`
@@ -164,7 +164,7 @@
                     ? 'Produto sem estoque'
                     : `<svg
                         id="svg${j + 2}_${i + 2}"
-                        jsbarcode-value="${this.products[j].value_card}/${this.products[j].$loki}"
+                        jsbarcode-value="${this.products[j].value_card}-${this.products[j].$loki}"
                         jsbarcode-displayValue="true"
                         jsbarcode-height="50"
                       />`
@@ -181,7 +181,7 @@
                     ? 'Produto sem estoque'
                     : `<svg
                         id="svg${j + 3}_${i + 3}"
-                        jsbarcode-value="${this.products[j].value_cracha_promo}/${this.products[j].$loki}"
+                        jsbarcode-value="${this.products[j].value_cracha_promo}-${this.products[j].$loki}"
                         jsbarcode-displayValue="true"
                         jsbarcode-height="50"
                       />`
@@ -198,7 +198,7 @@
                     ? 'Produto sem estoque'
                     : `<svg
                         id="svg${j + 4}_${i + 4}"
-                        jsbarcode-value="${this.products[j].value_money_promo}/${this.products[j].$loki}"
+                        jsbarcode-value="${this.products[j].value_money_promo}-${this.products[j].$loki}"
                         jsbarcode-displayValue="true"
                         jsbarcode-height="50"
                       />`
@@ -215,7 +215,7 @@
                     ? 'Produto sem estoque'
                     : `<svg
                         id="svg${j + 5}_${i + 5}"
-                        jsbarcode-value="${this.products[j].value_card_promo}/${this.products[j].$loki}"
+                        jsbarcode-value="${this.products[j].value_card_promo}-${this.products[j].$loki}"
                         jsbarcode-displayValue="true"
                         jsbarcode-height="50"
                       />`
