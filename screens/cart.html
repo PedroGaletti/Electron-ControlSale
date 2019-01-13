@@ -126,7 +126,7 @@
                 item.products.map(product => {
                   return products.data.map(product_data => {
                     if (product.$loki === product_data.$loki) {
-                      product.qtdeProduct -= 1;
+                      product.qtdeProduct -= product.qtde_baixa;
                       String(product.qtdeProduct);
                       return products.update(product);
                     }
@@ -143,7 +143,6 @@
               date: new Date(),
             });
           }
-
           cart.removeDataOnly('cart');
           db.save();
           this.products = [];
@@ -161,12 +160,9 @@
       db.save();
     }
 
-
     document.addEventListener('keypress', (e) => {
-      if(e.which == 13) {
-        document.querySelector('#buttonFinalizar').click();
-        document.querySelector('#input').focus();
-      }
+      if(e.which == 13) document.querySelector('#buttonFinalizar').click();
+      document.querySelector('#input').focus();
     }, false);
 
     document.addEventListener('keyup', (e) => {
@@ -176,58 +172,62 @@
 
 
     document.querySelector('#input').addEventListener('paste', (e) => {
-      setTimeout(() => {
+      setTimeout(async () => {
         const value = e.target.value;
-        const id = (value.substr(value.length - 1));
+        const index = (value.indexOf('/') + 1);
+        const id = value.substr(index);
         const item = products_data.find(item => item.$loki == id);
         e.target.value = '';
 
         if (item) {
-          newItemInCart(item, value.substr(0, value.length - 2));
-          window.location.reload();
+          await newItemInCart(item, value.substr(0, value.length - 2));
+          // await window.location.reload();
         }
       }, 500);
   });
 
   document.querySelector('#input').addEventListener('keyup', (e) => {
-    setTimeout(() => {
+    setTimeout(async () => {
       const value = e.target.value;
-      const id = (value.substr(value.length - 1));
+      const index = (value.indexOf('/') + 1);
+      const id = value.substr(index);
       const item = products_data.find(item => item.$loki == id);
       e.target.value = '';
 
       if (item) {
-        newItemInCart(item, value.substr(0, value.length - 2));
-        window.location.reload();
+        await newItemInCart(item, value.substr(0, value.length - 2));
+        // await window.location.reload();
       }
     }, 500);
   });
 
   document.querySelector('#input').addEventListener('keypress', (e) => {
-    setTimeout(() => {
+    setTimeout(async () => {
       const value = e.target.value;
-      const id = (value.substr(value.length - 1));
+      const index = (value.indexOf('/') + 1);
+      const id = value.substr(index);
       const item = products_data.find(item => item.$loki == id);
       e.target.value = '';
 
       if (item) {
-        newItemInCart(item, value.substr(0, value.length - 2));
-        window.location.reload();
+        await newItemInCart(item, value.substr(0, value.length - 2));
+        // await window.location.reload();
       }
     }, 500);
   });
 
 
   document.querySelector('#input').addEventListener('focus', (e) => {
-    setTimeout(() => {
+    setTimeout(async () => {
       const value = e.target.value;
-      const id = (value.substr(value.length - 1));
+      const index = (value.indexOf('/') + 1);
+      const id = value.substr(index );
       const item = products_data.find(item => item.$loki == id);
       e.target.value = '';
 
       if (item) {
-        newItemInCart(item, value.substr(0, value.length - 2));
-        window.location.reload();
+        await newItemInCart(item, value.substr(0, value.length - 2));
+        // await window.location.reload();
       }
     }, 500);
   });

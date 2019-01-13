@@ -60,6 +60,20 @@
               </ul>
             </div>
             <div class="form-group">
+              <label>Quantidade do produto</label>
+              <ul id="qtde_product_combos">
+                <li v-for="product in products_combo">
+                  {{product.name}}
+                  <input
+                    class="product_combo_qtde"
+                    type="text"
+                    class="form-control"
+                    placeholder="Qtde. Produto no Combo"
+                  />
+                </li>
+              </ul>
+            </div>
+            <div class="form-group">
               <label>Nome Combo</label>
               <input
                 id="name"
@@ -280,10 +294,17 @@
           const value_cracha_promo = document.querySelector('#value_cracha_promo').value
             ? document.querySelector('#value_cracha_promo').value
             : document.querySelector('#value_cracha_promo_product').value;
+          const insert_qtde_baixa = () => {
+            const inputs = document.getElementsByClassName('product_combo_qtde');
+              for(z = 0; z < inputs.length; z++) {
+                this.products_combo[z].qtde_baixa = inputs[z].value;
+              }
+              return this.products_combo;
+          }
           
             let data = {
             name,
-            products: this.products_combo,
+            products: this.products_combo.length ? insert_qtde_baixa() : [],
             qtdeProduct,
             value_card: value_card.substr(2).replace(",", "."),
             value_money: value_money.substr(2).replace(",", "."),
@@ -315,7 +336,7 @@
           document.querySelector('#form-body').reset();
           document.querySelector('#product_combos').innerHTML = ``;
           alert('Cadastrado com sucesso');
-          window.location = '../index.html';
+          window.location = './register.html';
         },
         changeProduct: function(product) {
           const currentProduct = this.products_combo.filter(item => item.$loki === product.$loki);

@@ -60,6 +60,21 @@
                   </ul>
                 </div>
                 <div class="form-group">
+                  <label>Quantidade do produto</label>
+                  <ul id="qtde_product_combos">
+                    <li v-for="product in currentProduct[0].products">
+                      {{product.name}}
+                      <input
+                        class="product_combo_qtde"
+                        type="text"
+                        class="form-control"
+                        placeholder="Qtde. Produto no Combo"
+                        v-model="product.qtde_baixa"
+                      />
+                    </li>
+                  </ul>
+                </div>
+                <div class="form-group">
                   <label>Nome Combo</label>
                   <input
                     id="name"
@@ -328,7 +343,7 @@
             const name  = document.querySelector('#name')
               ? document.querySelector('#name').value
               : document.querySelector('#name_product').value;
-            const qtdeProduct = document.querySelector('#qtdeProduct_product').value;
+            const qtdeProduct = this.currentProduct[0].combo === false ? document.querySelector('#qtdeProduct_product').value : '';
             const value_card = document.querySelector('#value_card')
               ? document.querySelector('#value_card').value
               : document.querySelector('#value_card_product').value;
@@ -347,6 +362,13 @@
             const value_cracha_promo = document.querySelector('#value_cracha_promo')
               ? document.querySelector('#value_cracha_promo').value
               : document.querySelector('#value_cracha_promo_product').value;
+            const insert_qtde_baixa = () => {
+              const inputs = document.getElementsByClassName('product_combo_qtde');
+              for(z = 0; z < inputs.length; z++) {
+                return this.currentProduct[0].products[z].qtde_baixa = inputs[z].value;
+              }
+              return this.currentProduct[0].products;
+            }
             const sum = () => {
               if (this.original_product.qtdeProduct != qtdeProduct) {
                 if (qtdeProduct.substr(0) === '-') {
@@ -379,6 +401,7 @@
               value_card_promo,
               value_money_promo,
               value_cracha_promo,
+              qtde_baixa: this.currentProduct[0].products.length ? insert_qtde_baixa() : "",
               ...this.currentProduct[0],
             };
 
@@ -399,6 +422,7 @@
               });
             });
             await products.update(data);
+            console.log(data);
             db.save();
             window.location = '../ListProductScreen/listProduct.html';
             alert('editado com sucesso');
