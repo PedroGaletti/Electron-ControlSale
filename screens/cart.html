@@ -78,8 +78,10 @@
     let cart;
     if (cart === null) {
       cart = db.addCollection('cart');
+      db.save();
     } else {
       cart = db.getCollection('cart');
+      db.save();
     }
     const sales = db.getCollection('sales');
     const products = db.getCollection('products');
@@ -161,7 +163,8 @@
         id: item.$loki,
       });
       db.save();
-      window.location.reload();
+      console.log(db);
+      // window.location.reload();
     }
 
     document.addEventListener('keypress', (e) => {
@@ -174,7 +177,6 @@
       document.querySelector('#input').focus();
     }, false);
 
-
     document.querySelector('#input').addEventListener('paste', (e) => {
       setTimeout(async () => {
         const value = e.target.value;
@@ -184,7 +186,7 @@
         e.target.value = '';
 
         if (item) {
-          if (item.qtdeProduct <= 0 && item.combo === false || item.products.length === 1) {
+          if (item.qtdeProduct <= 0 && item.combo === false) {
             return alert('produto não pode ser inserido, pois esta inativo. Procure um técnico');
           }
 
@@ -213,7 +215,7 @@
       e.target.value = '';
 
       if (item) {
-        if (item.qtdeProduct <= 0 && item.combo === false || item.products.length === 1) {
+        if (item.qtdeProduct <= 0 && item.combo === false) {
           return alert('produto não pode ser inserido, pois esta inativo. Procure um técnico');
         }
 
@@ -241,7 +243,7 @@
       e.target.value = '';
 
       if (item) {
-        if (item.qtdeProduct <= 0 && item.combo === false || item.products.length === 1) {
+        if (item.qtdeProduct <= 0 && item.combo === false) {
           return alert('produto não pode ser inserido, pois esta inativo. Procure um técnico');
         }
 
@@ -260,7 +262,6 @@
     }, 500);
   });
 
-
   document.querySelector('#input').addEventListener('focus', (e) => {
     setTimeout(async () => {
       const value = e.target.value;
@@ -270,7 +271,7 @@
       e.target.value = '';
 
       if (item) {
-        if (item.qtdeProduct <= 0 && item.combo === false || item.products.length === 1) {
+        if (item.qtdeProduct <= 0 && item.combo === false) {
           return alert('produto não pode ser inserido, pois esta inativo. Procure um técnico');
         }
 

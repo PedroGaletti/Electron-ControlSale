@@ -381,11 +381,7 @@
               return this.original_product.qtdeProduct;
             }
 
-            if (this.currentProduct[0].products.length == 1) {
-              return alert('Um combo não pode ter somente um produto.');
-            }
-
-            if (name === '' || (!this.currentProduct[0].combo && qtdeProduct === '') || value_card === ''
+            if (name === '' || value_card === ''
               || value_money === '' || value_cracha === '' || value_card_promo === ''
               || value_money_promo === '' || value_cracha_promo === '') {
               return alert('É necessário o preenchimento de todos os campos');

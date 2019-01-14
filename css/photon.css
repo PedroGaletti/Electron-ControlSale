@@ -382,10 +382,6 @@ dialog {
   margin-bottom: 80px;
 }
 
-.hundred-margin table {
-  margin-bottom: 80px;
-}
-
 .window-content {
   position: relative;
   overflow-y: auto;
@@ -2438,7 +2434,7 @@ th {
 
 th,
 td {
-  padding: 2px 15px;
+  padding: 2px 10px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
