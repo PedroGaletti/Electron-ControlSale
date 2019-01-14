@@ -18,6 +18,7 @@
               <th>Nome</th>
               <th>Valor</th>
               <th>Cod. Produto</th>
+              <th>Forma de Pagamento</th>
               <th>Remover</th>
             </tr>
           </thead>
@@ -26,6 +27,7 @@
               <td>{{ product.name }}</td>
               <td>{{ product.value }}</td>
               <td>{{ product.id }}</td>
+              <td>{{ product.form_payment }}</td>
               <td>
                 <button
                   type="button"
@@ -106,6 +108,7 @@
         removeProductCart: function(product) {
           cart.remove(product);
           db.save();
+          value -= product.value_card;
           if (this.products.length === 0) {
             value = 0;
           }
@@ -143,7 +146,6 @@
 
             sales.insert({
               products_sales: cart.data,
-              qtdeProducts: products.data,
               date: new Date(),
             });
           }
@@ -157,10 +159,11 @@
       },
     });
 
-    const newItemInCart = (item) => {
+    const newItemInCart = (form_payment, item) => {
       value += Number(item.value_card);
       cart.insert({
         value: item.value_card,
+        form_payment,
         name: item.name,
         id: item.$loki,
       });
@@ -168,7 +171,7 @@
     }
 
     document.addEventListener('keypress', (e) => {
-      if(e.which == 13) document.querySelector('#buttonFinalizar').click();
+      if(e.which == 16) document.querySelector('#buttonFinalizar').click();
       document.querySelector('#input').focus();
     }, false);
     document.querySelector('#buttonFinalizar').addEventListener('click', (e) => {
@@ -184,8 +187,18 @@
     }, false);
 
     document.querySelector('#input').addEventListener('paste', (e) => {
-      setTimeout(async () => {
+      setTimeout(() => {
         const value = e.target.value;
+        const form_payment = value.substr(0, value.indexOf('+'));
+        if (form_payment == 0) {
+          form_payment = 'crachá';
+        }
+        if (form_payment == 1) {
+          form_payment = 'dinheiro';
+        }
+        if (form_payment == 2) {
+          form_payment = 'cartão';
+        }
         const index = (value.indexOf('/') + 1);
         const id = value.substr(index);
         const item = products_data.find(item => item.$loki == id);
@@ -206,16 +219,26 @@
             return a.indexOf(true) != -1 ? true : false;
           }
 
-          return verify_product_inside() ? alert('Produtos do combo esgotados. Procure um técnico') : newItemInCart(item);
+          return verify_product_inside() ? alert('Produtos do combo esgotados. Procure um técnico') : newItemInCart(form_payment, item);
 
         }
       }, 500);
   });
 
   document.querySelector('#input').addEventListener('keyup', (e) => {
-    setTimeout(async () => {
+    setTimeout(() => {
       const value = e.target.value;
       const index = (value.indexOf('/') + 1);
+      let form_payment = value.substr(0, value.indexOf('+'));
+      if (form_payment == 0) {
+        form_payment = 'crachá';
+      }
+      if (form_payment == 1) {
+        form_payment = 'dinheiro';
+      }
+      if (form_payment == 2) {
+        form_payment = 'cartão';
+      }
       const id = value.substr(index);
       const item = products_data.find(item => item.$loki == id);
       e.target.value = '';
@@ -235,15 +258,25 @@
           return a.indexOf(true) != -1 ? true : false;
         }
 
-        return verify_product_inside() ? alert('Produtos do combo esgotados. Procure um técnico') : newItemInCart(item);
+        return verify_product_inside() ? alert('Produtos do combo esgotados. Procure um técnico') : newItemInCart(form_payment, item);
       }
     }, 500);
   });
 
   document.querySelector('#input').addEventListener('keypress', (e) => {
-    setTimeout(async () => {
+    setTimeout(() => {
       const value = e.target.value;
       const index = (value.indexOf('/') + 1);
+      const form_payment = value.substr(0, value.indexOf('+'));
+      if (form_payment == 0) {
+        form_payment = 'crachá';
+      }
+      if (form_payment == 1) {
+        form_payment = 'dinheiro';
+      }
+      if (form_payment == 2) {
+        form_payment = 'cartão';
+      }
       const id = value.substr(index);
       const item = products_data.find(item => item.$loki == id);
       e.target.value = '';
@@ -263,15 +296,25 @@
           return a.indexOf(true) != -1 ? true : false;
         }
 
-        return verify_product_inside() ? alert('Produtos do combo esgotados. Procure um técnico') : newItemInCart(item);
+        return verify_product_inside() ? alert('Produtos do combo esgotados. Procure um técnico') : newItemInCart(form_payment, item);
       }
     }, 500);
   });
 
   document.querySelector('#input').addEventListener('focus', (e) => {
-    setTimeout(async () => {
+    setTimeout(() => {
       const value = e.target.value;
       const index = (value.indexOf('/') + 1);
+      const form_payment = value.substr(0, value.indexOf('+'));
+      if (form_payment == 0) {
+        form_payment = 'crachá';
+      }
+      if (form_payment == 1) {
+        form_payment = 'dinheiro';
+      }
+      if (form_payment == 2) {
+        form_payment = 'cartão';
+      }
       const id = value.substr(index );
       const item = products_data.find(item => item.$loki == id);
       e.target.value = '';
@@ -291,7 +334,7 @@
           return a.indexOf(true) != -1 ? true : false;
         }
 
-        return verify_product_inside() ? alert('Produtos do combo esgotados. Procure um técnico') : newItemInCart(item);
+        return verify_product_inside() ? alert('Produtos do combo esgotados. Procure um técnico') : newItemInCart(form_payment, item);
       }
     }, 500);
   });
