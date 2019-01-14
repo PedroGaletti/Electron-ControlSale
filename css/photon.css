@@ -2444,6 +2444,11 @@ td:last-child {
   border-right: 0;
 }
 
+#list-body {
+  width: 400px;
+  margin-bottom: 80px;
+}
+
 .tab-group {
   margin-top: -1px;
   margin-bottom: 20px;

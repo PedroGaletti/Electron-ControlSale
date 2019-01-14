@@ -72,13 +72,11 @@
                 </td>
                 <td>
                   <input
-                    v-if="!product.combo"
                     placeholder="Novo Estoque"
                     id="new_stoque"
                     type="number"
                     class="form-control new_stoque"
                   />
-                  <a v-if="product.combo">-</a>
                 </td>
                 <td>
                   <button
@@ -126,7 +124,7 @@
           onSelectProduct: function(param, index) {
             var stoque = document.getElementsByClassName('new_stoque');
             for (var i = 0; i < stoque.length; i++) {
-              if (stoque[i].value && param.$loki === this.products[i].$loki) {
+              if (param.$loki == this.products[i].$loki) {
                 let data = {
                   ...param,
                   qtdeProduct: sum(stoque[i].value, param),

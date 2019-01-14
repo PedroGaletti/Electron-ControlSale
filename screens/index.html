@@ -99,6 +99,7 @@
         height: 500,
       });
       newWindow.loadFile(`${__dirname}/cart.html`);
+      // newWindow.webContents.openDevTools();
       newWindow.on('closed', function () {
         newWindow = null;
       });
@@ -110,9 +111,9 @@
 
       if (count_cart === 0) {
         cart.removeDataOnly();
+        db.save();
         count_cart = 1;
       }
-      db.save();
     }
 
     window.vue = require('vue');
@@ -142,7 +143,7 @@
                   : `<svg
                     id="svg${j}_${i}"
                     jsbarcode-value="${this.products_up[j].value_cracha}-${this.products_up[j].$loki}"
-                    jsbarcode-displayValue="false"
+                    jsbarcode-displayValue="true"
                     jsbarcode-height="50"
                   />`
                 }
@@ -157,7 +158,7 @@
                   : `<svg
                       id="svg${j + 1}_${i + 1}"
                       jsbarcode-value="${this.products_up[j].value_money}-${this.products_up[j].$loki}"
-                      jsbarcode-displayValue="false"
+                      jsbarcode-displayValue="true"
                       jsbarcode-height="50"
                     />`
                 }
@@ -172,7 +173,7 @@
                   : `<svg
                       id="svg${j + 2}_${i + 2}"
                       jsbarcode-value="${this.products_up[j].value_card}-${this.products_up[j].$loki}"
-                      jsbarcode-displayValue="false"
+                      jsbarcode-displayValue="true"
                       jsbarcode-height="50"
                     />`
                 }
@@ -196,7 +197,7 @@
                     : `<svg
                       id="svg${x}_${k}"
                       jsbarcode-value="${this.products_down[x].value_cracha}-${this.products_down[x].$loki}"
-                      jsbarcode-displayValue="false"
+                      jsbarcode-displayValue="true"
                       jsbarcode-height="50"
                     />`
                 }
@@ -211,7 +212,7 @@
                     : `<svg
                         id="svg${x + 1}_${k + 1}"
                         jsbarcode-value="${this.products_down[x].value_money}-${this.products_down[x].$loki}"
-                        jsbarcode-displayValue="false"
+                        jsbarcode-displayValue="true"
                         jsbarcode-height="50"
                       />`
                 }
@@ -226,7 +227,7 @@
                   : `<svg
                       id="svg${x + 2}_${k + 2}"
                       jsbarcode-value="${this.products_down[x].value_card}-${this.products_down[x].$loki}"
-                      jsbarcode-displayValue="false"
+                      jsbarcode-displayValue="true"
                       jsbarcode-height="50"
                     />`
                 }

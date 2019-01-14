@@ -86,21 +86,20 @@
     const sales = db.getCollection('sales');
     const products = db.getCollection('products');
     let products_data = [];
+    let value = 0;
 
     window.vue = require('vue');
     new Vue({
       el: '#table-estoque',
       data: {
         products: [],
-        value: 0.00,
       },
       mounted: function() {
         this.products = cart.data;
         this.products.filter(item => {
-          this.value += Number(item.value)
+          value += Number(item.value);
         });
         this.products_data = products.data;
-        this.value = String(this.value).substr(3, 1) === '.' ? Number(String(this.value).substr(0,6)) : this.value;
         products_data = this.products_data;
       },
       methods: {
@@ -108,7 +107,7 @@
           cart.remove(product);
           db.save();
           if (this.products.length === 0) {
-            this.value = 0;
+            value = 0;
           }
         },
         finishCart: function(param) {
@@ -152,15 +151,16 @@
           cart.removeDataOnly('cart');
           db.save();
           this.products = [];
-          this.value = 0.00;
+          value = 0.00;
           window.location.reload();
         },
       },
     });
 
-    const newItemInCart = (item, value) => {
+    const newItemInCart = (item) => {
+      value += Number(item.value_card);
       cart.insert({
-        value,
+        value: item.value_card,
         name: item.name,
         id: item.$loki,
       });
@@ -206,7 +206,7 @@
             return a.indexOf(true) != -1 ? true : false;
           }
 
-          return verify_product_inside() ? alert('Produtos do combo esgotados. Procure um técnico') : newItemInCart(item, value.substr(0, value.length - 2));
+          return verify_product_inside() ? alert('Produtos do combo esgotados. Procure um técnico') : newItemInCart(item);
 
         }
       }, 500);
@@ -235,7 +235,7 @@
           return a.indexOf(true) != -1 ? true : false;
         }
 
-        return verify_product_inside() ? alert('Produtos do combo esgotados. Procure um técnico') : newItemInCart(item, value.substr(0, value.length - 2));
+        return verify_product_inside() ? alert('Produtos do combo esgotados. Procure um técnico') : newItemInCart(item);
       }
     }, 500);
   });
@@ -263,7 +263,7 @@
           return a.indexOf(true) != -1 ? true : false;
         }
 
-        return verify_product_inside() ? alert('Produtos do combo esgotados. Procure um técnico') : newItemInCart(item, value.substr(0, value.length - 2));
+        return verify_product_inside() ? alert('Produtos do combo esgotados. Procure um técnico') : newItemInCart(item);
       }
     }, 500);
   });
@@ -291,7 +291,7 @@
           return a.indexOf(true) != -1 ? true : false;
         }
 
-        return verify_product_inside() ? alert('Produtos do combo esgotados. Procure um técnico') : newItemInCart(item, value.substr(0, value.length - 2));
+        return verify_product_inside() ? alert('Produtos do combo esgotados. Procure um técnico') : newItemInCart(item);
       }
     }, 500);
   });
