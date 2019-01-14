@@ -148,10 +148,12 @@
               date: new Date(),
             });
           }
+
           cart.removeDataOnly('cart');
           db.save();
           this.products = [];
           this.value = 0.00;
+          window.location.reload();
         },
       },
     });
@@ -163,15 +165,19 @@
         id: item.$loki,
       });
       db.save();
-      console.log(db);
-      // window.location.reload();
     }
 
     document.addEventListener('keypress', (e) => {
       if(e.which == 13) document.querySelector('#buttonFinalizar').click();
       document.querySelector('#input').focus();
     }, false);
+    document.querySelector('#buttonFinalizar').addEventListener('click', (e) => {
+      document.querySelector('#input').focus();
+    });
 
+    document.querySelector('#buttonCancel').addEventListener('click', (e) => {
+      document.querySelector('#input').focus();
+    });
     document.addEventListener('keyup', (e) => {
       if(e.which == 27) document.querySelector('#buttonCancel').click();
       document.querySelector('#input').focus();

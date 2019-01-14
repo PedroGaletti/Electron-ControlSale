@@ -127,6 +127,9 @@
         this.products_up = products.data.filter((item, index) => index < middle_array ? item : null);
         this.products_down = products.data.filter((item, index) => index >= (middle_array) ? item : null);
         this.products = products.data;
+        if (!newWindow) {
+          handleNewBrowser();
+        }
         for (i = 0; i < 3; i++) {
           document.getElementsByTagName('tbody')[0].innerHTML += `<tr id="tr${i}"></tr>`;
         }
@@ -258,9 +261,11 @@
         ? '../screens/RefreshScreen/refresh.html'
         : '../screens/authScreen/auth.html?screen=RefreshScreen/refresh.html';
     });
-    document.querySelector('#home').addEventListener('click', (e) => {
+    document.querySelector('#home').addEventListener('dblclick', (e) => {
       e.preventDefault();
-      window.location = `../screens/index.html`;
+      if (!newWindow) {
+        handleNewBrowser();
+      }
     });
   </script>
 </html>
