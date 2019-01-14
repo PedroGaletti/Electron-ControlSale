@@ -109,33 +109,6 @@
                 v-bind="money"
               />
             </div>
-            <div class="form-group">
-              <label>Valor Combo Crédito/Débito Promocional</label>
-              <money
-                id="value_card_promo"
-                class="form-control"
-                placeholder="Valor Combo Crédito/Débito Promocional"
-                v-bind="money"
-              />
-            </div>
-            <div class="form-group">
-              <label>Valor Combo Dinheiro Promocional</label>
-              <money
-                id="value_money_promo"
-                class="form-control"
-                placeholder="Valor Combo Dinheiro Promocional"
-                v-bind="money"
-              />
-            </div>
-            <div class="form-group">
-              <label>Valor Combo Crachá Promocional</label>
-              <money
-                id="value_cracha_promo"
-                class="form-control"
-                placeholder="Valor Combo Crachá Promocional"
-                v-bind="money"
-              />
-            </div>
             <div class="form-actions center">
               <button
                 type="button"
@@ -181,33 +154,6 @@
                 id="value_cracha_product"
                 class="form-control"
                 placeholder="Valor Produto Crachá"
-                v-bind="money"
-              />
-            </div>
-            <div class="form-group">
-              <label>Valor Produto Crédito/Débito Promocional</label>
-              <money
-                id="value_card_promo_product"
-                class="form-control"
-                placeholder="Valor Produto Crédito/Débito Promocional"
-                v-bind="money"
-              />
-            </div>
-            <div class="form-group">
-              <label>Valor Produto Dinheiro Promocional</label>
-              <money
-                id="value_money_promo_product"
-                class="form-control"
-                placeholder="Valor Produto Dinheiro Promocional"
-                v-bind="money"
-              />
-            </div>
-            <div class="form-group">
-              <label>Valor Produto Crachá Promocional</label>
-              <money
-                id="value_cracha_promo_product"
-                class="form-control"
-                placeholder="Valor Produto Crachá Promocional"
                 v-bind="money"
               />
             </div>
@@ -285,15 +231,6 @@
           const value_cracha = document.querySelector('#value_cracha').value
             ? document.querySelector('#value_cracha').value
             : document.querySelector('#value_cracha_product').value;
-          const value_card_promo = document.querySelector('#value_card_promo').value
-            ? document.querySelector('#value_card_promo').value
-            : document.querySelector('#value_card_promo_product').value;
-          const value_money_promo = document.querySelector('#value_money_promo').value
-            ? document.querySelector('#value_money_promo').value
-            : document.querySelector('#value_money_promo_product').value;
-          const value_cracha_promo = document.querySelector('#value_cracha_promo').value
-            ? document.querySelector('#value_cracha_promo').value
-            : document.querySelector('#value_cracha_promo_product').value;
           const insert_qtde_baixa = () => {
             const inputs = document.getElementsByClassName('product_combo_qtde');
               for(z = 0; z < inputs.length; z++) {
@@ -309,16 +246,12 @@
             value_card: value_card.substr(2).replace(",", "."),
             value_money: value_money.substr(2).replace(",", "."),
             value_cracha: value_cracha.substr(2).replace(",", "."),
-            value_card_promo: value_card_promo.substr(2).replace(",", "."),
-            value_money_promo: value_money_promo.substr(2).replace(",", "."),
-            value_cracha_promo: value_cracha_promo.substr(2).replace(",", "."),
             first_qtdeProduct: qtdeProduct || 0,
             combo: !!this.products_combo.length || false,
           };
 
           if (name === '' || (show && qtdeProduct === '') || value_card === ''
-            || value_money === '' || value_cracha === '' || value_card_promo === ''
-            || value_money_promo === '' || value_cracha_promo === '') {
+            || value_money === '' || value_cracha === '') {
               return alert('É necessário o preenchimento de todos os campos');
             }
 
