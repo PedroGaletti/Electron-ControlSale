@@ -63,7 +63,7 @@
             class="btn btn-primary pull-right"
             id="buttonFinalizar"
           >
-            Finalizar Compra (Enter)
+            Finalizar Compra (Shift)
           </button>
         </div>
       </footer>
@@ -170,7 +170,7 @@
       db.save();
     }
 
-    document.addEventListener('keypress', (e) => {
+    document.addEventListener('keyup', (e) => {
       if(e.which == 16) document.querySelector('#buttonFinalizar').click();
       document.querySelector('#input').focus();
     }, false);
@@ -189,7 +189,7 @@
     document.querySelector('#input').addEventListener('paste', (e) => {
       setTimeout(() => {
         const value = e.target.value;
-        const form_payment = value.substr(0, value.indexOf('+'));
+        let form_payment = value.substr(0, value.indexOf('['));
         if (form_payment == 0) {
           form_payment = 'crachá';
         }
@@ -229,7 +229,7 @@
     setTimeout(() => {
       const value = e.target.value;
       const index = (value.indexOf('/') + 1);
-      let form_payment = value.substr(0, value.indexOf('+'));
+      let form_payment = value.substr(0, value.indexOf('['));
       if (form_payment == 0) {
         form_payment = 'crachá';
       }
@@ -267,7 +267,7 @@
     setTimeout(() => {
       const value = e.target.value;
       const index = (value.indexOf('/') + 1);
-      const form_payment = value.substr(0, value.indexOf('+'));
+      let form_payment = value.substr(0, value.indexOf('['));
       if (form_payment == 0) {
         form_payment = 'crachá';
       }
@@ -305,7 +305,7 @@
     setTimeout(() => {
       const value = e.target.value;
       const index = (value.indexOf('/') + 1);
-      const form_payment = value.substr(0, value.indexOf('+'));
+      let form_payment = value.substr(0, value.indexOf('['));
       if (form_payment == 0) {
         form_payment = 'crachá';
       }

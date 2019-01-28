@@ -24,6 +24,9 @@
             <button id="refresh" class="btn btn-large btn-primary">
               Estoque
             </button>
+            <button id="sales" class="btn btn-large btn-primary">
+              Vendas
+            </button>
           </div>
         </header>
         <div class="center-horizontal hundred-margin">
@@ -189,6 +192,11 @@
       document.querySelector('#home').addEventListener('click', (e) => {
         e.preventDefault();
         window.location = '../index.html';
+      });
+
+      document.querySelector('#sales').addEventListener('click', (e) => {
+        e.preventDefault();
+        window.location = '../sales.html';
       });
     </script>
   </html>

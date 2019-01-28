@@ -24,6 +24,9 @@
           <button id="refresh" class="btn btn-large btn-primary">
             Estoque
           </button>
+          <button id="sales" class="btn btn-large btn-primary">
+            Vendas
+          </button>
         </div>
       </header>
       <div class="center-horizontal hundred-margin" id="app">
@@ -143,7 +146,7 @@
                   : `<svg
                     id="svg${j}_${i}"
                     jsbarcode-value="${0}+${this.products_up[j].value_cracha}-${this.products_up[j].$loki}"
-                    jsbarcode-displayValue="true"
+                    jsbarcode-displayValue="false"
                     jsbarcode-height="50"
                   />`
                 }
@@ -158,7 +161,7 @@
                   : `<svg
                       id="svg${j + 1}_${i + 1}"
                       jsbarcode-value="${1}+${this.products_up[j].value_money}-${this.products_up[j].$loki}"
-                      jsbarcode-displayValue="true"
+                      jsbarcode-displayValue="false"
                       jsbarcode-height="50"
                     />`
                 }
@@ -173,7 +176,7 @@
                   : `<svg
                       id="svg${j + 2}_${i + 2}"
                       jsbarcode-value="${2}+${this.products_up[j].value_card}-${this.products_up[j].$loki}"
-                      jsbarcode-displayValue="true"
+                      jsbarcode-displayValue="false"
                       jsbarcode-height="50"
                     />`
                 }
@@ -197,7 +200,7 @@
                     : `<svg
                       id="svg${x}_${k}"
                       jsbarcode-value="${0}+${this.products_down[x].value_cracha}-${this.products_down[x].$loki}"
-                      jsbarcode-displayValue="true"
+                      jsbarcode-displayValue="false"
                       jsbarcode-height="50"
                     />`
                 }
@@ -212,7 +215,7 @@
                     : `<svg
                         id="svg${x + 1}_${k + 1}"
                         jsbarcode-value="${1}+${this.products_down[x].value_money}-${this.products_down[x].$loki}"
-                        jsbarcode-displayValue="true"
+                        jsbarcode-displayValue="false"
                         jsbarcode-height="50"
                       />`
                 }
@@ -227,7 +230,7 @@
                   : `<svg
                       id="svg${x + 2}_${k + 2}"
                       jsbarcode-value="${2}+${this.products_down[x].value_card}-${this.products_down[x].$loki}"
-                      jsbarcode-displayValue="true"
+                      jsbarcode-displayValue="false"
                       jsbarcode-height="50"
                     />`
                 }
@@ -260,6 +263,12 @@
       window.location = isLogged
         ? '../screens/RefreshScreen/refresh.html'
         : '../screens/authScreen/auth.html?screen=RefreshScreen/refresh.html';
+    });
+    document.querySelector('#sales').addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location = isLogged
+        ? './sales.html'
+        : '../screens/authScreen/auth.html?screen=sales.html';
     });
     document.querySelector('#home').addEventListener('dblclick', (e) => {
       e.preventDefault();

@@ -31,4 +31,9 @@ ready(() => {
     e.preventDefault();
     window.location = '../RefreshScreen/refresh.html';
   });
+
+  document.querySelector('#sales').addEventListener('click', (e) => {
+    e.preventDefault();
+    window.location = '../sales.html';
+  });
 });

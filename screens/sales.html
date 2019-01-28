@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>288 Worship</title>
+    <meta charset="utf-8"/>
+    <link href="../css/photon.css" rel="stylesheet"> 
+    <script src="../scripts/vue.js"></script>
+  </head>
+  <body>
+    <div class="window">
+      <header class="toolbar toolbar-header">
+        <div class="toolbar-actions">
+          <button id="home" class="btn btn-large btn-default">
+            <span class="icon icon-home"></span>
+          </button>
+          <button id="register" class="btn btn-large btn-primary">
+            Cadastrar
+          </button>
+          <button id="edit" class="btn btn-large btn-primary">
+            Editar
+          </button>
+          <button id="refresh" class="btn btn-large btn-primary">
+            Estoque
+          </button>
+          <button id="refresh" class="btn btn-large btn-primary">
+            Vendas
+          </button>
+        </div>
+      </header>
+      <div class="center-horizontal hundred-margin">
+        <image src="../images/Logo-AmareloEpreto.png" class="image center" />
+        <table class="table-striped" id="table-sale">
+          <thead>
+            <tr>
+              <th>Venda</th>
+              <th>Forma de pagamento</th>
+              <th>Produtos Vendidos</th>
+              <th>Valor Produto</th>
+              <th>Remover Compra</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="sale in sales">
+              <td>{{ sale.$loki }}</td>
+              <td>
+                <div style="display: flex; flex-direction: column;">
+                  <a v-for="sale_payment in sale.products_sales">
+                    {{ sale_payment.form_payment }}
+                  </a>
+                </div>
+              </td>
+              <td>
+                  <div style="display: flex; flex-direction: column;">
+                  <a v-for="sale_product in sale.products_sales">
+                    {{ sale_product.name }}
+                  </a>
+                </div>
+              </td>
+              <td>
+                <div style="display: flex; flex-direction: column;">
+                  <a v-for="sale_value in sale.products_sales">
+                    {{ sale_value.value }}
+                  </a>
+                </div>
+              </td>
+              <td>
+                <button
+                  type="button"
+                  class="btn btn-form btn-primary"
+                  @click="onRemoveSale(sale)"
+                >
+                  Remover Compra
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    </body>
+  <script>
+    const read = require('read-file-utf8');
+    const loki = require('lokijs');
+    const path = require('path');
+    let dbFile = path.resolve(__dirname, '../db.json');
+    const db = new loki(dbFile);
+    const data = read(path.resolve(__dirname, '../db.json'));
+    db.loadJSON(data);
+
+    const sales = db.getCollection('sales');
+
+    window.vue = require('vue');
+    new Vue({
+      el: '#table-sale',
+      data: {
+        sales: [],
+      },
+      mounted: function() {
+        this.sales = sales.data;
+      },
+      methods: {
+        onRemoveSale: function(sale) {
+          if (confirm('Tem certeza que deseja excluir essa venda? Ela se apagará do banco')) {
+            sales.remove(sale);
+            db.save();
+          }
+        },
+      },
+    });
+
+    document.querySelector('#home').addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location = './index.html';
+    });
+
+    document.querySelector('#register').addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location = './RegisterScreen/register.html';
+    });
+
+    document.querySelector('#edit').addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location = './ListProductScreen/listProduct.html';
+    });
+
+    document.querySelector('#refresh').addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location = './RefreshScreen/refresh.html';
+    });
+  </script>
+</html>

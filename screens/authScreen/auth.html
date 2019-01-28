@@ -20,6 +20,9 @@
         <button id="refresh" class="btn btn-large btn-primary">
           Estoque
         </button>
+        <button id="sales" class="btn btn-large btn-primary">
+          Vendas
+        </button>
       </div>
     </header>
     <div class="center">
@@ -132,6 +135,14 @@
 
       document.querySelector('#home').addEventListener('click', (e) => {
         window.location = '../index.html';
+      });
+
+      document.querySelector('#sales').addEventListener('click', (e) => {
+        screenToGo = 'sales.html';
+        if (isLogged) {
+          window.location = '../sales.html';
+        }
+        window.location = '';
       });
   </script>
 </html>
